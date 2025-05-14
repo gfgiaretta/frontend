@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Definição de Cores para uso no Tailwind */
+  --color-text: var(--color-text);
+  --color-background: var(--color-background);
+  --color-grey-1: var(--color-grey-1);
+  --color-grey-2: var(--color-grey-2);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-support-orange: var(--color-support-orange);
+  --color-support-blue: var(--color-support-blue);
+
+  /* Font Sizes */
+  --text-xs: 0.8125rem; /* 13px */
+  --text-sm: 0.9375rem; /* 15px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.0625rem; /* 17px */
+  --text-xl: 1.375rem; /* 22px */
+  --text-2xl: 2.125rem; /* 34px */
+
+  /* Fonts */
+  --font-neulis: 'Neulis Cursive', sans-serif;
+  --font-sfPro: 'SF Pro Display', sans-serif;
+}

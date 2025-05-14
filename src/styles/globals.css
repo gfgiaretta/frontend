@@ -1,0 +1,48 @@
+@import './tailwindConfig.css';
+
+:root {
+  --color-text: #1b1b1b;
+  --color-background: #f6f6f6;
+  --color-grey-1: #7b7b7b;
+  --color-grey-2: #d1d1d1;
+  --color-primary: #4d716a;
+  --color-secondary: #da7584;
+  --color-support-blue: #8fd3fd;
+  --color-support-orange: #f6703c;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #F6F6F6;
+    --color-background: #1B1B1B;
+    --color-grey-1: #8D8D8D;
+    --color-grey-2: #3D3D3D;
+    --color-primary: #72A199;
+    --color-secondary: #FF8699;
+    --color-support-orange: #8FD3FD;
+    --color-support-blue: #F6703C;
+  }
+} */
+
+/* Fonte Neulis Cursive */
+@font-face {
+  font-family: 'Neulis Cursive';
+  src: url('/fonts/Neulis_Cursive_Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap; /* opcional, mas recomendado */
+}
+
+/* Fonte SF Pro Display */
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/SF-Pro-Display-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
