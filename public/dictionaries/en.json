@@ -1,0 +1,130 @@
+{
+  "Home": {
+    "title": "Home",
+    "welcome": "Welcome to my website",
+    "invite": "Check out our examples of typography and colors"
+  },
+  "Auth": {
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "register": "Register",
+    "registerAction": "Register",
+    "confirmPassword": "Confirm your Password",
+    "email": "E-mail",
+    "registerErrors": {
+      "usernameRequired": "Please enter a username.",
+      "passwordRequired": "Please enter a password.",
+      "confirmPasswordRequired": "Please confirm your password.",
+      "emailRequired": "Please enter an email address.",
+      "passwordMismatch": "Passwords do not match.",
+      "emailInvalid": "Please enter a valid email address.",
+      "passwordInvalid": "Password must be at least 8 characters long and include an uppercase letter, a number, and a special character.",
+      "unknownError": "An unknown error occurred. Please try again later."
+    }
+  },
+  "Library": {
+    "title": "Library",
+    "title-boom": "creative boom",
+    "description-boom": "A leading art and design platform from the United Kingdom that offers news, inspiration, insights, and advice from the creative industry.",
+    "title-creative": "creative confidence",
+    "description-creative": "Book by Tom Kelley and David Kelley, founder of IDEO. It discusses creativity as essential for success.",
+    "title-magazine": "recorte magazine",
+    "description-magazine": "A subscription-based magazine covering topics like literature, politics, music, and fashion. Essential foundations for creatives.",
+    "title-muz": "muz.li",
+    "description-muz": "Discover the best inspirations for visual arts and photography. Also includes expert articles on design from around the world."
+  },
+  "Profile": {
+    "title": "Profile",
+    "description": "This is a simple profile page. You can add your personal information here."
+  },
+  "Menu": {
+    "home": "Home",
+    "library": "Library",
+    "exercises": "Exercises",
+    "profile": "Profile"
+  },
+  "Feedback": {
+    "feedbackTitle": "Feedback",
+    "feedbackMessage": "Congratulations, you’ve completed today’s exercise!",
+    "motivation": "'Our work is sometimes easier to start when we ask ourselves what’s wrong!'",
+    "backToFeed": "Back to feed",
+    "days": "DAYS",
+    "share": "Share"
+  },
+  "LimitedNarrative": {
+    "title": "Limited Narrative",
+    "description": "The idea here is to exercise how much we can create with so little. Write a narrative with just eight words about an unrequited romance.",
+    "alertDescription": "Fill in all the words to continue.",
+    "alertTitle": "Attention!"
+  },
+  "Components": {
+    "modal": {
+      "cancel": "Cancel",
+      "confirm": "Ok"
+    }
+  },
+  "Statistics": {
+    "title": "statistics"
+  },
+  "General": {
+    "title": "General"
+  },
+  "consecutive days": {
+    "text": "consecutive days"
+  },
+  "saved posts": {
+    "text": "saved posts"
+  },
+  "Onboarding": {
+    "next": "Next",
+    "start": "Start",
+    "steps": [
+      {
+        "title": "create lightly",
+        "description": "Receive daily suggestions for creative exercises and content to fuel and stimulate your creativity."
+      },
+      {
+        "title": "be consistent",
+        "description": "Make creativity a habit with small daily moments dedicated to reflecting, exploring and developing."
+      },
+      {
+        "title": "exchange experiences",
+        "description": "Share your ideas and feedback in a welcoming community that makes you feel at home."
+      }
+    ]
+  },
+  "Interests": {
+    "title": "what do you like?",
+    "choice": "Choose three to proceed.",
+    "allDone": "All done!",
+    "photography": "Photography",
+    "sculpture": "Sculpture",
+    "crafts": "Crafts",
+    "music": "Music",
+    "games": "Games",
+    "design": "Design",
+    "illustration": "Illustration",
+    "theatre": "Theater",
+    "marketing": "Advertising",
+    "art": "Art",
+    "writing": "Writing",
+    "literature": "Literature",
+    "fashion": "Fashion"
+  },
+  "Exercises": {
+    "title": "Exercises",
+    "subtitle": "What creative universe will we explore today?",
+    "next": "Swipe to the side to see the options."
+  },
+  "Inversion": {
+    "title": "Inversion"
+  },
+  "PostCard": {
+    "invalidDate": "Invalid date",
+    "minute": "minute",
+    "hour": "hour",
+    "day": "day",
+    "week": "week"
+  }
+}

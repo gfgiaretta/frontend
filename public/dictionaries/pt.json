@@ -1,0 +1,130 @@
+{
+  "Home": {
+    "title": "Home",
+    "welcome": "Bem-vindo ao meu site",
+    "invite": "Veja nossos exemplos de tipografia e cores"
+  },
+  "Auth": {
+    "username": "Nome de usuário",
+    "password": "Senha",
+    "login": "Login",
+    "register": "Registrar",
+    "registerAction": "Registre-se",
+    "confirmPassword": "Confirme sua Senha",
+    "email": "E-mail",
+    "registerErrors": {
+      "usernameRequired": "Por favor, insira um nome de usuário.",
+      "passwordRequired": "Por favor, insira uma senha.",
+      "confirmPasswordRequired": "Por favor, confirme sua senha.",
+      "emailRequired": "Por favor, insira um endereço de e-mail.",
+      "passwordMismatch": "As senhas não coincidem.",
+      "emailInvalid": "Por favor, insira um e-mail válido.",
+      "passwordInvalid": "A senha deve ter no mínimo 8 caracteres e incluir uma letra maiúscula, um número e um caractere especial.",
+      "unknownError": "Ocorreu um erro desconhecido. Por favor, tente novamente mais tarde."
+    }
+  },
+  "Library": {
+    "title": "Biblioteca",
+    "title-boom": "creative boom",
+    "description-boom": "É uma plataforma líder de arte e design do Reino Unido que oferece notícias, inspiração, insights e conselhos da indústria criativa.",
+    "title-creative": "confiança criativa",
+    "description-creative": "Livro de Tom Kelley e David Kelley, fundador da IDEO. Aborda a criatividade como essencial para o sucesso.",
+    "title-magazine": "revista recorte",
+    "description-magazine": "Revista por assinatura que aborda temas como literatura, política, música e moda. Fundamentos essenciais para criativos.",
+    "title-muz": "muz.li",
+    "description-muz": "Descubra as melhores inspirações para artes visuais, fotografia. Bem como artigos de especialistas em design de todo o mundo."
+  },
+  "Profile": {
+    "title": "Perfil",
+    "description": "Esta é uma página de perfil simples. Você pode adicionar suas informações pessoais aqui."
+  },
+  "Menu": {
+    "home": "Home",
+    "library": "Biblioteca",
+    "exercises": "Exercícios",
+    "profile": "Perfil"
+  },
+  "Feedback": {
+    "feedbackTitle": "Feedback",
+    "feedbackMessage": "Parabéns, você finalizou o exercício do dia!",
+    "motivation": "'Nosso trabalho às vezes é mais fácil de começar quando nos perguntamos o que está errado!'",
+    "backToFeed": "Voltar ao feed",
+    "days": "DIAS",
+    "share": "Compartilhar"
+  },
+  "LimitedNarrative": {
+    "title": "Narrativa limitada",
+    "description": "Aqui a ideia é exercitar o quanto podemos criar com tão pouco. Escreva uma narrativa com apenas oito palavras sobre um romance não correspondido.",
+    "alertDescription": "Preencha todas as palavras para continuar.",
+    "alertTitle": "Atenção!"
+  },
+  "Components": {
+    "modal": {
+      "cancel": "Cancelar",
+      "confirm": "Ok"
+    }
+  },
+  "Statistics": {
+    "title": "estatísticas"
+  },
+  "General": {
+    "title": "Geral"
+  },
+  "consecutive days": {
+    "text": "dias seguidos"
+  },
+  "saved posts": {
+    "text": "posts salvos"
+  },
+  "Onboarding": {
+    "next": "Próximo",
+    "start": "Começar",
+    "steps": [
+      {
+        "title": "crie de forma leve",
+        "description": "Receba sugestões diárias de exercícios criativos e conteúdos para abastecer e estimular sua criatividade."
+      },
+      {
+        "title": "seja consistente",
+        "description": "Transforme a criatividade em hábito com pequenos momentos diários destinados a refletir, explorar e desenvolver."
+      },
+      {
+        "title": "troque experiências",
+        "description": "Compartilhe suas ideias e feedbacks em uma comunidade acolhedora que faz você se sentir em casa."
+      }
+    ]
+  },
+  "Interests": {
+    "title": "do que você gosta?",
+    "choice": "Escolha três para prosseguir.",
+    "allDone": "Tudo pronto!",
+    "photography": "Fotografia",
+    "sculpture": "Escultura",
+    "crafts": "Artesanato",
+    "music": "Música",
+    "games": "Jogos",
+    "design": "Design",
+    "illustration": "Ilustração",
+    "theatre": "Teatro",
+    "marketing": "Publicidade",
+    "art": "Arte",
+    "writing": "Escrita",
+    "literature": "Literatura",
+    "fashion": "Moda"
+  },
+  "Exercises": {
+    "title": "Exercícios",
+    "subtitle": "Que universo criativo exploraremos hoje?",
+    "next": "Arraste para o lado para ver as opções."
+  },
+  "Inversion": {
+    "title": "Inversão"
+  },
+  "PostCard": {
+    "invalidDate": "Data invalida",
+    "minute": "minuto",
+    "hour": "hora",
+    "day": "dia",
+    "week": "semana"
+  }
+}
