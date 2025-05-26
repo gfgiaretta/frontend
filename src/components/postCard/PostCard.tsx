@@ -40,13 +40,12 @@ export default function PostCard({
                 `}
     >
       <div className="flex flex-row justify-between items-center mb-2 w-full">
-        <div className="flex-shrink-0">
+        <div className="w-8 h-8 relative rounded-full overflow-hidden">
           <Image
             src={userImage}
             alt="User avatar"
-            width={30}
-            height={30}
-            className="rounded-full"
+            fill
+            className="object-cover"
           />
         </div>
         <div className="ml-2 flex-grow">

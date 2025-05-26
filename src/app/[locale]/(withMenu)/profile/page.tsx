@@ -1,18 +1,19 @@
-import { useTranslations } from 'next-intl'
+import { Bookmark, SquarePen } from 'lucide-react'
 
-import { Text } from '@/components/ui/Text'
+import ProfileScreen from '@/components/Profile/ProfileScreen'
 
 export default function ProfilePage() {
-  const t = useTranslations('Profile')
+  const icon = [Bookmark, SquarePen]
+
   return (
-    <div className="bg-background flex flex-col h-screen p-6 space-y-4">
-      <h1 className="text-primary text-5xl font-[174]">{t('title')}</h1>
-      <Text
-        size="body"
-        className="text-base text-center "
-      >
-        {t('description')}
-      </Text>
+    <div className="w-full h-full min-h-screen bg-background ">
+      <ProfileScreen
+        userName={'@Lucas'}
+        userImage={'/userimage.jpg'}
+        description={'Description'}
+        streak={'21'}
+        iconName={icon[0]}
+      />
     </div>
   )
 }

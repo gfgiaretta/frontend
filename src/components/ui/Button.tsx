@@ -7,7 +7,7 @@ import React, {
 
 interface ButtonProps extends Omit<ComponentProps<'button'>, 'ref'> {
   children: ReactNode
-  variant?: 'filled' | 'outlined' | 'negative'
+  variant?: 'filled' | 'outlined' | 'negative' | 'post'
   size?: 'md' | 'lg'
 }
 
@@ -28,6 +28,7 @@ const BaseButton: ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
     filled: 'bg-primary text-background border-2 border-primary',
     outlined: 'bg-background text-primary border-2 border-primary',
     negative: 'bg-grey-1 text-background border-2 border-grey-1',
+    post: 'bg-secondary text-background border-2 border-secondary',
   }
 
   const sizeStyles: Record<NonNullable<ButtonProps['size']>, string> = {

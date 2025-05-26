@@ -126,5 +126,20 @@
     "hour": "hour",
     "day": "day",
     "week": "week"
+  },
+  "Post": {
+    "title": "Create a post",
+    "back": "Project title",
+    "placeholderTitle": "Enter a title",
+    "description": "Description",
+    "placeholderDescription": "Enter a brief project description",
+    "addImage": "Add image",
+    "cancel": "Cancel",
+    "create": "Create",
+    "image": "Image",
+    "removeImage": "Removeimage"
+  },
+  "EditProfile": {
+    "description": "Insert a description about you"
   }
 }

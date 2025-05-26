@@ -126,5 +126,20 @@
     "hour": "hora",
     "day": "dia",
     "week": "semana"
+  },
+  "Post": {
+    "title": "Criar uma publicação",
+    "back": "Título do projeto",
+    "placeholderTitle": "Insira um título",
+    "description": "Descrição",
+    "placeholderDescription": "Insira uma breve descrição do projeto",
+    "addImage": "Adicionar imagem",
+    "cancel": "Cancelar",
+    "create": "Criar",
+    "image": "Imagem",
+    "removeImage": "Remover imagem"
+  },
+  "EditProfile": {
+    "description": "Insira uma breve descrição sobre você."
   }
 }

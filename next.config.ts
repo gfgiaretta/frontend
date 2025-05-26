@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       { hostname: 'thispersondoesnotexist.com' },
       { hostname: 'example.com' },
       { hostname: 'i.pinimg.com' },
+      { hostname: 'projeto-creative-flow.s3.us-east-2.amazonaws.com' },
     ],
   },
   redirects: async () => {
