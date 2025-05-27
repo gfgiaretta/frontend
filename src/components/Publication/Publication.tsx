@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 
+import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useTranslations } from 'next-intl'
@@ -36,7 +37,6 @@ export function Publication() {
 
   const useHandleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    console.log('FILE: ', file)
     const fileURL = URL.createObjectURL(file!)
     setPostImage(fileURL)
 
@@ -104,10 +104,12 @@ export function Publication() {
         </label>
       </div>
 
-      <img
+      <Image
         src={postImage || defaultPostImageUrl}
         alt="Post Image"
-        className="h-50 rounded border-1 border-grey-1 shadow object-cover"
+        className="w-full h-50 rounded border-1 border-grey-1 shadow object-cover"
+        width={100}
+        height={50}
       />
 
       <input
