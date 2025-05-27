@@ -59,6 +59,7 @@ export const Statistics = () => {
     userInterests.forEach((item, idx) => {
       chartDataFromApi.push({
         name: tInterests(item.interestId),
+        // eslint-disable-next-line no-magic-numbers
         value: graph[item.title] || 0,
         color: INTERESTS_COLORS[idx] || '#ccc',
         icon: InterestsData[item.interestId]?.icon || '',
@@ -75,6 +76,7 @@ export const Statistics = () => {
 
     const now = new Date()
     const year = now.getFullYear()
+    // eslint-disable-next-line no-magic-numbers
     const month = now.getMonth() + 1
 
     const days: Days[] = []
@@ -95,6 +97,7 @@ export const Statistics = () => {
 
   useEffect(() => {
     GetData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

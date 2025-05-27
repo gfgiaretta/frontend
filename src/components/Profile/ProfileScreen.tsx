@@ -76,6 +76,7 @@ export default function ProfileScreen({ iconName: icon }: UserProps) {
     console.log('UserInfor pre call: ', userInfo)
     fetchUserInfo()
     console.log('UserInfor post call: ', userInfo)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
