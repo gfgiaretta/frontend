@@ -1,10 +1,18 @@
+'use client'
+
+import { useSearchParams } from 'next/navigation'
+
 import { EditUser } from '@/components/EditUser/EditUser'
 
-export default function ProfilePage() {
+export default function EditProfilePage() {
+  const searchParams = useSearchParams()
+  const bio = searchParams.get('bio') ?? ''
+  const userImage = searchParams.get('userImage') ?? ''
+
   return (
     <EditUser
-      bio="teste"
-      userImage="/userimage.jpg"
+      bio={bio}
+      userImage={userImage}
     />
   )
 }

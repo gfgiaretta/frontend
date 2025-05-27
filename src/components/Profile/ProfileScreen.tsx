@@ -78,6 +78,12 @@ export default function ProfileScreen({ iconName: icon }: UserProps) {
     console.log('UserInfor post call: ', userInfo)
   }, [])
 
+  const handleEditClick = () => {
+    const bioParam = encodeURIComponent(userInfo.description || '')
+    const imageParam = encodeURIComponent(userInfo.userImage || '')
+    router.push(`profile/edit-profile?bio=${bioParam}&userImage=${imageParam}`)
+  }
+
   return (
     <div className="w-full h-full min-h-screen flex flex-col relative bg-background">
       <div className="w-full flex relative justify-between items-start px-4 py-4 bg-cover w-full h-[15vh] bg-[url('/profile-top-wave.svg')] bg-no-repeat bg-cover bg-bottom relative">
@@ -85,7 +91,7 @@ export default function ProfileScreen({ iconName: icon }: UserProps) {
           {icon && (
             <button
               className="text-white px-1 py-1"
-              onClick={() => router.push('/profile/edit-profile')}
+              onClick={handleEditClick}
             >
               <SquarePen
                 className=""

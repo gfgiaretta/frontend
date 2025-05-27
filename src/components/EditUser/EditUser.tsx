@@ -3,10 +3,12 @@
 import { useState } from 'react'
 import { useRef } from 'react'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { Check, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+
+import { useImageUpload } from '@/hooks/useImageUpload'
 
 interface EditUserProps {
   bio?: string
@@ -14,34 +16,51 @@ interface EditUserProps {
 }
 
 export const EditUser = ({ bio, userImage }: EditUserProps) => {
+  const searchParams = useSearchParams()
+  const bioParam = searchParams.get('bio') ?? ''
+  const userImageParam = searchParams.get('userImage') ?? ''
+
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // eslint-disable-next-line no-undef
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const fileURL = URL.createObjectURL(e.target.files[0])
-      setProfilePicture(fileURL)
-    }
-  }
+  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     const fileURL = URL.createObjectURL(e.target.files[0])
+  //     setProfilePicture(fileURL)
+  //   }
+  // }
 
   const description = useTranslations('EditProfile')
 
   const router = useRouter()
 
-  const defaultUserBio = bio
-  const defaultUserImage = userImage
+  const defaultUserBio = bioParam || bio || ''
+  const defaultUserImage = userImageParam || userImage || ''
 
   const [userBio, setUserBio] = useState<string | null>(bio || null)
   const [profilePicture, setProfilePicture] = useState(userImage || null)
+
+  // eslint-disable-next-line no-undef
+  const useHandleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+
+    useImageUpload(file).then((url) => {
+      if (url) {
+        setProfilePicture(url)
+      }
+    })
+  }
 
   const handleExit = () => {
     router.push('/profile')
   }
 
   const handleSave = () => {
-    console.log(defaultUserBio)
-    if (defaultUserImage === profilePicture && defaultUserBio === userBio) {
+    const bioChanged = defaultUserBio !== userBio
+    const imageChanged = defaultUserImage !== profilePicture
+
+    if (!bioChanged && !imageChanged) {
       console.log('sem alteração')
+      return
     }
     if (defaultUserImage !== profilePicture) {
       console.log('alterou foto')
@@ -49,8 +68,7 @@ export const EditUser = ({ bio, userImage }: EditUserProps) => {
     }
     if (defaultUserBio !== userBio) {
       console.log('alterou bio')
-      setProfilePicture(null)
-      console.log(profilePicture)
+      console.log(userBio)
       //chamar metodo back com pic = null e sair da pagina
     }
 
@@ -98,14 +116,15 @@ export const EditUser = ({ bio, userImage }: EditUserProps) => {
           <input
             type="file"
             accept="image/*"
-            ref={fileInputRef}
-            onChange={handleImageChange}
             className="hidden"
+            ref={fileInputRef}
+            onChange={useHandleImageUpload}
           />
         </div>
       </div>
       <div className="px-6 mt-12">
         <textarea
+          value={userBio ?? ''}
           onChange={(e) => setUserBio(e.target.value)}
           placeholder={description('description')}
           className="w-full bg-grey-2/30 rounded-[10px] p-4 placeholder-text/30 resize-none drop-shadow-md"
