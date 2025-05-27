@@ -11,7 +11,7 @@ export default function TestButtonPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[var(--color-background)]">
       <InterestButton
-        icon={<PencilIcon className="w-7 h-7" />}
+        icon={PencilIcon}
         title="Fotografia"
         color="primary"
         size="lg"
@@ -19,16 +19,16 @@ export default function TestButtonPage() {
         onClick={() => setSelected(!selected)}
       />
       <InterestButton
-        icon={<PencilIcon className="w-7 h-7" />}
+        icon={PencilIcon}
         title="Fotografia"
-        color="secodary"
+        color="secondary"
         size="md"
         isSelected={selected}
         onClick={() => setSelected(!selected)}
       />
       <InterestButton
-        icon={<PencilIcon className="w-7 h-7" />}
-        title="Fotografia"
+        icon={PencilIcon}
+        title="Texto Muito Longo "
         color="support"
         size="sm"
         isSelected={selected}

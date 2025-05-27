@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 
+import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useTranslations } from 'next-intl'
@@ -20,11 +21,12 @@ export function Publication() {
   const t = useTranslations('Post')
   const router = useRouter()
   const searchParams = useSearchParams()
+  const defaultPostImageUrl = '/PostDefault.png'
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [imageUrl, setImageUrl] = useState<string | null>(null)
-
+  const [postImage, setPostImage] = useState<string | null>(null)
   useEffect(() => {
     const defaultTitle = searchParams.get('title') || ''
     const defaultDescription = searchParams.get('description') || ''
@@ -35,6 +37,8 @@ export function Publication() {
 
   const useHandleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
+    const fileURL = URL.createObjectURL(file!)
+    setPostImage(fileURL)
 
     useImageUpload(file).then((url) => {
       if (url) {
@@ -99,6 +103,15 @@ export function Publication() {
           {t('image')}
         </label>
       </div>
+
+      <Image
+        src={postImage || defaultPostImageUrl}
+        alt="Post Image"
+        className="w-full h-50 rounded border-1 border-grey-1 shadow object-cover"
+        width={100}
+        height={50}
+      />
+
       <input
         type="file"
         accept="image/*"
@@ -125,7 +138,15 @@ export function Publication() {
           size="lg"
           onClick={() => {
             setImageUrl(null)
-            if (inputRef.current) inputRef.current.value = ''
+            if (inputRef.current) {
+              inputRef.current.value = ''
+            }
+            if (postImage) {
+              setPostImage(null)
+            }
+            if (imageUrl) {
+              setImageUrl(null)
+            }
           }}
         >
           {t('removeImage')}

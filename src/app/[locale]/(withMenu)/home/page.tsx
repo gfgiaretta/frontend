@@ -8,11 +8,10 @@ import { useRouter } from 'next/navigation'
 import { Bookmark, Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import PostCard from '@/components/postCard/PostCard'
 import useTokenCheck from '@/hooks/useToken'
 import { api } from '@/utils/api'
-import { getTimeSince } from '@/utils/dateUtils'
 import { getToken } from '@/utils/token'
+import SmallPostCard from '@/components/SmallPostCard/SmallPostCard'
 
 interface Post {
   id: string
@@ -49,7 +48,7 @@ export default function HomePage() {
             }
           }) as Post[],
         )
-      } catch {}
+      } catch { }
     }
 
     fetchPosts()
@@ -59,7 +58,7 @@ export default function HomePage() {
   const t = useTranslations('PostCard')
 
   return (
-    <div className="h-full w-full flex flex-col px-6 py-6 bg-background">
+    <div className="min-h-screen w-full flex flex-col px-6 py-6 bg-background">
       <div className="mb-5 flex flex-row w-full justify-between items-center">
         <div>
           <Image
@@ -82,17 +81,15 @@ export default function HomePage() {
           </button>
         </div>
       </div>
-      <div className="flex flex-col gap-5 pb-[76px]">
+      <div className="items-center flex flex-col gap-5 pb-[76px]">
         {posts.map((post) => (
-          <PostCard
+          <SmallPostCard
             key={post.id}
             userName={post.userName}
             title={post.title}
             description={post.description}
-            postAt={getTimeSince(post.createdAt, t)}
-            userImage={post.userImage}
             postImage={post.postImage}
-            iconName={icon[0]}
+            userImage={post.userImage}
           />
         ))}
       </div>
