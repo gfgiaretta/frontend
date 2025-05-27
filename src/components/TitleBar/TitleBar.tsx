@@ -35,7 +35,7 @@ export function TitleBar({ label, answer, onConfirm }: TitleBarProps) {
       <Text
         as="h3"
         size="cap2"
-        className=""
+        className={`flex-1 text-center ${answer ? '' : 'justify-self-center'}`}
       >
         {label}
       </Text>

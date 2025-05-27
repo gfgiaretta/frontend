@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { Bookmark, Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -26,6 +27,7 @@ interface Post {
 
 export default function HomePage() {
   const [posts, setPosts] = useState<Post[]>([])
+  const router = useRouter()
   useTokenCheck()
   useEffect(() => {
     const fetchPosts = async () => {
@@ -68,7 +70,10 @@ export default function HomePage() {
           />
         </div>
         <div className="flex ml-auto rounded-full bg-primary">
-          <button className="w-8 h-8 flex justify-center items-center">
+          <button
+            className="w-8 h-8 flex justify-center items-center"
+            onClick={() => router.push('/post')}
+          >
             <Plus
               className="text-white"
               size={20}

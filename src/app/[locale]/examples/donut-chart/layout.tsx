@@ -4,10 +4,6 @@ import '@mantine/charts/styles.css'
 import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css'
 
-export default function ExamplesPageLayout({
-  children,
-}: {
-  children: ReactNode
-}) {
+export default function ExamplesLayout({ children }: { children: ReactNode }) {
   return <MantineProvider>{children}</MantineProvider>
 }

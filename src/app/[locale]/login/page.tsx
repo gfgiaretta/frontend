@@ -47,7 +47,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-1 px-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background px-6">
       <div className="flex items-center mb-8 mt-10">
         <Image
           src="/creative-flow-logo-completo.svg"

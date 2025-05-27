@@ -1,0 +1,15 @@
+export const InterestsData: Record<string, { icon: string }> = {
+  photography: { icon: '/photographyIcon.svg' },
+  sculpture: { icon: '/sculptureIcon.svg' },
+  crafts: { icon: '/craftsIcon.svg' },
+  music: { icon: '/musicIcon.svg' },
+  games: { icon: '/gamesIcon.svg' },
+  design: { icon: '/designIcon.svg' },
+  illustration: { icon: '/illustrationIcon.svg' },
+  theatre: { icon: '/theaterIcon.svg' },
+  marketing: { icon: '/marketingIcon.svg' },
+  art: { icon: '/artIcon.svg' },
+  writing: { icon: '/writingIcon.svg' },
+  literature: { icon: '/literatureIcon.svg' },
+  fashion: { icon: '/fashionIcon.svg' },
+}

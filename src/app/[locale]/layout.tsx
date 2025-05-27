@@ -3,6 +3,9 @@ import React from 'react'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
+import '@mantine/charts/styles.css'
+import { MantineProvider } from '@mantine/core'
+import '@mantine/core/styles.css'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 
 import { RootLayout } from '@/components/RootLayout/RootLayout'
@@ -41,13 +44,15 @@ export default async function LocaleLayout({
         />
       </head>
       <body>
-        <NextIntlClientProvider>
-          <AuthenticationProvider>
-            <RootLayout>
-              <div>{children}</div>
-            </RootLayout>
-          </AuthenticationProvider>
-        </NextIntlClientProvider>
+        <MantineProvider>
+          <NextIntlClientProvider>
+            <AuthenticationProvider>
+              <RootLayout>
+                <div>{children}</div>
+              </RootLayout>
+            </AuthenticationProvider>
+          </NextIntlClientProvider>
+        </MantineProvider>
       </body>
     </html>
   )

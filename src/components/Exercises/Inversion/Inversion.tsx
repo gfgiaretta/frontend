@@ -49,7 +49,7 @@ export function Inversion({ exerciseId }: InversionProps) {
         exerciseId,
       })
 
-      router.push('/exercises/feedback')
+      router.push(`/exercises/feedback?exerciseId=${exerciseId}`)
     } catch (err: unknown) {
       if (err instanceof Error) {
         console.error('Error:', err.message)
