@@ -3,8 +3,8 @@
 import { useState } from 'react'
 
 import { Menu } from '@/components/Menu/Menu'
-import PostCard from '@/components/SmallPostCard/PostCard/PostCard'
 import { Button } from '@/components/ui/Button'
+import PostCard from '@/components/SmallPostCard/PostCard/PostCard'
 
 export default function PostCardExample() {
   const [open, setOpen] = useState(true)
@@ -14,7 +14,7 @@ export default function PostCardExample() {
       <Button onClick={() => setOpen(true)}>
         <span className="text-white">Open Post Card</span>
       </Button>
-      {/* <PostCard
+      <PostCard
         userName='User Name'
         userImage='/userimage.jpg'
         title='Título do projeto'
@@ -24,7 +24,7 @@ export default function PostCardExample() {
         favorite={true}
         open={open}
         onClose={() => setOpen(false)}
-      /> */}
+      />
       <Menu />
     </div>
   )
