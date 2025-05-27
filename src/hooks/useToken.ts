@@ -29,6 +29,7 @@ export default function useTokenCheck() {
       } catch (_) {
         setTimeout(() => {
           router.replace('/login')
+          // eslint-disable-next-line no-magic-numbers
         }, 1)
       }
     }

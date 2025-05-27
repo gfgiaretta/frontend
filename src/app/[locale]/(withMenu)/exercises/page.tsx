@@ -75,7 +75,7 @@ export default function ExercisesPage() {
           {t('title')}
         </Text>
         <div className="flex items-center gap-3">
-          <Link href="/arquivoPaginaExercicio">
+          <Link href="/history">
             <Image
               src="/arquivoPaginaExercicio.svg"
               alt="Arquivo de Exercícios"
