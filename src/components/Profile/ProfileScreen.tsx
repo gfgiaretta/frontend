@@ -1,4 +1,7 @@
+'use client'
+
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { Bookmark, LucideIcon, SquarePen } from 'lucide-react'
 
@@ -21,13 +24,17 @@ export default function ProfileScreen({
   iconName: icon,
 }: UserProps) {
   const Icon = [Bookmark]
+  const router = useRouter()
 
   return (
     <div className="w-full h-full min-h-screen flex flex-col relative bg-background">
       <div className="w-full flex relative justify-between items-start px-4 py-4 bg-cover w-full h-[15vh] bg-[url('/profile-top-wave.svg')] bg-no-repeat bg-cover bg-bottom relative">
         <div>
           {icon && (
-            <button className="text-white px-1 py-1">
+            <button
+              className="text-white px-1 py-1"
+              onClick={() => router.push('/profile/edit-profile')}
+            >
               <SquarePen
                 className=""
                 size={25}

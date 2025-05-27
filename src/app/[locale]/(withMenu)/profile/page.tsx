@@ -1,3 +1,5 @@
+'use client'
+
 import { Bookmark, SquarePen } from 'lucide-react'
 
 import ProfileScreen from '@/components/Profile/ProfileScreen'
