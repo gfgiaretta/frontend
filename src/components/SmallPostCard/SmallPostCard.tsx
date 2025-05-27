@@ -1,12 +1,13 @@
 'use client'
 
+import { useState } from 'react'
+
 import Image from 'next/image'
 
 import { Bookmark, LucideIcon } from 'lucide-react'
 
-import { Text } from '@/components/ui/Text'
-import { useState } from 'react'
 import PostCard from './PostCard/PostCard'
+import { Text } from '@/components/ui/Text'
 
 interface SmallPostCardProps {
   userName: string
@@ -29,7 +30,10 @@ export default function SmallPostCard({
 
   return (
     <>
-      <div className="mb-20 w-full max-w-md" onClick={() => setOpenPost(true)}>
+      <div
+        className="mb-20 w-full max-w-md"
+        onClick={() => setOpenPost(true)}
+      >
         <div className="relative">
           <div className="overflow-hidden w-[300px] h-[150px]">
             <Image

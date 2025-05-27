@@ -1,4 +1,6 @@
-import { useRef } from 'react'
+import React, { useRef } from 'react'
+
+import Image from 'next/image'
 
 type Props = {
   image: string
@@ -8,7 +10,6 @@ type Props = {
 export const ImageUploader = ({ image, onChange }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // eslint-disable-next-line no-undef
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const fileURL = URL.createObjectURL(e.target.files[0])
@@ -18,7 +19,7 @@ export const ImageUploader = ({ image, onChange }: Props) => {
 
   return (
     <div className="relative w-40 h-40">
-      <img
+      <Image
         src={image}
         alt="Profile Picture"
         className="w-full h-full rounded-full bg-grey-1 object-cover shadow-md"
@@ -27,7 +28,7 @@ export const ImageUploader = ({ image, onChange }: Props) => {
         onClick={() => fileInputRef.current?.click()}
         className="absolute bottom-25 right-1 "
       >
-        <img
+        <Image
           src="/pencil.svg"
           alt="Edit Pencil"
           width={60}

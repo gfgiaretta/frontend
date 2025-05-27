@@ -14,6 +14,7 @@ import { useImageUpload } from '@/hooks/useImageUpload'
 import { api } from '@/utils/api'
 import { getToken } from '@/utils/token'
 
+// eslint-disable-next-line no-magic-numbers
 const SUCCESS_UPLOAD_STATUS = [200, 201]
 
 export function Publication() {
@@ -25,8 +26,9 @@ export function Publication() {
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [imageUrl, setImageUrl] = useState<string | null>('default_post.jpeg')
   const [postImage, setPostImage] = useState<string | null>(null)
+
   useEffect(() => {
     const defaultTitle = searchParams.get('title') || ''
     const defaultDescription = searchParams.get('description') || ''

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRef } from 'react'
 
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import { Check, X } from 'lucide-react'
@@ -16,7 +17,6 @@ interface EditUserProps {
 export const EditUser = ({ bio, userImage }: EditUserProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // eslint-disable-next-line no-undef
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const fileURL = URL.createObjectURL(e.target.files[0])
@@ -78,7 +78,7 @@ export const EditUser = ({ bio, userImage }: EditUserProps) => {
       </div>
       <div className="relative flex justify-center -mt-[164px]">
         <div className="relative w-40 h-40">
-          <img
+          <Image
             src={profilePicture || '/userimage.jpg'}
             alt="Profile Picture"
             className="w-44 h-44 rounded-full border-1 border-grey-1 shadow object-cover"
@@ -87,7 +87,7 @@ export const EditUser = ({ bio, userImage }: EditUserProps) => {
             onClick={() => fileInputRef.current?.click()}
             className="absolute bottom-25 right-1"
           >
-            <img
+            <Image
               src="/pencil.svg"
               alt="Edit Pencil"
               width={60}

@@ -71,16 +71,16 @@ export default function ProfileScreen({ iconName: icon }: UserProps) {
             saved: post.isSaved,
           })),
         })
-      } catch {}
+      } catch { }
     }
     console.log('UserInfor pre call: ', userInfo)
     fetchUserInfo()
     console.log('UserInfor post call: ', userInfo)
-  }, [])
+  })
 
   return (
     <div className="w-full h-full min-h-screen flex flex-col relative bg-background">
-      <div className="w-full flex relative justify-between items-start px-4 py-4 bg-cover w-full h-[15vh] bg-[url('/profile-top-wave.svg')] bg-no-repeat bg-cover bg-bottom relative">
+      <div className="flex relative justify-between items-start px-4 py-4 w-full h-[15vh] bg-[url('/profile-top-wave.svg')] bg-no-repeat bg-cover bg-bottom">
         <div>
           {icon && (
             <button

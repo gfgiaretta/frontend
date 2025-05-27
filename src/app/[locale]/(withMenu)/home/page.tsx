@@ -5,13 +5,15 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { Bookmark, Plus } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { Plus } from 'lucide-react'
+
+import SmallPostCard from '@/components/SmallPostCard/SmallPostCard'
+// import { Bookmark, Plus } from 'lucide-react'
+// import { useTranslations } from 'next-intl'
 
 import useTokenCheck from '@/hooks/useToken'
 import { api } from '@/utils/api'
 import { getToken } from '@/utils/token'
-import SmallPostCard from '@/components/SmallPostCard/SmallPostCard'
 
 interface Post {
   id: string
@@ -48,14 +50,11 @@ export default function HomePage() {
             }
           }) as Post[],
         )
-      } catch { }
+      } catch {}
     }
 
     fetchPosts()
   }, [])
-
-  const icon = [Bookmark, Plus]
-  const t = useTranslations('PostCard')
 
   return (
     <div className="min-h-screen w-full flex flex-col px-6 py-6 bg-background">

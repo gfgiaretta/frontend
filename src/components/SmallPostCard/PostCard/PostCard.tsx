@@ -41,6 +41,7 @@ export default function PostCard({
     setTimeout(() => {
       onClose()
       setIsClosing(false)
+      // eslint-disable-next-line no-magic-numbers
     }, 300)
   }
 
