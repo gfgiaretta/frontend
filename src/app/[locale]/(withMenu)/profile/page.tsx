@@ -9,13 +9,7 @@ export default function ProfilePage() {
 
   return (
     <div className="w-full h-full min-h-screen bg-background ">
-      <ProfileScreen
-        userName={'@Lucas'}
-        userImage={'/userimage.jpg'}
-        description={'Description'}
-        streak={'21'}
-        iconName={icon[0]}
-      />
+      <ProfileScreen iconName={icon[0]} />
     </div>
   )
 }

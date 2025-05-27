@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -7,24 +9,74 @@ import { Bookmark, LucideIcon, SquarePen } from 'lucide-react'
 
 import SmallPostCard from '@/components/SmallPostCard/SmallPostCard'
 import { Text } from '@/components/ui/Text'
+import useTokenCheck from '@/hooks/useToken'
+import { api } from '@/utils/api'
+import { getToken } from '@/utils/token'
 
 interface UserProps {
-  userName: string
-  userImage: string
-  description: string
   iconName?: LucideIcon
-  streak: string
 }
 
-export default function ProfileScreen({
-  userName,
-  description,
-  userImage,
-  streak,
-  iconName: icon,
-}: UserProps) {
+interface Post {
+  id: string
+  userName: string
+  title: string
+  description: string
+  createdAt: string
+  userImage: string
+  postImage: string
+  saved: boolean
+}
+
+interface UserInfo {
+  name: string
+  description: string
+  streak: number
+  userImage: string
+  posts: Post[]
+}
+
+export default function ProfileScreen({ iconName: icon }: UserProps) {
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    name: 'Name',
+    description: '',
+    streak: 0,
+    userImage: '',
+    posts: [],
+  })
   const Icon = [Bookmark]
   const router = useRouter()
+  useTokenCheck()
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const token = getToken()
+        const response = await api(token).get('user/profile')
+        console.log('RESPONSE: ', response)
+        const user = response.data.data
+        setUserInfo({
+          name: user.name,
+          description: user.description,
+          streak: user.streak,
+          userImage: user.profile_picture_url,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          posts: user.posts.map((post: any) => ({
+            id: post.post_id,
+            userName: post.owner.name,
+            title: post.title,
+            description: post.description,
+            createdAt: post.createdAt,
+            userImage: post.owner.profile_picture_url,
+            postImage: post.image_url,
+            saved: post.isSaved,
+          })),
+        })
+      } catch {}
+    }
+    console.log('UserInfor pre call: ', userInfo)
+    fetchUserInfo()
+    console.log('UserInfor post call: ', userInfo)
+  }, [])
 
   return (
     <div className="w-full h-full min-h-screen flex flex-col relative bg-background">
@@ -71,13 +123,13 @@ export default function ProfileScreen({
               size="notes"
               className="text-xs text-background"
             >
-              {streak}
+              {userInfo.streak}
             </Text>
           </div>
           {/* User Image */}
           <div className="z-10">
             <Image
-              src={userImage}
+              src={userInfo.userImage}
               width={90}
               height={90}
               className="rounded-full"
@@ -90,7 +142,7 @@ export default function ProfileScreen({
             as="span"
             size="body"
           >
-            {userName}
+            {userInfo.name}
           </Text>
         </div>
         <div className="px-2 py-2 mt-2">
@@ -98,7 +150,7 @@ export default function ProfileScreen({
             as="h3"
             size="sub"
           >
-            {description}
+            {userInfo.description}
           </Text>
         </div>
         <div className="px-3 py-3">
@@ -112,30 +164,17 @@ export default function ProfileScreen({
         </div>
       </div>
       <div className="absolute w-full px-6 py-3 pb-20 pt-44 left-1/2 -translate-x-1/2 top-25">
-        <SmallPostCard
-          userName={'@Lucas Cid'}
-          userImage={'/userimage.jpg'}
-          title={'Título do projeto'}
-          postImage={'/post.jpg'}
-          description={'Descrição'}
-          iconName={Icon[0]}
-        />
-        <SmallPostCard
-          userName={'@Lucas Cid'}
-          userImage={'/userimage.jpg'}
-          title={'Título do projeto'}
-          postImage={'/post.jpg'}
-          description={'Descrição'}
-          iconName={Icon[0]}
-        />
-        <SmallPostCard
-          userName={'@Lucas Cid'}
-          userImage={'/userimage.jpg'}
-          title={'Título do projeto'}
-          postImage={'/post.jpg'}
-          description={'Descrição'}
-          iconName={Icon[0]}
-        />
+        {userInfo.posts.map((post) => (
+          <SmallPostCard
+            key={post.id}
+            userName={post.userName}
+            userImage={post.userImage}
+            title={post.title}
+            postImage={post.postImage}
+            description={post.description}
+            iconName={Icon[0]}
+          />
+        ))}
       </div>
     </div>
   )
