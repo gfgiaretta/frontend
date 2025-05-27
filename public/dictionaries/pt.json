@@ -141,5 +141,8 @@
   },
   "EditProfile": {
     "description": "Insira uma breve descrição sobre você."
-  }
+  },
+  "History": {
+  "title": "Histórico"
+}
 }
