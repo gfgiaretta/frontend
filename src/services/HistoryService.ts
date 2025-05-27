@@ -1,3 +1,6 @@
+import { api } from '@/utils/api'
+import { getToken } from '@/utils/token'
+
 export interface HistoryItem {
   id: string
   title: string
@@ -7,16 +10,14 @@ export interface HistoryItem {
 }
 
 export const getHistory = async (): Promise<HistoryItem[]> => {
-  const response = await fetch('/api/history', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+  const token = getToken()
+  const response = await api(token).get('/exercise/history')
 
-  if (!response.ok) {
+  if (response.status !== 200) {
     throw new Error('Falha ao buscar histórico')
   }
 
-  return response.json()
+  console.log('HISTORY RESPONSE: ', response)
+
+  return response.data as HistoryItem[]
 }
