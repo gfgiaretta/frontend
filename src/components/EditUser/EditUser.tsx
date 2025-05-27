@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRef } from 'react'
 
 import Image from 'next/image'
@@ -17,7 +17,6 @@ interface EditUserProps {
 export const EditUser = ({ bio, userImage }: EditUserProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // eslint-disable-next-line no-undef
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const fileURL = URL.createObjectURL(e.target.files[0])
