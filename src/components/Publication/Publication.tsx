@@ -20,11 +20,12 @@ export function Publication() {
   const t = useTranslations('Post')
   const router = useRouter()
   const searchParams = useSearchParams()
+  const defaultPostImageUrl = '/PostDefault.png'
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [imageUrl, setImageUrl] = useState<string | null>(null)
-
+  const [postImage, setPostImage] = useState<string | null>(null)
   useEffect(() => {
     const defaultTitle = searchParams.get('title') || ''
     const defaultDescription = searchParams.get('description') || ''
@@ -35,6 +36,9 @@ export function Publication() {
 
   const useHandleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
+    console.log('FILE: ', file)
+    const fileURL = URL.createObjectURL(file!)
+    setPostImage(fileURL)
 
     useImageUpload(file).then((url) => {
       if (url) {
@@ -99,6 +103,13 @@ export function Publication() {
           {t('image')}
         </label>
       </div>
+
+      <img
+        src={postImage || defaultPostImageUrl}
+        alt="Post Image"
+        className="h-50 rounded border-1 border-grey-1 shadow object-cover"
+      />
+
       <input
         type="file"
         accept="image/*"
