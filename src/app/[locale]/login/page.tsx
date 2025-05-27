@@ -116,14 +116,14 @@ export default function Login() {
         <Button
           variant="filled"
           onClick={HandleLogin}
-          className="w-full py-4 text-lg"
+          className="w-full max-w-48"
         >
           {t('login')}
         </Button>
         <Button
           variant="filled"
-          className="w-full py-4 text-lg"
           onClick={() => router.push('/register')}
+          className="w-full max-w-48"
         >
           {t('register')}
         </Button>

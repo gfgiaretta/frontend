@@ -6,13 +6,14 @@ import React, {
 } from 'react'
 
 interface ButtonProps extends Omit<ComponentProps<'button'>, 'ref'> {
+  className?: string
   children: ReactNode
   variant?: 'filled' | 'outlined' | 'negative'
   size?: 'md' | 'lg'
 }
 
 const BaseButton: ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
-  { onClick, variant = 'filled', size = 'md', children },
+  { onClick, variant = 'filled', size = 'md', children, className },
   ref,
 ) => {
   const baseStyles = `
@@ -31,15 +32,15 @@ const BaseButton: ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
   }
 
   const sizeStyles: Record<NonNullable<ButtonProps['size']>, string> = {
-    md: 'w-[7.75rem] h-[2.5rem] text-[0.875rem]', // 124px x 40px | 14px font
-    lg: 'w-[12.4375rem] h-[2.5rem] text-[1rem]', // 199px x 40px | 16px font
+    md: 'px-3 py-2 text-sm',
+    lg: 'px-4 py-3 text-lg',
   }
 
   return (
     <button
       ref={ref}
       onClick={onClick}
-      className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]}`}
+      className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
     >
       {children}
     </button>
