@@ -23,7 +23,7 @@ export function Publication() {
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [imageUrl, setImageUrl] = useState<string | null>("post1.jpg")
 
   useEffect(() => {
     const defaultTitle = searchParams.get('title') || ''
@@ -36,11 +36,13 @@ export function Publication() {
   const useHandleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
 
-    useImageUpload(file).then((url) => {
-      if (url) {
-        setImageUrl(url)
-      }
-    })
+    if (!file) return
+
+      useImageUpload(file).then((url) => {
+        if (url) {
+          setImageUrl(url)
+        }
+      })
   }
 
   const useSendPost = async () => {
