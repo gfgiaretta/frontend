@@ -101,7 +101,7 @@ export default function TesButtonPage() {
         <div className="flex flex-col items-center gap-2 w-screen max-w-100 ">
           <div className="flex gap-2 min-w-8/10">
             <InterestButton
-              icon={<PencilAndScribeIcon className="w-7 h-7" />}
+              icon={PencilAndScribeIcon}
               title={t('writing')}
               color={colorMapper(selectedInterests.indexOf('writing'))}
               size="sm"
@@ -115,7 +115,7 @@ export default function TesButtonPage() {
               }}
             />
             <InterestButton
-              icon={<MusicNoteIcon className="w-7 h-7 " />}
+              icon={MusicNoteIcon}
               title={t('music')}
               color={colorMapper(selectedInterests.indexOf('music'))}
               size="sm"
@@ -131,7 +131,7 @@ export default function TesButtonPage() {
           </div>
           <div className="flex gap-2 justify-end min-w-9/10">
             <InterestButton
-              icon={<BookPageIcon className="w-7 h-7" />}
+              icon={BookPageIcon}
               title={t('literature')}
               color={colorMapper(selectedInterests.indexOf('literature'))}
               size="sm"
@@ -145,7 +145,7 @@ export default function TesButtonPage() {
               }}
             />
             <InterestButton
-              icon={<PencilAndRullerIcon className="w-7 h-7" />}
+              icon={PencilAndRullerIcon}
               title={t('design')}
               color={colorMapper(selectedInterests.indexOf('design'))}
               size="sm"
@@ -161,7 +161,7 @@ export default function TesButtonPage() {
           </div>
           <div className="flex gap-2 justify-start min-w-7/10">
             <InterestButton
-              icon={<CameraIcon className="w-7 h-7" />}
+              icon={CameraIcon}
               title={t('photography')}
               color={colorMapper(selectedInterests.indexOf('photography'))}
               size="sm"
@@ -175,7 +175,7 @@ export default function TesButtonPage() {
               }}
             />
             <InterestButton
-              icon={<GameControllerIcon className="w-7 h-7" />}
+              icon={GameControllerIcon}
               title={t('games')}
               color={colorMapper(selectedInterests.indexOf('games'))}
               size="sm"
@@ -191,7 +191,7 @@ export default function TesButtonPage() {
           </div>
           <div className="flex gap-2 justify-start min-w-9/10">
             <InterestButton
-              icon={<HangerIcon className="w-7 h-7" />}
+              icon={HangerIcon}
               title={t('fashion')}
               color={colorMapper(selectedInterests.indexOf('fashion'))}
               size="sm"
@@ -205,7 +205,7 @@ export default function TesButtonPage() {
               }}
             />
             <InterestButton
-              icon={<ScissorsIcon className="w-7 h-7" />}
+              icon={ScissorsIcon}
               title={t('crafts')}
               color={colorMapper(selectedInterests.indexOf('crafts'))}
               size="sm"
@@ -221,7 +221,7 @@ export default function TesButtonPage() {
           </div>
           <div className="flex gap-2 justify-end  min-w-7/10">
             <InterestButton
-              icon={<MegaphoneIcon className="w-7 h-7" />}
+              icon={MegaphoneIcon}
               title={t('marketing')}
               color={colorMapper(selectedInterests.indexOf('marketing'))}
               size="sm"
@@ -235,7 +235,7 @@ export default function TesButtonPage() {
               }}
             />
             <InterestButton
-              icon={<HammerIcon className="w-7 h-7" />}
+              icon={HammerIcon}
               title={t('sculpture')}
               color={colorMapper(selectedInterests.indexOf('sculpture'))}
               size="sm"
@@ -251,7 +251,7 @@ export default function TesButtonPage() {
           </div>
           <div className="flex gap-2 justify-start min-w-7/10">
             <InterestButton
-              icon={<TheaterMaskIcon className="w-7 h-7" />}
+              icon={TheaterMaskIcon}
               title={t('theatre')}
               color={colorMapper(selectedInterests.indexOf('theatre'))}
               size="sm"
@@ -265,7 +265,7 @@ export default function TesButtonPage() {
               }}
             />
             <InterestButton
-              icon={<PencilAndOutlineIcon className="w-7 h-7" />}
+              icon={PencilAndOutlineIcon}
               title={t('illustration')}
               color={colorMapper(selectedInterests.indexOf('illustration'))}
               size="sm"
@@ -281,7 +281,7 @@ export default function TesButtonPage() {
           </div>
           <div className="flex gap-2 justify-center">
             <InterestButton
-              icon={<PhotoArtFrameIcon className="w-7 h-7" />}
+              icon={PhotoArtFrameIcon}
               title={t('art')}
               color={colorMapper(selectedInterests.indexOf('art'))}
               size="sm"

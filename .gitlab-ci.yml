@@ -1,6 +1,12 @@
 default:
   image: node:22.15
+  cache:
+    key: node-modules-cache
+    policy: pull-push
+    paths:
+      - node_modules/
   before_script:
+    - npm install
     - npm ci
 
 stages:

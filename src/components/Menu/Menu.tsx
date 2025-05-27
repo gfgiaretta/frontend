@@ -82,7 +82,7 @@ function useMenuItems(): MenuItem[] {
 export function Menu() {
   const menuItems = useMenuItems()
   return (
-    <div className="flex gap-4 fixed bottom-0 left-0 right-0 pt-2 pb-4 justify-around items-center bg-background">
+    <div className="flex gap-4 fixed bottom-0 left-0 right-0 z-50 pt-2 pb-4 justify-around items-center bg-background">
       {menuItems.map((item, index) => (
         <div
           key={index}
