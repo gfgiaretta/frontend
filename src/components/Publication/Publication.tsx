@@ -23,7 +23,7 @@ export function Publication() {
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [imageUrl, setImageUrl] = useState<string | null>("post1.jpg")
+  const [imageUrl, setImageUrl] = useState<string | null>("default_post.jpeg")
 
   useEffect(() => {
     const defaultTitle = searchParams.get('title') || ''
