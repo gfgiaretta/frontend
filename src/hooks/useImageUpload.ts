@@ -47,7 +47,7 @@ function extractS3Key(url: string): string | null {
     const pathname = parsedUrl.pathname
 
     // Ensure it starts with a slash and return the full S3 key
-    return decodeURIComponent(pathname)
+    return decodeURIComponent(pathname).slice(1)
   } catch (_) {
     //console.error('Invalid URL:', e)
     return null
