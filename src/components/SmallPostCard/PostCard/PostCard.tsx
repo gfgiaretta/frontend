@@ -8,7 +8,7 @@ import { Bookmark } from 'lucide-react'
 
 import { Text } from '@/components/ui/Text'
 
-export interface PostInformation {
+interface PostCardProps {
   userName: string
   userImage: string
   title: string
@@ -16,18 +16,20 @@ export interface PostInformation {
   description: string
   postAt: string
   favorite: boolean
-}
-
-interface PostCardProps {
-  postInformation: PostInformation
   className?: string
   children?: ReactNode
   open: boolean
   onClose: () => void
 }
 
-export default function PostCardModal({
-  postInformation,
+export default function PostCard({
+  userName,
+  userImage,
+  title,
+  postImage,
+  description,
+  postAt,
+  favorite,
   className = '',
   open,
   onClose,
@@ -41,16 +43,6 @@ export default function PostCardModal({
       setIsClosing(false)
     }, 300)
   }
-
-  const {
-    userName,
-    userImage,
-    title,
-    postImage,
-    description,
-    postAt,
-    favorite,
-  } = postInformation
 
   if (!open) return null
 
