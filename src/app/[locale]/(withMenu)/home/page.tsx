@@ -49,6 +49,7 @@ export default function HomePage() {
             }
           }) as Post[],
         )
+        console.log(response)
       } catch {}
     }
 
