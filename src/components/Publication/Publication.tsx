@@ -136,7 +136,15 @@ export function Publication() {
           size="lg"
           onClick={() => {
             setImageUrl(null)
-            if (inputRef.current) inputRef.current.value = ''
+            if (inputRef.current) {
+              inputRef.current.value = ''
+            }
+            if (postImage) {
+              setPostImage(null)
+            }
+            if (imageUrl) {
+              setImageUrl(null)
+            }
           }}
         >
           {t('removeImage')}
