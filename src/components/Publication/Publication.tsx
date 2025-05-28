@@ -34,7 +34,7 @@ export function Publication({ exerciseId }: PublicationProps) {
 
   useEffect(() => {
     const fetchExercise = async () => {
-    const token = getToken()
+      const token = getToken()
       try {
         const response = await api(token).get(`/exercise/${exerciseId}`)
         const exerciseTitle = response.data.title
@@ -141,10 +141,10 @@ export function Publication({ exerciseId }: PublicationProps) {
         onChange={useHandleImageUpload}
       />
 
-      <div className="flex justify-center mb-3">
+      <div className="mb-3">
         <Button
           variant="outlined"
-          className="rounded-full"
+          className="w-full rounded-full"
           size="lg"
           onClick={() => inputRef.current?.click()}
         >
@@ -152,29 +152,22 @@ export function Publication({ exerciseId }: PublicationProps) {
         </Button>
       </div>
 
-      <div className="flex justify-center mb-3">
+      <div className="mb-3">
         <Button
           variant="post"
-          className="rounded-full"
+          className="w-full rounded-full"
           size="lg"
           onClick={() => {
             setImageUrl(null)
-            if (inputRef.current) {
-              inputRef.current.value = ''
-            }
-            if (postImage) {
-              setPostImage(null)
-            }
-            if (imageUrl) {
-              setImageUrl(null)
-            }
+            if (inputRef.current) inputRef.current.value = ''
+            setPostImage(null)
           }}
         >
           {t('removeImage')}
         </Button>
       </div>
 
-      <div className="flex justify-between gap-4 px-4 pb-20">
+      <div className="flex justify-between gap-4 pb-20">
         <Button
           variant="outlined"
           className="w-1/2 rounded-full"
@@ -182,6 +175,7 @@ export function Publication({ exerciseId }: PublicationProps) {
         >
           {t('cancel')}
         </Button>
+
         <Button
           variant={isFormFilled ? 'filled' : 'negative'}
           className="w-1/2 rounded-full"
