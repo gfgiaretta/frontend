@@ -32,6 +32,8 @@ export const Statistics = () => {
   const [statisticsData, setStatisticsData] = useState(
     defaultStatisticsDataCount,
   )
+
+  const [streak, setStreak] = useState(0)
   interface ChartDataItem {
     name: string
     value: number
@@ -44,6 +46,7 @@ export const Statistics = () => {
     const token = getToken()
     const userInfo = await api(token).get('/auth/token')
     const responseStatisitcs = await api(token).get('user/stats')
+    const userStreak = await api(token).get('/user/streak')
     const responseData = responseStatisitcs.data
 
     interface UserInterest {
@@ -93,6 +96,7 @@ export const Statistics = () => {
     }
     responseData.calendar = days
     setStatisticsData(responseData)
+    setStreak(userStreak.data.streak)
   }
 
   useEffect(() => {
@@ -111,7 +115,10 @@ export const Statistics = () => {
         </Text>
       </div>
       <div>
-        <StreaksAndSavedPosts savedPosts={statisticsData.savedItems} />
+        <StreaksAndSavedPosts
+          savedPosts={statisticsData.savedItems}
+          streak={streak}
+        />
       </div>
       <div className="w-full h-full pt-8 bg-background">
         <div className="justify-start">
