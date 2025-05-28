@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "start": "pm2-runtime start ecosystem.config.js --env production",
+    "deploy": "npm run ci && npm run build && npm run start"
   },
   "dependencies": {
     "@mantine/charts": "^7.17.4",
@@ -27,6 +28,7 @@
     "lucide-react": "^0.484.0",
     "next": "^15.2.3",
     "next-intl": "^4.0.2",
+    "pm2": "^6.0.6",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
