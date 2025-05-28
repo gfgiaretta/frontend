@@ -30,7 +30,7 @@ function formatDate(date: Date): string {
 export function MonthCalendar({ calendar }: { calendar: Days[] }) {
   return (
     <Calendar
-      className="w-fit border-2 border-text rounded-2xl px-3 pb-4 pt-2"
+      className="w-fit border-2 border-text rounded-2xl z-20 px-3 pb-4 pt-2"
       hideWeekdays
       hideOutsideDates
       static
