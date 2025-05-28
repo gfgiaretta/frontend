@@ -9,10 +9,11 @@ import CardsProps from './CardsProps'
 import useTokenCheck from '@/hooks/useToken'
 
 type Props = {
+  streak: number
   savedPosts: number
 }
 
-export const StreaksAndSavedPosts = ({ savedPosts }: Props) => {
+export const StreaksAndSavedPosts = ({ streak, savedPosts }: Props) => {
   useTokenCheck()
   const t = useTranslations('General')
   const textAuxStreaks = useTranslations('consecutive days')
@@ -31,7 +32,7 @@ export const StreaksAndSavedPosts = ({ savedPosts }: Props) => {
       </div>
       <div className="flex gap-4 w-full mx-auto pt-2">
         <CardsProps
-          value={2}
+          value={streak}
           textAux={textAuxStreaks('text')}
           img={
             <Image
