@@ -1,4 +1,4 @@
-import { MonthCalendar } from '@/components/Calendar/Calendar'
+import { MonthCalendar } from '@/components/Statistics/Calendar/Calendar'
 
 export default function CalendarExamplePage() {
   return (

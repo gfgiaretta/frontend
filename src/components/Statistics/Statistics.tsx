@@ -6,11 +6,11 @@ import { useTranslations } from 'next-intl'
 
 import { Text } from '../ui/Text'
 import { StreaksAndSavedPosts } from './StreaksAndSavedPosts'
-import { MonthCalendar } from '@/components/Calendar/Calendar'
-import { DonutChart } from '@/components/DonutChart/DonutChart'
+import { MonthCalendar } from '@/components/Statistics/Calendar/Calendar'
 import { api } from '@/utils/api'
 import { InterestsData } from '@/utils/interestUtils'
 import { getToken } from '@/utils/token'
+import { DonutChart } from './DonutChart/DonutChart'
 
 interface Days {
   date: string
@@ -104,8 +104,8 @@ export const Statistics = () => {
   }, []) // eslint-disable-next-line react-hooks/exhaustive-deps
 
   return (
-    <div className="w-full h-full bg-background">
-      <div className="justify-start">
+    <div className="w-full h-full flex flex-col bg-background">
+      <div>
         <Text
           as="h1"
           size="t1"
@@ -121,7 +121,7 @@ export const Statistics = () => {
         />
       </div>
       <div className="w-full h-full pt-8 bg-background">
-        <div className="justify-start">
+        <div>
           <Text
             as="h2"
             size="t2"
@@ -130,10 +130,10 @@ export const Statistics = () => {
             {exercises('title')}
           </Text>
         </div>
-        <div className="flex flex-col items-center my-6">
+        {(chartData && chartData.length > 0) && <div className="flex flex-col items-center py-6">
           <DonutChart data={chartData} />
-        </div>
-        <div className="w-full flex m-10">
+        </div>}
+        <div className="w-full flex p-10">
           <MonthCalendar calendar={statisticsData.calendar} />
         </div>
       </div>
