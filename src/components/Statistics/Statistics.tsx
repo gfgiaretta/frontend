@@ -97,7 +97,7 @@ export const Statistics = () => {
 
   useEffect(() => {
     GetData()
-  })
+  }, []) // eslint-disable-next-line react-hooks/exhaustive-deps
 
   return (
     <div className="w-full h-full bg-background">
