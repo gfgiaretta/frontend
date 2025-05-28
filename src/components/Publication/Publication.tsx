@@ -47,13 +47,15 @@ export function Publication({ exerciseId }: PublicationProps) {
     if (exerciseId) fetchExercise()
   }, [exerciseId])
 
-  const useHandleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    const fileURL = URL.createObjectURL(file!)
-    setPostImage(fileURL)
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
 
-    useImageUpload(file).then((url) => {
-      if (url) setImageUrl(url)
+    const url = URL.createObjectURL(file)
+    setPostImage(url)
+
+    useImageUpload(file).then(uploadedUrl => {
+      if (uploadedUrl) setImageUrl(uploadedUrl)
     })
   }
 
@@ -109,7 +111,15 @@ export function Publication({ exerciseId }: PublicationProps) {
         </label>
       </div>
 
-      <div className="relative w-full">
+      <div
+        onClick={() => {
+          if (inputRef.current) {
+            inputRef.current.value = ''
+            inputRef.current.click()
+          }
+        }}
+        className="cursor-pointer relative w-full"
+      >
         <Image
           src={postImage || defaultPostImageUrl}
           alt="Post Image"
@@ -139,7 +149,7 @@ export function Publication({ exerciseId }: PublicationProps) {
         accept="image/*"
         className="hidden"
         ref={inputRef}
-        onChange={useHandleImageUpload}
+        onChange={handleImageUpload}
       />
 
       <div className="mt-auto flex justify-between gap-4 pb-20">
