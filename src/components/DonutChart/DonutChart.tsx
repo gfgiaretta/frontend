@@ -50,6 +50,10 @@ export const DonutChart: FC<DonutChartProps> = ({ data }) => {
               alt={name}
               width={16}
               height={16}
+              style={{
+                filter:
+                  'brightness(0) saturate(100%) invert(13%) sepia(0%) saturate(7482%) hue-rotate(146deg) brightness(98%) contrast(87%)',
+              }}
             />
             <Text
               as="span"
