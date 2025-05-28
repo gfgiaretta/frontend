@@ -10,7 +10,7 @@ export default function FeedbackPage() {
 
   return (
     <div className="w-screen h-screen justify-center items-center flex bg-background">
-      {exerciseId && <FeedbackScreen />}
+      {exerciseId && <FeedbackScreen exerciseId={exerciseId} />}
       {exerciseId == null && <div>Erro</div>}
     </div>
   )

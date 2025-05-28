@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { Plus } from 'lucide-react'
+import { Bookmark, Plus } from 'lucide-react'
 
 import SmallPostCard from '@/components/SmallPostCard/SmallPostCard'
 // import { Bookmark, Plus } from 'lucide-react'
@@ -89,6 +89,7 @@ export default function HomePage() {
             description={post.description}
             postImage={post.postImage}
             userImage={post.userImage}
+            iconName={Bookmark}
           />
         ))}
       </div>

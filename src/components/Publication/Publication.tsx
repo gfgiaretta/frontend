@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import Image from 'next/image'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import { useTranslations } from 'next-intl'
 
@@ -17,11 +17,14 @@ import { getToken } from '@/utils/token'
 // eslint-disable-next-line no-magic-numbers
 const SUCCESS_UPLOAD_STATUS = [200, 201]
 
-export function Publication() {
+type PublicationProps = {
+  exerciseId: string
+}
+
+export function Publication({ exerciseId }: PublicationProps) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const t = useTranslations('Post')
   const router = useRouter()
-  const searchParams = useSearchParams()
   const defaultPostImageUrl = '/PostDefault.png'
 
   const [title, setTitle] = useState('')
@@ -30,12 +33,28 @@ export function Publication() {
   const [postImage, setPostImage] = useState<string | null>(null)
 
   useEffect(() => {
-    const defaultTitle = searchParams.get('title') || ''
-    const defaultDescription = searchParams.get('description') || ''
+    const fetchExercise = async () => {
+      const token = getToken()
+      try {
+        const response = await api(token).get(`/exercise/${exerciseId}`)
+        const exerciseTitle = response.data.title
+        const exerciseDescription = response.data.description
 
-    setTitle(defaultTitle)
-    setDescription(defaultDescription)
-  }, [searchParams])
+        console.log('Exercicio:', response.data)
+        console.log('Exercise Title:', exerciseTitle)
+        console.log('Exercise Description:', exerciseDescription)
+
+        if (!title) setTitle(exerciseTitle)
+        if (!description) setDescription(exerciseDescription)
+      } catch (error) {
+        console.error('Erro ao buscar exercício:', error)
+      }
+    }
+
+    if (exerciseId) {
+      fetchExercise()
+    }
+  }, [exerciseId])
 
   const useHandleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -52,8 +71,8 @@ export function Publication() {
   const useSendPost = async () => {
     const token = getToken()
     const resp = await api(token).post('/post', {
-      title,
-      description,
+      title: title,
+      description: description,
       image: imageUrl,
     })
     if (SUCCESS_UPLOAD_STATUS.includes(resp.status)) {
@@ -122,10 +141,10 @@ export function Publication() {
         onChange={useHandleImageUpload}
       />
 
-      <div className="flex justify-center mb-3">
+      <div className="mb-3">
         <Button
           variant="outlined"
-          className="rounded-full"
+          className="w-full rounded-full"
           size="lg"
           onClick={() => inputRef.current?.click()}
         >
@@ -133,29 +152,22 @@ export function Publication() {
         </Button>
       </div>
 
-      <div className="flex justify-center mb-3">
+      <div className="mb-3">
         <Button
           variant="post"
-          className="rounded-full"
+          className="w-full rounded-full"
           size="lg"
           onClick={() => {
             setImageUrl(null)
-            if (inputRef.current) {
-              inputRef.current.value = ''
-            }
-            if (postImage) {
-              setPostImage(null)
-            }
-            if (imageUrl) {
-              setImageUrl(null)
-            }
+            if (inputRef.current) inputRef.current.value = ''
+            setPostImage(null)
           }}
         >
           {t('removeImage')}
         </Button>
       </div>
 
-      <div className="flex justify-between gap-4 px-4 pb-20">
+      <div className="flex justify-between gap-4 pb-20">
         <Button
           variant="outlined"
           className="w-1/2 rounded-full"
@@ -163,6 +175,7 @@ export function Publication() {
         >
           {t('cancel')}
         </Button>
+
         <Button
           variant={isFormFilled ? 'filled' : 'negative'}
           className="w-1/2 rounded-full"

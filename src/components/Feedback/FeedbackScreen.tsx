@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Head from 'next/head'
 import Image from 'next/image'
@@ -12,19 +12,44 @@ import { useTranslations } from 'next-intl'
 import StreakCard from './StreakCard'
 import { Button } from '@/components/ui/Button'
 import { Text } from '@/components/ui/Text'
+import { getToken } from '@/utils/token'
+import { api } from '@/utils/api'
 
-export default function FeedbackScreen() {
+type FeedbackProps = {
+  exerciseId: string
+}
+
+export default function FeedbackScreen({ exerciseId }: FeedbackProps) {
+  const DEFAULT_VALUE = 0
   const t = useTranslations('Feedback')
-  const NumberOfDays = 1
   const router = useRouter()
   const [isSharing, setIsSharing] = useState(false)
+  const [streak, setStreak] = useState(DEFAULT_VALUE)
+
+  useEffect(() => {
+    const fetchStreak = async () => {
+    const token = getToken()
+      try {
+        const response = await api(token).get(`/user/streak`)
+        const streakDays = response.data.streak
+
+        console.log('Streak:', streakDays)
+        console.log('Response:', response.data)
+
+        setStreak(streakDays)
+      } catch (error) {
+        console.error('Erro ao buscar streak:', error)
+      }
+    }
+
+    fetchStreak()
+  }, [])
 
   const handleShare = async (e: React.MouseEvent) => {
     e.preventDefault()
     setIsSharing(true)
     try {
-      const title = 'Acabei de realizar o exercício diário!'
-      router.push(`/post?title=${title}`)
+      router.push(`/post?exerciseId=${exerciseId}`)
     } catch (err) {
       console.error('Erro ao compartilhar:', err)
     } finally {
@@ -63,7 +88,7 @@ export default function FeedbackScreen() {
         </Text>
 
         <div className="flex space-x-4 mt-6 mb-10">
-          <StreakCard days={NumberOfDays} />
+          <StreakCard days={streak} />
         </div>
 
         <div className="flex space-x-4 mt-10">
