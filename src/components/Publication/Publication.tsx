@@ -1,12 +1,9 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import { useTranslations } from 'next-intl'
-
 import { TitleBar } from '@/components/TitleBar/TitleBar'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -40,10 +37,6 @@ export function Publication({ exerciseId }: PublicationProps) {
         const exerciseTitle = response.data.title
         const exerciseDescription = response.data.description
 
-        console.log('Exercicio:', response.data)
-        console.log('Exercise Title:', exerciseTitle)
-        console.log('Exercise Description:', exerciseDescription)
-
         if (!title) setTitle(exerciseTitle)
         if (!description) setDescription(exerciseDescription)
       } catch (error) {
@@ -51,9 +44,7 @@ export function Publication({ exerciseId }: PublicationProps) {
       }
     }
 
-    if (exerciseId) {
-      fetchExercise()
-    }
+    if (exerciseId) fetchExercise()
   }, [exerciseId])
 
   const useHandleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,31 +53,26 @@ export function Publication({ exerciseId }: PublicationProps) {
     setPostImage(fileURL)
 
     useImageUpload(file).then((url) => {
-      if (url) {
-        setImageUrl(url)
-      }
+      if (url) setImageUrl(url)
     })
   }
 
   const useSendPost = async () => {
     const token = getToken()
     const resp = await api(token).post('/post', {
-      title: title,
-      description: description,
+      title,
+      description,
       image: imageUrl,
     })
     if (SUCCESS_UPLOAD_STATUS.includes(resp.status)) {
       router.push('/home')
-    } else {
-      // TODO: criar uma toast
-      //console.error('Failed to create post:', resp.data)
     }
   }
 
   const isFormFilled = title.trim() !== '' && description.trim() !== ''
 
   return (
-    <div className="flex flex-col px-6 py-8 w-full justify-between h-screen max-w-md mx-auto text-text">
+    <div className="flex flex-col px-6 py-8 w-full h-screen max-w-md mx-auto text-text">
       <div>
         <div className="mb-6">
           <TitleBar label={t('title')} />
@@ -95,7 +81,6 @@ export function Publication({ exerciseId }: PublicationProps) {
         <label className="text-xl font-semibold font-neulis text-primary mb-2">
           {t('back')}
         </label>
-
         <Input
           placeholder={t('placeholderTitle')}
           className="bg-grey-2 border border-transparent focus:border-transparent focus:ring-0 outline-none rounded-md mb-4 placeholder:text-grey-1"
@@ -106,7 +91,6 @@ export function Publication({ exerciseId }: PublicationProps) {
         <label className="text-xl font-semibold font-neulis text-primary mb-2">
           {t('description')}
         </label>
-
         <div className="relative mb-4">
           <textarea
             placeholder={t('placeholderDescription')}
@@ -120,18 +104,35 @@ export function Publication({ exerciseId }: PublicationProps) {
           </span>
         </div>
 
-        <label className="text-xl font-semibold font-neulis text-primary mb-2">
+        <label className="text-xl font-semibold font-neulis text-primary mb-1">
           {t('image')}
         </label>
       </div>
 
-      <Image
-        src={postImage || defaultPostImageUrl}
-        alt="Post Image"
-        className="w-full h-50 rounded border-1 border-grey-1 shadow object-cover"
-        width={100}
-        height={50}
-      />
+      <div className="relative w-full">
+        <Image
+          src={postImage || defaultPostImageUrl}
+          alt="Post Image"
+          className="w-full h-50 rounded border border-grey-1 shadow object-cover cursor-pointer"
+          width={100}
+          height={50}
+          onClick={() => inputRef.current?.click()}
+        />
+
+        {postImage && (
+          <button
+            type="button"
+            onClick={() => {
+              setPostImage(null)
+              setImageUrl(null)
+              if (inputRef.current) inputRef.current.value = ''
+            }}
+            className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm"
+          >
+            ✕
+          </button>
+        )}
+      </div>
 
       <input
         type="file"
@@ -141,33 +142,7 @@ export function Publication({ exerciseId }: PublicationProps) {
         onChange={useHandleImageUpload}
       />
 
-      <div className="mb-3">
-        <Button
-          variant="outlined"
-          className="w-full rounded-full"
-          size="lg"
-          onClick={() => inputRef.current?.click()}
-        >
-          {t('addImage')}
-        </Button>
-      </div>
-
-      <div className="mb-3">
-        <Button
-          variant="post"
-          className="w-full rounded-full"
-          size="lg"
-          onClick={() => {
-            setImageUrl(null)
-            if (inputRef.current) inputRef.current.value = ''
-            setPostImage(null)
-          }}
-        >
-          {t('removeImage')}
-        </Button>
-      </div>
-
-      <div className="flex justify-between gap-4 pb-20">
+      <div className="mt-auto flex justify-between gap-4 pb-20">
         <Button
           variant="outlined"
           className="w-1/2 rounded-full"
