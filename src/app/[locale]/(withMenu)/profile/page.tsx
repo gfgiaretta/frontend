@@ -9,7 +9,7 @@ export default function ProfilePage() {
 
   return (
     <div className="w-full h-full min-h-screen bg-background ">
-      <ProfileScreen iconName={icon[0]} />
+      <ProfileScreen />
     </div>
   )
 }

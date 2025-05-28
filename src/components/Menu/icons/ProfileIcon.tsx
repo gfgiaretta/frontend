@@ -4,7 +4,7 @@ export function ProfileIcon(props: React.SVGProps<SVGSVGElement>) {
   const { className, ...rest } = props
   return (
     <svg
-      viewBox="0 0 21 20"
+      viewBox="0 0 17 18"
       fill="none"
       className={className}
       {...rest}

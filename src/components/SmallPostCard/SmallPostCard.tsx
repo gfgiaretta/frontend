@@ -79,13 +79,12 @@ export default function SmallPostCard({
             </div>
           </div>
           <div className="flex flex-row absolute top-0 bg-text/70 rounded-br-2xl rounded-tl-2xl">
-            <div>
+            <div className="relative w-8 aspect-square mx-2 my-2">
               <Image
                 src={userImage}
                 alt="User avatar"
-                width={30}
-                height={30}
-                className="rounded-full mx-2 my-2"
+                fill
+                className="rounded-full object-cover"
               />
             </div>
             <div className="ml-1 mr-3 flex items-center">

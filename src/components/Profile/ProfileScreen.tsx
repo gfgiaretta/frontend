@@ -13,10 +13,6 @@ import useTokenCheck from '@/hooks/useToken'
 import { api } from '@/utils/api'
 import { getToken } from '@/utils/token'
 
-interface UserProps {
-  iconName?: LucideIcon
-}
-
 interface Post {
   id: string
   userName: string
@@ -36,7 +32,7 @@ interface UserInfo {
   posts: Post[]
 }
 
-export default function ProfileScreen({ iconName: icon }: UserProps) {
+export default function ProfileScreen() {
   const [userInfo, setUserInfo] = useState<UserInfo>({
     name: 'Name',
     description: '',
@@ -44,7 +40,6 @@ export default function ProfileScreen({ iconName: icon }: UserProps) {
     userImage: '',
     posts: [],
   })
-  const Icon = [Bookmark]
   const router = useRouter()
   useTokenCheck()
   useEffect(() => {
@@ -52,13 +47,13 @@ export default function ProfileScreen({ iconName: icon }: UserProps) {
       try {
         const token = getToken()
         const response = await api(token).get('user/profile')
-        console.log('RESPONSE: ', response)
+        console.log('fetchUserInfo : ', response)
         const user = response.data.data
         setUserInfo({
           name: user.name,
           description: user.description,
           streak: user.streak,
-          userImage: user.profile_picture_url,
+          userImage: user.profilePictureUrl,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           posts: user.posts.map((post: any) => ({
             id: post.post_id,
@@ -73,97 +68,66 @@ export default function ProfileScreen({ iconName: icon }: UserProps) {
         })
       } catch { }
     }
-    console.log('UserInfor pre call: ', userInfo)
     fetchUserInfo()
-    console.log('UserInfor post call: ', userInfo)
-  })
+  }, [])
+
+  const handleEditClick = () => {
+    const bioParam = encodeURIComponent(userInfo.description || '')
+    const imageParam = encodeURIComponent(userInfo.userImage || '')
+    router.push(`profile/edit-profile?bio=${bioParam}&userImage=${imageParam}`)
+  }
 
   return (
     <div className="w-full h-full min-h-screen flex flex-col relative bg-background">
       <div className="flex relative justify-between items-start px-4 py-4 w-full h-[15vh] bg-[url('/profile-top-wave.svg')] bg-no-repeat bg-cover bg-bottom">
         <div>
-          {icon && (
-            <button
-              className="text-white px-1 py-1"
-              onClick={() => router.push('/profile/edit-profile')}
-            >
-              <SquarePen
-                className=""
-                size={25}
-                strokeWidth={2}
-              />
-            </button>
-          )}
+          <button className="text-white px-1 py-1" onClick={handleEditClick}>
+            <SquarePen size={25} strokeWidth={2} />
+          </button>
         </div>
         <div>
-          {icon && (
-            <button className="text-white px-1 py-1">
-              <Bookmark
-                className=""
-                size={25}
-                strokeWidth={2}
-              />
-            </button>
-          )}
+          <button className="text-white px-1 py-1">
+            <Bookmark size={25} strokeWidth={2} />
+          </button>
         </div>
       </div>
       <div className="flex flex-col items-center px-4 absolute top-13 left-1/2 -translate-x-1/2">
         <div className="relative w-max">
-          {/* Streak*/}
+          {/* Streak */}
           <div className="absolute top-0 right-0 z-20 flex items-center justify-center w-8 h-8 bg-support-orange rounded-full p-1">
-            <Image
-              src="/streak.svg"
-              width={14}
-              height={14}
-              className="rounded-full mr-1"
-              alt="streak"
-            />
-            <Text
-              as="span"
-              size="notes"
-              className="text-xs text-background"
-            >
+            <Image src="/streak.svg" width={14} height={14} className="rounded-full mr-1" alt="streak" />
+            <Text as="span" size="notes" className="text-xs text-background">
               {userInfo.streak}
             </Text>
           </div>
+
           {/* User Image */}
-          <div className="z-10">
+          <div className="relative w-24 h-24 aspect-square z-10">
             <Image
-              src={userInfo.userImage}
-              width={90}
-              height={90}
-              className="rounded-full"
+              src={userInfo.userImage || '/userimage.jpg'}
+              fill
               alt="User image"
+              className="rounded-full object-cover border border-grey-1 shadow"
             />
           </div>
         </div>
         <div className="py-1 px-1">
-          <Text
-            as="span"
-            size="body"
-          >
+          <Text as="span" size="body">
             {userInfo.name}
           </Text>
         </div>
         <div className="px-2 py-2 mt-2">
-          <Text
-            as="h3"
-            size="sub"
-          >
+          <Text as="h3" size="sub">
             {userInfo.description}
           </Text>
         </div>
         <div className="px-3 py-3">
-          <Text
-            as="span"
-            size="notes"
-            className="text-grey-1"
-          >
+          <Text as="span" size="notes" className="text-grey-1">
             Posts
           </Text>
         </div>
       </div>
-      <div className="absolute w-full px-6 py-3 pb-20 pt-44 left-1/2 -translate-x-1/2 top-25">
+      <div className="items-center flex flex-col gap-8 w-full px-6 py-3 pb-20 pt-44">
         {userInfo.posts.map((post) => (
           <SmallPostCard
             key={post.id}
@@ -172,7 +136,6 @@ export default function ProfileScreen({ iconName: icon }: UserProps) {
             title={post.title}
             postImage={post.postImage}
             description={post.description}
-            iconName={Icon[0]}
           />
         ))}
       </div>

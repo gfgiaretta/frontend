@@ -28,12 +28,10 @@ export async function useImageUpload(file: File | null | undefined) {
       fileType: 'image/jpeg',
     }
 
-    const key = `${new Date().getTime()}.jpeg`
-
-    const s3Link = await getS3Link(key)
+    const s3Link = await getS3Link()
+    const result = extractS3Key(s3Link)
     const compressedFile = await imageCompression(file, options)
     await uploadToS3(s3Link, compressedFile)
-    const result = extractS3Key(s3Link)
     return result
   } catch (_) {
     //TODO: ADD TOAST TO APP AND SHOW AN ERROR TOAST HERE
@@ -46,8 +44,9 @@ function extractS3Key(url: string): string | null {
     const parsedUrl = new URL(url)
     const pathname = parsedUrl.pathname
 
-    // Ensure it starts with a slash and return the full S3 key
+    // Remove the first slash from the URL path and return the full S3 key
     // eslint-disable-next-line no-magic-numbers
+    console.log('URI:' + decodeURIComponent(pathname).slice(1))
     return decodeURIComponent(pathname).slice(1)
   } catch (_) {
     //console.error('Invalid URL:', e)
@@ -55,13 +54,9 @@ function extractS3Key(url: string): string | null {
   }
 }
 
-async function getS3Link(key: string) {
+async function getS3Link() {
   const token = getToken()
-  const response = (await api(token).get('/presigned', {
-    params: {
-      key,
-    },
-  })) as ImageUploadResponse
+  const response = (await api(token).get('/presigned')) as ImageUploadResponse
 
   const s3Link = response.data
   if (!s3Link) {
