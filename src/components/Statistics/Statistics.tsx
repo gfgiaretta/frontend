@@ -63,7 +63,7 @@ export const Statistics = () => {
       chartDataFromApi.push({
         name: tInterests(item.interestId),
         // eslint-disable-next-line no-magic-numbers
-        value: graph[item.title] || 0,
+        value: graph[item.title] || '',
         color: INTERESTS_COLORS[idx] || '#ccc',
         icon: InterestsData[item.interestId]?.icon || '',
       })
@@ -105,36 +105,36 @@ export const Statistics = () => {
 
   return (
     <div className="w-full h-full flex flex-col bg-background">
-      <div>
-        <Text
-          as="h1"
-          size="t1"
-          className="text-primary"
-        >
-          {pageTitle('title')}
-        </Text>
-      </div>
-      <div>
-        <StreaksAndSavedPosts
-          savedPosts={statisticsData.savedItems}
-          streak={streak}
-        />
-      </div>
-      <div className="w-full h-full pt-8 bg-background">
-        <div>
-          <Text
-            as="h2"
-            size="t2"
-            className="text-text"
-          >
-            {exercises('title')}
-          </Text>
-        </div>
-        {(chartData && chartData.length > 0) && <div className="flex flex-col items-center py-6">
-          <DonutChart data={chartData} />
-        </div>}
-        <div className="w-full flex p-10">
-          <MonthCalendar calendar={statisticsData.calendar} />
+      <Text
+        as="h1"
+        size="t1"
+        className="text-primary"
+      >
+        {pageTitle('title')}
+      </Text>
+      <div className='w-full flex flex-col items-center justify-center'>
+        <div className='w-full max-w-2xl'>
+          <StreaksAndSavedPosts
+            savedPosts={statisticsData.savedItems}
+            streak={streak}
+          />
+          <div className="w-full h-full pt-8 bg-background">
+            <div>
+              <Text
+                as="h2"
+                size="t2"
+                className="text-text"
+              >
+                {exercises('title')}
+              </Text>
+            </div>
+            {(chartData && chartData.length > 0) && <div className="flex flex-col items-center py-6">
+              <DonutChart data={chartData} />
+            </div>}
+            <div className="w-full flex p-10">
+              <MonthCalendar calendar={statisticsData.calendar} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
