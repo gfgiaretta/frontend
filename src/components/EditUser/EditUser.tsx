@@ -3,8 +3,8 @@
 import React, { useState } from 'react'
 import { useRef } from 'react'
 
-import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { Check, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -21,7 +21,9 @@ export const EditUser = () => {
   const defaultProfileImageURL = searchParams.get('userImage') || ''
 
   const [userBio, setUserBio] = useState<string>(defaultBio)
-  const [profileImageURL, setProfileImageURL] = useState<string>(defaultProfileImageURL)
+  const [profileImageURL, setProfileImageURL] = useState<string>(
+    defaultProfileImageURL,
+  )
   const [profileImageFile, setProfileImageFile] = useState<File>()
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -36,12 +38,9 @@ export const EditUser = () => {
 
     setProfileImageFile(imageFile)
     setProfileImageURL(imageURL)
-
-    console.log('state URL ' + profileImageURL + ' file ' + profileImageFile);
-    console.log('URL ' + imageURL + ' file ' + imageFile);
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const bioChanged = defaultBio !== userBio
     const imageChanged = defaultProfileImageURL !== profileImageURL
 
@@ -50,20 +49,19 @@ export const EditUser = () => {
       return
     }
 
-    let imageUrl = profileImageURL
-    if (imageChanged) {
-      useImageUpload(profileImageFile).then((url) => {
-        if (url)
-          imageUrl = url
+    let imageUrl: string | null | undefined = profileImageURL
 
-        const payload: patchProfileParams = {
-          description: userBio ?? '',
-          profilePictureUrl: imageUrl ?? '',
-        }
-        patchProfile(payload)
-        router.push('/profile')
-      })
+    if (imageChanged) {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      imageUrl = await useImageUpload(profileImageFile)
     }
+    const payload: patchProfileParams = {
+      description: userBio ?? '',
+      profilePictureUrl: imageUrl ?? '',
+    }
+
+    patchProfile(payload)
+    router.push('/profile')
   }
 
   return (
@@ -71,10 +69,16 @@ export const EditUser = () => {
       <div className="relative w-full h-[42vh] bg-[url('/background-edit-profile.svg')] bg-no-repeat bg-cover bg-bottom">
         <div className="absolute top-0 left-0 right-0 flex justify-between px-4 pt-4">
           <button onClick={handleExit}>
-            <X className="text-white" size={30} />
+            <X
+              className="text-white"
+              size={30}
+            />
           </button>
           <button onClick={handleSave}>
-            <Check className="text-white" size={30} />
+            <Check
+              className="text-white"
+              size={30}
+            />
           </button>
         </div>
       </div>
