@@ -80,7 +80,7 @@ export default function HomePage() {
           </button>
         </div>
       </div>
-      <div className="items-center flex flex-col gap-5 pb-[76px]">
+      <div className="items-center flex flex-col gap-1 pb-[76px]">
         {posts.map((post) => (
           <SmallPostCard
             key={post.id}
