@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Check, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-import { useImageUpload } from '@/hooks/useImageUpload'
+import { UseImageUpload } from '@/hooks/useImageUpload'
 import { patchProfile, patchProfileParams } from '@/services/ProfileService'
 
 export const EditUser = () => {
@@ -52,8 +52,7 @@ export const EditUser = () => {
     let imageUrl: string | null | undefined = profileImageURL
 
     if (imageChanged) {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      imageUrl = await useImageUpload(profileImageFile)
+      imageUrl = await UseImageUpload(profileImageFile)
     }
     const payload: patchProfileParams = {
       description: userBio ?? '',
