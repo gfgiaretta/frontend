@@ -9,8 +9,7 @@ export default function CreatePostPage() {
   const exerciseId = searchParams.get('exerciseId')
   return (
     <div className="w-screen h-screen justify-center items-center flex bg-background">
-      {exerciseId && <Publication exerciseId={exerciseId} />}
-      {exerciseId == null && <Publication exerciseId={''} />}
+      <Publication exerciseId={exerciseId || null} />
     </div>
   )
 }

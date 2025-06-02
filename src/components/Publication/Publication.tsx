@@ -18,7 +18,7 @@ import { getToken } from '@/utils/token'
 const SUCCESS_UPLOAD_STATUS = [200, 201]
 
 type PublicationProps = {
-  exerciseId: string
+  exerciseId: string | null
 }
 
 export function Publication({ exerciseId }: PublicationProps) {
