@@ -3,8 +3,8 @@ import { FC } from 'react'
 import Image from 'next/image'
 
 import { DonutChart as MantineDonutChart } from '@mantine/charts'
+import { Text } from '@/components/ui/Text'
 
-import { Text } from '../ui/Text'
 
 export interface DonutChartCategory {
   name: string
