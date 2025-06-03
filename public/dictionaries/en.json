@@ -141,5 +141,8 @@
   },
   "EditProfile": {
     "description": "Insert a description about you"
-  }
+  },
+  "History": {
+    "title": "History"
+}
 }
