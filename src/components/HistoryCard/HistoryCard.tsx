@@ -56,7 +56,7 @@ export function HistoryCard({
         <Text
           as="p"
           size="notes"
-          className="line-clamp-2"
+          className="line-clamp-3"
         >
           {description}
         </Text>
