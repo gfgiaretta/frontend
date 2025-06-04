@@ -19,7 +19,7 @@ interface DonutChartProps {
 
 export const DonutChart: FC<DonutChartProps> = ({ data }) => {
   return (
-    <div className="flex items-center gap-6">
+    <div className="w-full flex flex-wrap justify-center items-center">
       <MantineDonutChart
         data={data.map(({ name, value, color }) => ({
           name,

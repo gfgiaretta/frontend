@@ -131,7 +131,7 @@ export const Statistics = () => {
             {(chartData && chartData.length > 0) && <div className="flex flex-col items-center py-6">
               <DonutChart data={chartData} />
             </div>}
-            <div className="w-full flex p-10">
+            <div className="w-full flex py-10">
               <MonthCalendar calendar={statisticsData.calendar} />
             </div>
           </div>
