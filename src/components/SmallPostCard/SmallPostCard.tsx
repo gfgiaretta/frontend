@@ -31,11 +31,11 @@ export default function SmallPostCard({
   return (
     <>
       <div
-        className="mb-20 w-full max-w-md"
+        className="mb-5 w-full max-w-md"
         onClick={() => setOpenPost(true)}
       >
         <div className="relative">
-          <div className="overflow-hidden w-[300px] h-[150px]">
+          <div className="overflow-hidden w-full h-[150px] relative">
             <Image
               src={postImage}
               alt="Post image"
@@ -43,7 +43,7 @@ export default function SmallPostCard({
               className="rounded-t-2xl object-cover"
             />
           </div>
-          <div className="absolute flex flex-row bg-text rounded-b-2xl justify-between items-center w-full top-30">
+          <div className="flex flex-row bg-text rounded-b-2xl justify-between items-center w-full top-30">
             <div className="flex flex-col text-background mx-3 my-3">
               <div>
                 <Text
