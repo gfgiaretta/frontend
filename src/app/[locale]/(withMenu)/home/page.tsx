@@ -88,6 +88,7 @@ export default function HomePage() {
             userName={post.userName}
             title={post.title}
             description={post.description}
+            createdAt={post.createdAt}
             postImage={post.postImage}
             userImage={post.userImage}
             iconName={Bookmark}

@@ -17,6 +17,7 @@ interface SmallPostCardProps {
   title: string
   postImage: string
   description: string
+  createdAt: string
   iconName?: LucideIcon
 }
 
@@ -27,6 +28,7 @@ export default function SmallPostCard({
   title,
   postImage,
   description,
+  createdAt,
   iconName: Icon,
 }: SmallPostCardProps) {
   const [openPost, setOpenPost] = useState(false)
@@ -111,7 +113,7 @@ export default function SmallPostCard({
         description={description}
         open={openPost}
         onClose={() => setOpenPost(false)}
-        postAt={''}
+        createdAt={createdAt}
         favorite={false}
       />
     </>

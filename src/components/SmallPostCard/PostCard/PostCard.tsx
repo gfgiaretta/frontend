@@ -5,10 +5,12 @@ import { ReactNode, useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import { Bookmark } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import { Comment } from '@/components/SmallPostCard/PostCard/Comment/Comment'
 import { Text } from '@/components/ui/Text'
 import { CommentDTO, fetchComments } from '@/services/CommentService'
+import { getTimeSince } from '@/utils/dateUtils'
 
 interface PostCardProps {
   postId: string
@@ -17,7 +19,7 @@ interface PostCardProps {
   title: string
   postImage: string
   description: string
-  postAt: string
+  createdAt: string
   favorite: boolean
   className?: string
   children?: ReactNode
@@ -32,12 +34,13 @@ export default function PostCard({
   title,
   postImage,
   description,
-  postAt,
+  createdAt,
   favorite,
   className = '',
   open,
   onClose,
 }: PostCardProps) {
+  const t = useTranslations('PostCard')
   const [isClosing, setIsClosing] = useState(false)
   const [comments, setComments] = useState<CommentDTO[]>([])
 
@@ -145,7 +148,7 @@ export default function PostCard({
                   size="notes"
                   className="text-grey-1"
                 >
-                  {postAt}
+                  {getTimeSince(createdAt, t)}
                 </Text>
               </div>
             </div>
