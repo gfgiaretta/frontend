@@ -143,6 +143,10 @@
     "description": "Insira uma breve descrição sobre você."
   },
   "History": {
-  "title": "Histórico"
-}
+    "title": "Histórico"
+  },
+  "ConnectionExercise": {
+    "title": "Conexão Artistica",
+    "description": "Aqui a ideia é refrescar a memória sobre estilos artísticos. Relacione o artista com sua respectiva obra, selecionando-os um depois do outro."
+  }
 }
