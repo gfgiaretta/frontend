@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import Image from 'next/image'
 
 import { Text } from '@/components/ui/Text'
@@ -9,11 +11,19 @@ interface CommentProps {
   content: string
 }
 
+const MAX_LENGTH = 120
+
 export function Comment({
   ownerName,
   ownerProfilePictureUrl,
   content,
 }: CommentProps) {
+  const [expanded, setExpanded] = useState(false)
+
+  const isLong = content.length > MAX_LENGTH
+  const visibleContent =
+    expanded || !isLong ? content : `${content.slice(0, MAX_LENGTH)}...`
+
   return (
     <div className="flex items-start gap-3 py-2 border-b border-grey-1/20">
       <Image
@@ -34,9 +44,17 @@ export function Comment({
         <Text
           as="p"
           size="sub"
-          className="text-sm"
+          className="text-sm leading-snug break-words"
         >
-          {content}
+          {visibleContent}
+          {isLong && (
+            <button
+              onClick={() => setExpanded((prev) => !prev)}
+              className="ml-1 text-blue-600 hover:underline text-xs font-medium"
+            >
+              {expanded ? 'Mostrar menos' : 'Ler mais'}
+            </button>
+          )}
         </Text>
       </div>
     </div>
