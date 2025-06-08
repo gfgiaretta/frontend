@@ -10,6 +10,8 @@ import PostCard from './PostCard/PostCard'
 import { Text } from '@/components/ui/Text'
 
 interface SmallPostCardProps {
+  key: string
+  postId: string
   userName: string
   userImage: string
   title: string
@@ -19,6 +21,7 @@ interface SmallPostCardProps {
 }
 
 export default function SmallPostCard({
+  postId,
   userName,
   userImage,
   title,
@@ -100,6 +103,7 @@ export default function SmallPostCard({
         </div>
       </div>
       <PostCard
+        postId={postId}
         userName={userName}
         userImage={userImage}
         title={title}

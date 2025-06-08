@@ -1,14 +1,17 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import Image from 'next/image'
 
 import { Bookmark } from 'lucide-react'
 
+import { Comment } from '@/components/SmallPostCard/PostCard/Comment/Comment'
 import { Text } from '@/components/ui/Text'
+import { CommentDTO, fetchComments } from '@/services/CommentService'
 
 interface PostCardProps {
+  postId: string
   userName: string
   userImage: string
   title: string
@@ -23,6 +26,7 @@ interface PostCardProps {
 }
 
 export default function PostCard({
+  postId,
   userName,
   userImage,
   title,
@@ -35,6 +39,7 @@ export default function PostCard({
   onClose,
 }: PostCardProps) {
   const [isClosing, setIsClosing] = useState(false)
+  const [comments, setComments] = useState<CommentDTO[]>([])
 
   const handleClose = () => {
     setIsClosing(true)
@@ -44,6 +49,12 @@ export default function PostCard({
       // eslint-disable-next-line no-magic-numbers
     }, 300)
   }
+
+  useEffect(() => {
+    if (open) {
+      fetchComments(postId).then(setComments)
+    }
+  }, [open, postId])
 
   if (!open) return null
 
@@ -68,6 +79,7 @@ export default function PostCard({
             flex flex-col relative w-full max-w-md ${className}
           `}
           >
+            {/* Post owner*/}
             <div className="flex flex-row justify-between items-center mb-4 w-full">
               <div className="flex-shrink-0">
                 <Image
@@ -97,6 +109,7 @@ export default function PostCard({
               </div>
             </div>
 
+            {/* Image */}
             <div className="flex justify-center items-center">
               <Image
                 src={postImage}
@@ -107,6 +120,7 @@ export default function PostCard({
               />
             </div>
 
+            {/* Title and body */}
             <div>
               <div className="mt-2">
                 <Text
@@ -133,6 +147,36 @@ export default function PostCard({
                 >
                   {postAt}
                 </Text>
+              </div>
+            </div>
+
+            {/* Comments */}
+            <div className="mt-4">
+              <Text
+                as="h1"
+                size="t3"
+                className="mb-2"
+              >
+                Comments
+              </Text>
+              <div className="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1">
+                {comments.length === 0 && (
+                  <Text
+                    size="notes"
+                    className="text-grey-1"
+                  >
+                    Seja o primeiro a comentar!
+                  </Text>
+                )}
+                {comments.map((comment) => (
+                  <Comment
+                    key={comment.comment_id}
+                    commentId={comment.comment_id}
+                    ownerName={comment.owner.name}
+                    ownerProfilePictureUrl={comment.owner.profile_picture_url}
+                    content={comment.content}
+                  />
+                ))}
               </div>
             </div>
           </div>

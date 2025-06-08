@@ -84,6 +84,7 @@ export default function HomePage() {
         {posts.map((post) => (
           <SmallPostCard
             key={post.id}
+            postId={post.id}
             userName={post.userName}
             title={post.title}
             description={post.description}
