@@ -143,6 +143,12 @@
     "description": "Insira uma breve descrição sobre você."
   },
   "History": {
-  "title": "Histórico"
-}
+    "title": "Histórico"
+  },
+  "Saved": {
+    "title": "Posts Salvos",
+    "loading": "Carregando",
+    "noSavedPosts": "Nenhum post salvo encontrado",
+    "unknownAuthor": "Autor desconhecido"
+  }
 }
