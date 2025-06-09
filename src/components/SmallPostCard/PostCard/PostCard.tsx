@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { Bookmark } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
+import { CommentInput } from './Comment/CommentInput'
 import { Comment } from '@/components/SmallPostCard/PostCard/Comment/Comment'
 import { Text } from '@/components/ui/Text'
 import { CommentDTO, fetchComments } from '@/services/CommentService'
@@ -182,6 +183,11 @@ export default function PostCard({
                 ))}
               </div>
             </div>
+
+            <CommentInput
+              postId={postId}
+              onCommentSent={() => fetchComments(postId).then(setComments)}
+            />
           </div>
         </div>
       </div>
