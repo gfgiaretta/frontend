@@ -71,17 +71,17 @@ export default function PostCard({
 
       <div
         className={`
-          absolute bottom-16 left-0 w-full h-fit 
-          bg-background rounded-t-3xl 
-          p-4 pb-9 shadow-xl
-          ${isClosing ? 'animate-[slideDown_300ms_ease-in-out]' : 'animate-[slideUp_300ms_ease-in-out]'}
-        `}
+            absolute bottom-16 left-0 w-full h-fit 
+            bg-background rounded-t-3xl 
+            p-4 pb-9 shadow-xl
+            ${isClosing ? 'animate-[slideDown_300ms_ease-in-out]' : 'animate-[slideUp_300ms_ease-in-out]'}
+          `}
       >
         <div className="w-full flex items-center justify-center">
           <div
             className={`
-            flex flex-col relative w-full max-w-md ${className}
-          `}
+              flex flex-col relative w-full max-w-md ${className}
+            `}
           >
             {/* Post owner*/}
             <div className="flex flex-row justify-between items-center mb-4 w-full">

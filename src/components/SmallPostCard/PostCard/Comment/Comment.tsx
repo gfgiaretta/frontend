@@ -25,7 +25,7 @@ export function Comment({
     expanded || !isLong ? content : `${content.slice(0, MAX_LENGTH)}...`
 
   return (
-    <div className="flex items-start gap-3 py-2 border-b border-grey-1/20">
+    <div className="relative flex items-start gap-3 py-2 border-b border-grey-1/20">
       <Image
         src={ownerProfilePictureUrl}
         alt="User avatar"
@@ -33,7 +33,7 @@ export function Comment({
         height={30}
         className="rounded-full object-cover aspect-square"
       />
-      <div>
+      <div className="flex-1">
         <Text
           as="h1"
           size="t1"
@@ -44,13 +44,13 @@ export function Comment({
         <Text
           as="p"
           size="sub"
-          className="text-sm leading-snug break-words"
+          className="text-sm leading-snug break-all"
         >
           {visibleContent}
           {isLong && (
             <button
               onClick={() => setExpanded((prev) => !prev)}
-              className="ml-1 text-blue-600 hover:underline text-xs font-medium"
+              className="ml-1 text-grey-1 hover:underline text-xs font-medium"
             >
               {expanded ? 'Mostrar menos' : 'Ler mais'}
             </button>
