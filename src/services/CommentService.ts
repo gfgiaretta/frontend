@@ -17,3 +17,11 @@ export async function fetchComments(postId: string): Promise<CommentDTO[]> {
   })
   return response.data
 }
+
+export async function sendComment(postId: string, content: string) {
+  const token = getToken()
+  return api(token).post('/comment', {
+    postId: postId,
+    content,
+  })
+}
