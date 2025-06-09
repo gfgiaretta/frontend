@@ -31,15 +31,44 @@ export function Inversion({ exerciseId }: InversionProps) {
   const [selectedTool, setSelectedTool] = useState<Tool>('pen')
   const [strokeColor, setStrokeColor] = useState('#000000')
 
-  const DefaultScale = 1
+  //const DefaultScale = 1
   const FinePen = 1
   const DefaultPen = 5
   const EraserOrThickPen = 5
 
-  const handleConfirm = async () => {
-    // const exerciseId = '7a4fc39c-0f98-4cd6-9362-e161b142295a'
+  const handleSaveDrawing = async () => {
+    const canvas = canvasRef.current
+    if (!canvas) return
 
+    const token = getToken()
+    const response = await api(token).get('/auth/token')
+    const userId = response.data.userId
+
+    canvas.toBlob(async (blob) => {
+      if (!blob) return
+
+      const formData = new FormData()
+      formData.append('file', blob, `drawing-${exerciseId}.png`)
+      formData.append('userId', userId)
+      formData.append('exerciseId', exerciseId)
+
+      try {
+        await api(token).post('/exercise/upload-drawing', formData)
+        console.log('Desenho enviado com sucesso')
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error('Erro ao enviar desenho:', err.message)
+        } else {
+          console.error('Erro desconhecido ao enviar desenho:', err)
+        }
+      }
+    })
+  }
+
+  const handleConfirm = async () => {
     try {
+      await handleSaveDrawing()
+
       const token = getToken()
       const response = await api(token).get('/auth/token')
       const userId = response.data.userId
@@ -60,20 +89,29 @@ export function Inversion({ exerciseId }: InversionProps) {
   }
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+    const loadContent = async () => {
+      try {
+        const token = getToken()
+        const response = await api(token).get(
+          `/exercise/content?exerciseId=${exerciseId}`,
+        )
+        const imageUrl = response.data.imageUrl
 
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+        const canvas = canvasRef.current
+        if (!canvas || !imageUrl) return
+        const ctx = canvas.getContext('2d')
+        if (!ctx) return
 
-    const rect = canvas.getBoundingClientRect()
-    const scale = window.devicePixelRatio || DefaultScale
+        const image = new window.Image()
+        image.onload = () => ctx.drawImage(image, canvas.width, canvas.height)
+        image.src = imageUrl
+      } catch (err) {
+        console.error('Erro ao carregar conteúdo salvo:', err)
+      }
+    }
 
-    canvas.width = rect.width * scale
-    canvas.height = rect.height * scale
-
-    ctx.scale(scale, scale)
-  }, []) // <- roda só uma vez
+    loadContent()
+  }, [exerciseId])
 
   useEffect(() => {
     const canvas = canvasRef.current
