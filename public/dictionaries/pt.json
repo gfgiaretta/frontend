@@ -118,7 +118,8 @@
     "next": "Arraste para o lado para ver as opções."
   },
   "Inversion": {
-    "title": "Inversão"
+    "title": "Inversão",
+    "description": "Aqui a ideia é inverter a lógica de tudo que sabemos sobre a criação de marca. Desenhe sua versão do logo abaixo da pior maneira que conseguir."
   },
   "PostCard": {
     "invalidDate": "Data invalida",
@@ -143,6 +144,6 @@
     "description": "Insira uma breve descrição sobre você."
   },
   "History": {
-  "title": "Histórico"
-}
+    "title": "Histórico"
+  }
 }
