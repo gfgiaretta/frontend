@@ -68,8 +68,8 @@ export default function LibraryCard({
           <div className="ml-auto flex border-1 border-primary rounded-full">
             <button className="text-primary px-0.5 py-0.5">
               <Bookmark
-                className="fill-primary"
-                size={14}
+                className="fill-secondary"
+                size={20}
                 strokeWidth={0}
               />
             </button>

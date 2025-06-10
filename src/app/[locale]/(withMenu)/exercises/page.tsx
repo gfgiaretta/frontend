@@ -76,7 +76,10 @@ export default function ExercisesPage() {
         </Text>
         <div className="flex items-center gap-3">
           <Link href="/history">
-            <Archive size={35} />
+            <Archive
+              className="text-primary"
+              size={35}
+            />
           </Link>
           <Link href="/exercises/statistics">
             <Image
