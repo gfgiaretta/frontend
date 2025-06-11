@@ -19,7 +19,7 @@ interface DonutChartProps {
 
 export const DonutChart: FC<DonutChartProps> = ({ data }) => {
   return (
-    <div className="flex items-center gap-6">
+    <div className="flex items-center flex-wrap justify-center">
       <MantineDonutChart
         data={data.map(({ name, value, color }) => ({
           name,
@@ -45,16 +45,31 @@ export const DonutChart: FC<DonutChartProps> = ({ data }) => {
               className="inline-block rounded-full"
               style={{ background: color, width: 24, height: 24 }}
             />
-            <Image
-              src={icon}
-              alt={name}
-              width={16}
-              height={16}
+            <div
               style={{
-                filter:
-                  'brightness(0) saturate(100%) invert(13%) sepia(0%) saturate(7482%) hue-rotate(146deg) brightness(98%) contrast(87%)',
+                width: 24,
+                height: 24,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
               }}
-            />
+            >
+              <Image
+                src={icon}
+                alt={name}
+                width={16}
+                height={16}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  filter:
+                    'brightness(0) saturate(100%) invert(13%) sepia(0%) saturate(7482%) hue-rotate(146deg) brightness(98%) contrast(87%)',
+                  display: 'block',
+                }}
+              />
+            </div>
             <Text
               as="span"
               size="sub"
