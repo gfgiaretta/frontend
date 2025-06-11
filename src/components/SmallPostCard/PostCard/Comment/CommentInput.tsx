@@ -3,8 +3,12 @@
 
 import { useRef, useState } from 'react'
 
+import { useTranslations } from 'next-intl'
+
 import { Button } from '@/components/ui/Button'
 import { sendComment } from '@/services/CommentService'
+
+// components/CommentInput.tsx
 
 // components/CommentInput.tsx
 
@@ -17,6 +21,7 @@ export function CommentInput({ postId, onCommentSent }: CommentInputProps) {
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const t = useTranslations('PostCard.comments')
 
   const handleSend = async () => {
     if (!content.trim()) return
@@ -54,7 +59,7 @@ export function CommentInput({ postId, onCommentSent }: CommentInputProps) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
         onInput={handleInput}
-        placeholder="Escreva um comentário..."
+        placeholder={t('writeComment')}
         rows={1}
         className="resize-none overflow-hidden flex-grow"
       />
@@ -64,7 +69,7 @@ export function CommentInput({ postId, onCommentSent }: CommentInputProps) {
         onClick={handleSend}
         disabled={loading || content.trim() === ''}
       >
-        Send
+        {t('send')}
       </Button>
     </div>
   )

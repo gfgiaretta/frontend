@@ -125,7 +125,15 @@
     "minute": "minuto",
     "hour": "hora",
     "day": "dia",
-    "week": "semana"
+    "week": "semana",
+    "comments": {
+      "title": "Comentários",
+      "showMore": "Ler mais",
+      "showLess": "Mostrar menos",
+      "send": "Enviar",
+      "writeComment": "Escreva um comentário...",
+      "firstCommenter": "Seja o primeiro a comentar!"
+    }
   },
   "Post": {
     "title": "Criar uma publicação",
@@ -143,6 +151,6 @@
     "description": "Insira uma breve descrição sobre você."
   },
   "History": {
-  "title": "Histórico"
-}
+    "title": "Histórico"
+  }
 }

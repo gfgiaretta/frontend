@@ -161,7 +161,7 @@ export default function PostCard({
                 size="t3"
                 className="mb-2"
               >
-                Comments
+                {t('comments.title')}
               </Text>
               <div className="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1">
                 {comments.length === 0 && (
@@ -169,7 +169,7 @@ export default function PostCard({
                     size="notes"
                     className="text-grey-1"
                   >
-                    Seja o primeiro a comentar!
+                    {t('comments.firstCommenter')}
                   </Text>
                 )}
                 {comments.map((comment) => (

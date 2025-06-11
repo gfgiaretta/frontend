@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 import Image from 'next/image'
 
+import { useTranslations } from 'next-intl'
+
 import { Text } from '@/components/ui/Text'
 
 interface CommentProps {
@@ -18,6 +20,7 @@ export function Comment({
   ownerProfilePictureUrl,
   content,
 }: CommentProps) {
+  const t = useTranslations('PostCard.comments')
   const [expanded, setExpanded] = useState(false)
 
   const isLong = content.length > MAX_LENGTH
@@ -52,7 +55,7 @@ export function Comment({
               onClick={() => setExpanded((prev) => !prev)}
               className="ml-1 text-grey-1 hover:underline text-xs font-medium"
             >
-              {expanded ? 'Mostrar menos' : 'Ler mais'}
+              {expanded ? t('showLess') : t('showMore')}
             </button>
           )}
         </Text>
