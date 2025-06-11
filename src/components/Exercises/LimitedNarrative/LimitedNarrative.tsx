@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useTranslations } from 'next-intl'
 
@@ -13,6 +13,7 @@ import { Text } from '@/components/ui/Text'
 import useTokenCheck from '@/hooks/useToken'
 import { api } from '@/utils/api'
 import { getToken } from '@/utils/token'
+import { saveExercisesDetails } from '@/utils/saveExercisesDetails'
 
 const TOTAL_FIELDS = 8
 const DISPLAY_OFFSET = 1
@@ -24,11 +25,11 @@ interface AnswerNarrative {
   finalPhrase: string
 }
 
-type LimitedNarrativeProps = {
-  exerciseId: string
-}
+export function LimitedNarrative() {
 
-export function LimitedNarrative({ exerciseId }: LimitedNarrativeProps) {
+  const searchParams = useSearchParams()
+  const exerciseId = searchParams.get('exerciseId') || ''
+
   const [answer, setAnswer] = useState<AnswerNarrative>({
     words: Array(TOTAL_FIELDS).fill(''),
     finalPhrase: '',
@@ -53,7 +54,6 @@ export function LimitedNarrative({ exerciseId }: LimitedNarrativeProps) {
   }
 
   const handleConfirm = async () => {
-    // const exerciseId = '7a4fc39c-0f98-4cd6-9362-e161b142295a'
 
     try {
       const token = getToken()
@@ -66,7 +66,12 @@ export function LimitedNarrative({ exerciseId }: LimitedNarrativeProps) {
         exerciseId,
       })
 
-      router.push(`/exercises/feedback?exerciseId=${exerciseId}`)
+      const title = t('title')
+      const description = "Veja o texto que eu criei: " + answer.finalPhrase
+      const imageUrl = ''
+      saveExercisesDetails(title, description, imageUrl)
+
+      router.push(`/exercises/feedback`)
     } catch (err: unknown) {
       if (err instanceof Error) {
         console.error('Error:', err.message)

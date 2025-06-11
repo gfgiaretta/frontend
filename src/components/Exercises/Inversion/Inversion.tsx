@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useTranslations } from 'next-intl'
 
@@ -12,14 +12,14 @@ import { Text } from '@/components/ui/Text'
 import useTokenCheck from '@/hooks/useToken'
 import { api } from '@/utils/api'
 import { getToken } from '@/utils/token'
+import { saveExercisesDetails } from '@/utils/saveExercisesDetails'
 
 type Tool = 'pen' | 'fine' | 'thick' | 'eraser'
 
-type InversionProps = {
-  exerciseId: string
-}
+export function Inversion() {
+  const searchParams = useSearchParams()
+  const exerciseId = searchParams.get('exerciseId') || ''
 
-export function Inversion({ exerciseId }: InversionProps) {
   const t = useTranslations('Inversion')
 
   useTokenCheck()
@@ -37,7 +37,6 @@ export function Inversion({ exerciseId }: InversionProps) {
   const EraserOrThickPen = 5
 
   const handleConfirm = async () => {
-    // const exerciseId = '7a4fc39c-0f98-4cd6-9362-e161b142295a'
 
     try {
       const token = getToken()
@@ -49,7 +48,13 @@ export function Inversion({ exerciseId }: InversionProps) {
         exerciseId,
       })
 
-      router.push(`/exercises/feedback?exerciseId=${exerciseId}`)
+      const title = t('title')
+      const description = t('description')
+      // Adicionar URL do S3 do desenho
+      const imageUrl = ''
+      saveExercisesDetails(title, description, imageUrl)
+
+      router.push(`/exercises/feedback`)
     } catch (err: unknown) {
       if (err instanceof Error) {
         console.error('Error:', err.message)
@@ -162,8 +167,7 @@ export function Inversion({ exerciseId }: InversionProps) {
         size="sub"
         className="text-base text-left"
       >
-        Aqui a ideia é inverter a lógica de tudo que sabemos sobre a criação de
-        marca. Desenhe sua versão do logo abaixo da pior maneira que conseguir
+        {t('description')}
       </Text>
 
       <div className="flex justify-center bg-background py-7">
