@@ -1,11 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
-
 import { Bookmark, LucideIcon } from 'lucide-react'
-
 import PostCard from './PostCard/PostCard'
 import { Text } from '@/components/ui/Text'
 
@@ -27,6 +24,17 @@ export default function SmallPostCard({
   iconName: Icon,
 }: SmallPostCardProps) {
   const [openPost, setOpenPost] = useState(false)
+
+  useEffect(() => {
+    if (openPost) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [openPost])
 
   return (
     <>
