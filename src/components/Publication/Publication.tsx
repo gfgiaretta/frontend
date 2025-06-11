@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl'
 import { TitleBar } from '@/components/TitleBar/TitleBar'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { useImageUpload } from '@/hooks/useImageUpload'
+import { UseImageUpload } from '@/hooks/useImageUpload'
 import { api } from '@/utils/api'
 import { getToken } from '@/utils/token'
 
@@ -64,7 +64,7 @@ export function Publication() {
     const fileURL = URL.createObjectURL(file!)
     setPostImage(fileURL)
 
-    useImageUpload(file).then((url) => {
+    UseImageUpload(file).then((url) => {
       if (url) {
         setImageUrl(url)
       }
