@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { ImageIcon, LucideIcon, PenTool, Zap } from 'lucide-react'
+import { Archive, ImageIcon, LucideIcon, PenTool, Zap } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 import ExerciseCard from '@/components/ExercisesCard/ExerciseCard'
@@ -76,11 +76,9 @@ export default function ExercisesPage() {
         </Text>
         <div className="flex items-center gap-3">
           <Link href="/history">
-            <Image
-              src="/arquivoPaginaExercicio.svg"
-              alt="Arquivo de Exercícios"
-              width={35}
-              height={35}
+            <Archive
+              className="text-primary"
+              size={35}
             />
           </Link>
           <Link href="/exercises/statistics">
