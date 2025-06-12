@@ -126,7 +126,15 @@
     "minute": "minute",
     "hour": "hour",
     "day": "day",
-    "week": "week"
+    "week": "week",
+    "comments": {
+      "title": "Comments",
+      "showMore": "Show more",
+      "showLess": "Show less",
+      "send": "Send",
+      "writeComment": "Write a comment...",
+      "firstCommenter": "Be the first to comment!"
+    }
   },
   "Post": {
     "title": "Create a post",

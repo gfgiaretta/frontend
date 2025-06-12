@@ -9,7 +9,7 @@ interface ButtonProps extends Omit<ComponentProps<'button'>, 'ref'> {
   className?: string
   children: ReactNode
   variant?: 'filled' | 'outlined' | 'negative' | 'post'
-  size?: 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg'
 }
 
 const BaseButton: ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
@@ -33,6 +33,7 @@ const BaseButton: ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
   }
 
   const sizeStyles: Record<NonNullable<ButtonProps['size']>, string> = {
+    sm: 'px-2 py-1 text-sm',
     md: 'px-3 py-2 text-sm',
     lg: 'px-4 py-3 text-lg',
   }

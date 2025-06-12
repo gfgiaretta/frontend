@@ -10,20 +10,25 @@ import PostCard from './PostCard/PostCard'
 import { Text } from '@/components/ui/Text'
 
 interface SmallPostCardProps {
+  key: string
+  postId: string
   userName: string
   userImage: string
   title: string
   postImage: string
   description: string
+  createdAt: string
   iconName?: LucideIcon
 }
 
 export default function SmallPostCard({
+  postId,
   userName,
   userImage,
   title,
   postImage,
   description,
+  createdAt,
   iconName: Icon,
 }: SmallPostCardProps) {
   const [openPost, setOpenPost] = useState(false)
@@ -100,6 +105,7 @@ export default function SmallPostCard({
         </div>
       </div>
       <PostCard
+        postId={postId}
         userName={userName}
         userImage={userImage}
         title={title}
@@ -107,7 +113,7 @@ export default function SmallPostCard({
         description={description}
         open={openPost}
         onClose={() => setOpenPost(false)}
-        postAt={''}
+        createdAt={createdAt}
         favorite={false}
       />
     </>
