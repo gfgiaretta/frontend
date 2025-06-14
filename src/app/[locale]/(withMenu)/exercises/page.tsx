@@ -12,6 +12,7 @@ import ExerciseCard from '@/components/ExercisesCard/ExerciseCard'
 import { Text } from '@/components/ui/Text'
 import useTokenCheck from '@/hooks/useToken'
 import { api } from '@/utils/api'
+import { InterestsData } from '@/utils/interestUtils'
 import { getToken } from '@/utils/token'
 
 type VariantType = 'primary' | 'secondary' | 'support-blue'
@@ -140,13 +141,8 @@ export default function ExercisesPage() {
           <div className="flex gap-4 w-max scroll-x-auto pl-4">
             {exercises.map((exercise) => {
               const config = typeConfig[exercise.type]
+              const icon = InterestsData[exercise.interest_id]?.icon || ''
               if (!config) return null
-
-              console.log('Interests: ', interests)
-              console.log(
-                'Exercise interest: ',
-                interests[exercise.interest_id],
-              )
 
               return (
                 <Link
@@ -155,7 +151,7 @@ export default function ExercisesPage() {
                   className="snap-center flex-shrink-0 block cursor-pointer transition-transform active:scale-95"
                 >
                   <ExerciseCard
-                    icon={config.icon}
+                    icon={icon}
                     title={exercise.title}
                     description={exercise.description}
                     variant={interests[exercise.interest_id]}
