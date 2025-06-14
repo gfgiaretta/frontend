@@ -42,11 +42,23 @@ interface Exercise {
   title: string
   description: string
   type: string
+  interest_id: string
+}
+
+interface UserInterest {
+  title: string
+  interestId: string
+  [key: string]: string
+}
+
+interface Interest {
+  [key: string]: VariantType
 }
 
 export default function ExercisesPage() {
   const t = useTranslations('Exercises')
   const [exercises, setExercises] = useState<Exercise[]>([])
+  const [interests, setInterests] = useState<Interest>({})
   useTokenCheck()
 
   useEffect(() => {
@@ -54,6 +66,16 @@ export default function ExercisesPage() {
       try {
         const token = getToken()
         const response = await api(token).get('/exercise')
+        const userInfo = await api(token).get('/auth/token')
+
+        const userInterests = userInfo.data.interests as UserInterest[]
+        console.log('userInterests: ', userInterests)
+        setInterests({
+          [userInterests[0].interestId]: 'primary' as VariantType,
+          [userInterests[1].interestId]: 'secondary' as VariantType,
+          [userInterests[2].interestId]: 'support-blue' as VariantType,
+        })
+
         setExercises(response.data)
       } catch (error) {
         console.error('Erro ao buscar exercícios:', error)
@@ -118,8 +140,13 @@ export default function ExercisesPage() {
           <div className="flex gap-4 w-max scroll-x-auto pl-4">
             {exercises.map((exercise) => {
               const config = typeConfig[exercise.type]
-
               if (!config) return null
+
+              console.log('Interests: ', interests)
+              console.log(
+                'Exercise interest: ',
+                interests[exercise.interest_id],
+              )
 
               return (
                 <Link
@@ -131,7 +158,7 @@ export default function ExercisesPage() {
                     icon={config.icon}
                     title={exercise.title}
                     description={exercise.description}
-                    variant={config.variant}
+                    variant={interests[exercise.interest_id]}
                     id={exercise.exercise_id}
                     type={config.route}
                   />
