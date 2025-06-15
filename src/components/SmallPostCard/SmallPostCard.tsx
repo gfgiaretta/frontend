@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Image from 'next/image'
 
@@ -37,22 +37,30 @@ export default function SmallPostCard({
   const [openPost, setOpenPost] = useState(false)
   const [isSaved, setIsSaved] = useState(favorite)
 
-  const handleSave = async () => {
-    if (isSaved) return
+  const handleSave = async (e: React.MouseEvent) => {
+    e.stopPropagation()
 
     try {
-      await axios.post('/savedPosts', {
-        postId,
-        title,
-        description,
-        postImage,
-        userName,
-        userImage,
-      })
+      if (!isSaved) {
+        await axios.post('/savedPosts', {
+          postId,
+          title,
+          description,
+          postImage,
+          userName,
+          userImage,
+        })
 
-      setIsSaved(true)
+        setIsSaved(true)
+      } else {
+        await axios.delete('/savedPosts', {
+          data: { postId },
+        })
+
+        setIsSaved(false)
+      }
     } catch (error) {
-      console.error('Erro ao salvar o post:', error)
+      console.error('Erro ao salvar/remover o post:', error)
     }
   }
 
@@ -112,10 +120,13 @@ export default function SmallPostCard({
                     className="flex items-center justify-center"
                   >
                     <Bookmark
-                      className="mx-1 my-1"
-                      size={25}
-                      strokeWidth={0}
-                      fill={isSaved ? 'fill-secondary' : 'none'}
+                      className={`mx-1 my-1 ${
+                        isSaved
+                          ? 'fill-secondary text-secondary'
+                          : 'fill-none text-secondary'
+                      }`}
+                      size={23}
+                      strokeWidth={2}
                     />
                   </button>
                 )}
