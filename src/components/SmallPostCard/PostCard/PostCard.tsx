@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from 'react'
 
 import Image from 'next/image'
 
+import axios from 'axios'
 import { Bookmark } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
@@ -44,14 +45,35 @@ export default function PostCard({
   const t = useTranslations('PostCard')
   const [isClosing, setIsClosing] = useState(false)
   const [comments, setComments] = useState<CommentDTO[]>([])
+  const [isSaved, setIsSaved] = useState(favorite)
+
+  const ANIMATION_DURATION = 300
 
   const handleClose = () => {
     setIsClosing(true)
     setTimeout(() => {
       onClose()
       setIsClosing(false)
-      // eslint-disable-next-line no-magic-numbers
-    }, 300)
+    }, ANIMATION_DURATION)
+  }
+
+  const handleSave = async () => {
+    if (isSaved) return
+
+    try {
+      await axios.post('/savedPosts', {
+        postId,
+        title,
+        description,
+        postImage,
+        userName,
+        userImage,
+      })
+
+      setIsSaved(true)
+    } catch (error) {
+      console.error('Erro ao salvar o post:', error)
+    }
   }
 
   useEffect(() => {
@@ -65,7 +87,11 @@ export default function PostCard({
   return (
     <div className="fixed inset-0 z-30">
       <div
-        className={`absolute inset-0 bg-black/50 ${isClosing ? 'animate-[fadeOut_300ms_ease-in-out]' : 'animate-[fadeIn_300ms_ease-in-out]'}`}
+        className={`absolute inset-0 bg-black/50 ${
+          isClosing
+            ? 'animate-[fadeOut_300ms_ease-in-out]'
+            : 'animate-[fadeIn_300ms_ease-in-out]'
+        }`}
         onClick={handleClose}
       />
 
@@ -74,7 +100,11 @@ export default function PostCard({
             absolute bottom-16 left-0 w-full h-fit 
             bg-background rounded-t-3xl 
             p-4 pb-9 shadow-xl
-            ${isClosing ? 'animate-[slideDown_300ms_ease-in-out]' : 'animate-[slideUp_300ms_ease-in-out]'}
+            ${
+              isClosing
+                ? 'animate-[slideDown_300ms_ease-in-out]'
+                : 'animate-[slideUp_300ms_ease-in-out]'
+            }
           `}
       >
         <div className="w-full flex items-center justify-center">
@@ -83,7 +113,6 @@ export default function PostCard({
               flex flex-col relative w-full max-w-md ${className}
             `}
           >
-            {/* Post owner*/}
             <div className="flex flex-row justify-between items-center mb-4 w-full">
               <div className="flex-shrink-0">
                 <Image
@@ -104,16 +133,18 @@ export default function PostCard({
                 </Text>
               </div>
               <div className="flex ml-auto border-2 border-secondary rounded-full">
-                <button className="text-secondary px-1 py-1">
+                <button
+                  onClick={handleSave}
+                  className="text-secondary px-1 py-1"
+                >
                   <Bookmark
-                    className={`${favorite && 'fill-secondary'}`}
+                    className={`${isSaved && 'fill-secondary'}`}
                     size={18}
                   />
                 </button>
               </div>
             </div>
 
-            {/* Image */}
             <div className="flex justify-center items-center">
               <Image
                 src={postImage}
@@ -124,7 +155,6 @@ export default function PostCard({
               />
             </div>
 
-            {/* Title and body */}
             <div>
               <div className="mt-2">
                 <Text
@@ -154,7 +184,6 @@ export default function PostCard({
               </div>
             </div>
 
-            {/* Comments */}
             <div className="mt-4">
               <Text
                 as="h1"

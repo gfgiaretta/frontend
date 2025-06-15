@@ -1,8 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
 import Image from 'next/image'
+
+import axios from 'axios'
 import { Bookmark, LucideIcon } from 'lucide-react'
+
 import PostCard from './PostCard/PostCard'
 import { Text } from '@/components/ui/Text'
 
@@ -15,6 +19,7 @@ interface SmallPostCardProps {
   postImage: string
   description: string
   createdAt: string
+  favorite: boolean
   iconName?: LucideIcon
 }
 
@@ -26,9 +31,30 @@ export default function SmallPostCard({
   postImage,
   description,
   createdAt,
+  favorite,
   iconName: Icon,
 }: SmallPostCardProps) {
   const [openPost, setOpenPost] = useState(false)
+  const [isSaved, setIsSaved] = useState(favorite)
+
+  const handleSave = async () => {
+    if (isSaved) return
+
+    try {
+      await axios.post('/savedPosts', {
+        postId,
+        title,
+        description,
+        postImage,
+        userName,
+        userImage,
+      })
+
+      setIsSaved(true)
+    } catch (error) {
+      console.error('Erro ao salvar o post:', error)
+    }
+  }
 
   useEffect(() => {
     if (openPost) {
@@ -56,13 +82,13 @@ export default function SmallPostCard({
               className="rounded-t-2xl object-cover"
             />
           </div>
+
           <div className="flex flex-row bg-text rounded-b-2xl justify-between items-center w-full top-30">
             <div className="flex flex-col text-background mx-3 my-3">
               <div>
                 <Text
                   as="span"
                   size="body"
-                  className=""
                 >
                   {title}
                 </Text>
@@ -77,20 +103,26 @@ export default function SmallPostCard({
                 </Text>
               </div>
             </div>
+
             <div className="my-3 mx-3">
               <div className="rounded-full bg-text ml-auto border-3 border-secondary">
                 {Icon && (
-                  <button className="flex items-center justify-center">
+                  <button
+                    onClick={handleSave}
+                    className="flex items-center justify-center"
+                  >
                     <Bookmark
-                      className="fill-secondary mx-1 my-1"
+                      className="mx-1 my-1"
                       size={25}
                       strokeWidth={0}
+                      fill={isSaved ? 'fill-secondary' : 'none'}
                     />
                   </button>
                 )}
               </div>
             </div>
           </div>
+
           <div className="flex flex-row absolute top-0 bg-text/70 rounded-br-2xl rounded-tl-2xl">
             <div className="relative w-8 aspect-square mx-2 my-2">
               <Image
@@ -112,6 +144,7 @@ export default function SmallPostCard({
           </div>
         </div>
       </div>
+
       <PostCard
         postId={postId}
         userName={userName}
@@ -122,7 +155,7 @@ export default function SmallPostCard({
         open={openPost}
         onClose={() => setOpenPost(false)}
         createdAt={createdAt}
-        favorite={false}
+        favorite={isSaved}
       />
     </>
   )
