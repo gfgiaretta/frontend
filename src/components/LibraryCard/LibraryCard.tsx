@@ -1,12 +1,14 @@
-import { ReactNode } from 'react'
+'use client'
+
+import { ReactNode, useState } from 'react'
 
 import Image from 'next/image'
 
+import axios from 'axios'
 import { Bookmark, LucideIcon } from 'lucide-react'
 
 import { Text } from '@/components/ui/Text'
 
-// Interface para as propriedades do componente LibraryCard
 interface LibraryCardProps {
   image: string
   title: string
@@ -17,7 +19,6 @@ interface LibraryCardProps {
   link?: string
 }
 
-// Componente LibraryCard
 export default function LibraryCard({
   image,
   title,
@@ -26,24 +27,44 @@ export default function LibraryCard({
   iconName: Icon,
   link = '',
 }: LibraryCardProps) {
+  const [isSaved, setIsSaved] = useState(false)
+
+  const STROKE_WIDTH_SAVED = 0
+  const STROKE_WIDTH_UNSAVED = 1.5
+
+  const handleSave = async () => {
+    if (isSaved) return
+
+    try {
+      await axios.post('/savedPosts', {
+        title,
+        descriptions,
+        image,
+        link,
+      })
+
+      setIsSaved(true)
+    } catch (error) {
+      console.error('Erro ao salvar o card:', error)
+    }
+  }
+
   return (
-    // Div principal do card
     <div
       onClick={() => {
         window.open(link, '_blank')
       }}
       className={`
-    relative
-    w-full       
-    rounded-2xl
-    bg-background
-    flex
-    items-start
-    p-2                          
-    ${className}
-  `}
+        relative
+        w-full       
+        rounded-2xl
+        bg-background
+        flex
+        items-start
+        p-2                          
+        ${className}
+      `}
     >
-      {/* Imagem do card */}
       <div className="w-[7.75rem] h-[7.75rem] self-center rounded-2xl overflow-hidden bg-background flex-shrink-0">
         <Image
           src={image}
@@ -54,7 +75,6 @@ export default function LibraryCard({
         />
       </div>
 
-      {/* Título + bookmark */}
       <div className="ml-3 flex flex-col flex-1 relative">
         <div className="flex justify-between items-center gap-1 text-primary">
           <Text
@@ -64,24 +84,29 @@ export default function LibraryCard({
             {title}
           </Text>
 
-          {/*icone bookmark*/}
           <div className="ml-auto flex border-1 border-primary rounded-full">
-            <button className="text-primary px-0.5 py-0.5">
+            <button
+              onClick={handleSave}
+              className="text-primary px-0.5 py-0.5 flex items-center justify-center"
+            >
               <Bookmark
-                className="fill-secondary"
+                className="mx-1 my-1"
                 size={20}
-                strokeWidth={0}
+                strokeWidth={
+                  isSaved ? STROKE_WIDTH_SAVED : STROKE_WIDTH_UNSAVED
+                }
+                fill={isSaved ? 'fill-secondary' : 'none'}
               />
             </button>
           </div>
         </div>
-        {/* Ícon dinâmico com base nos cards */}
+
         {Icon && (
           <button className="text-text hover:text-primary">
             <Icon size={14} />
           </button>
         )}
-        {/* Descrição do card */}
+
         <Text
           as="p"
           size="notes"
