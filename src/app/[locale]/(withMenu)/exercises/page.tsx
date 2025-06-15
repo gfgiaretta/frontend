@@ -12,6 +12,7 @@ import ExerciseCard from '@/components/ExercisesCard/ExerciseCard'
 import { Text } from '@/components/ui/Text'
 import useTokenCheck from '@/hooks/useToken'
 import { api } from '@/utils/api'
+import { InterestsData } from '@/utils/interestUtils'
 import { getToken } from '@/utils/token'
 
 type VariantType = 'primary' | 'secondary' | 'support-blue'
@@ -42,11 +43,23 @@ interface Exercise {
   title: string
   description: string
   type: string
+  interest_id: string
+}
+
+interface UserInterest {
+  title: string
+  interestId: string
+  [key: string]: string
+}
+
+interface Interest {
+  [key: string]: VariantType
 }
 
 export default function ExercisesPage() {
   const t = useTranslations('Exercises')
   const [exercises, setExercises] = useState<Exercise[]>([])
+  const [interests, setInterests] = useState<Interest>({})
   useTokenCheck()
 
   useEffect(() => {
@@ -54,6 +67,16 @@ export default function ExercisesPage() {
       try {
         const token = getToken()
         const response = await api(token).get('/exercise')
+        const userInfo = await api(token).get('/auth/token')
+
+        const userInterests = userInfo.data.interests as UserInterest[]
+        console.log('userInterests: ', userInterests)
+        setInterests({
+          [userInterests[0].interestId]: 'primary' as VariantType,
+          [userInterests[1].interestId]: 'secondary' as VariantType,
+          [userInterests[2].interestId]: 'support-blue' as VariantType,
+        })
+
         setExercises(response.data)
       } catch (error) {
         console.error('Erro ao buscar exercícios:', error)
@@ -113,7 +136,7 @@ export default function ExercisesPage() {
           <div className="flex gap-4 w-max scroll-x-auto pl-4">
             {exercises.map((exercise) => {
               const config = typeConfig[exercise.type]
-
+              const icon = InterestsData[exercise.interest_id]?.icon || ''
               if (!config) return null
 
               return (
@@ -123,10 +146,10 @@ export default function ExercisesPage() {
                   className="snap-center flex-shrink-0 block cursor-pointer transition-transform active:scale-95"
                 >
                   <ExerciseCard
-                    icon={config.icon}
+                    icon={icon}
                     title={exercise.title}
                     description={exercise.description}
-                    variant={config.variant}
+                    variant={interests[exercise.interest_id]}
                     id={exercise.exercise_id}
                     type={config.route}
                   />
