@@ -12,8 +12,8 @@ import { TitleBar } from '@/components/TitleBar/TitleBar'
 import { Text } from '@/components/ui/Text'
 import useTokenCheck from '@/hooks/useToken'
 import { api } from '@/utils/api'
-import { getToken } from '@/utils/token'
 import { saveExercisesDetails } from '@/utils/saveExercisesDetails'
+import { getToken } from '@/utils/token'
 
 const TOTAL_FIELDS = 8
 const DISPLAY_OFFSET = 1
@@ -25,11 +25,21 @@ interface AnswerNarrative {
   finalPhrase: string
 }
 
-export function LimitedNarrative() {
+interface ExerciseDetails {
+  title: string
+  description: string
+  imageUrl: string
+}
 
+export function LimitedNarrative() {
   const searchParams = useSearchParams()
   const exerciseId = searchParams.get('exerciseId') || ''
 
+  const [exerciseDetails, setExerciseDetails] = useState<ExerciseDetails>({
+    title: '',
+    description: '',
+    imageUrl: '',
+  })
   const [answer, setAnswer] = useState<AnswerNarrative>({
     words: Array(TOTAL_FIELDS).fill(''),
     finalPhrase: '',
@@ -41,37 +51,60 @@ export function LimitedNarrative() {
 
   const modalRef = useRef<AlertModalHandle>(null)
 
-  const handleChange = (index: number, value: string) => {
-    const wordWithoutSpace = value.replace(/\s/g, '')
-    const newWords = [...answer.words]
-    newWords[index] = wordWithoutSpace
-    const newPhrase = newWords.filter((p) => p.trim() !== '').join(' ')
+  const fetchExerciseDetails = async () => {
+    try {
+      const token = getToken()
+      const response = await api(token).get(`/exercise/${exerciseId}`)
 
+      setExerciseDetails({
+        title: response.data.title,
+        description: response.data.description,
+        imageUrl: response.data.imageUrl,
+      })
+    } catch (error) {
+      console.error('Error fetching exercise details:', error)
+    }
+  }
+
+  if (exerciseId) {
+    fetchExerciseDetails()
+  }
+
+  const handleChange = (index: number, value: string) => {
+    const newWords = [...answer.words]
+    newWords[index] = value
     setAnswer({
       words: newWords,
-      finalPhrase: newPhrase,
+      finalPhrase: answer.finalPhrase,
     })
   }
 
   const handleConfirm = async () => {
-
     try {
+      if (!exerciseId) {
+        console.error('No exercise ID provided')
+        return
+      }
+
       const token = getToken()
 
-      const response = await api(token).get('/auth/token')
-      const userId = response.data.userId
-
+      const processedWords = answer.words.map((word) => word.replace(/\s/g, ''))
+      const finalPhrase = processedWords
+        .filter((word) => word.trim() !== '')
+        .join(' ')
+      const content = { words: processedWords }
       await api(token).post('/exercise/register', {
-        userId,
         exerciseId,
+        content,
       })
 
-      const title = t('title')
-      const description = "Veja o texto que eu criei: " + answer.finalPhrase
-      const imageUrl = ''
-      saveExercisesDetails(title, description, imageUrl)
+      saveExercisesDetails(
+        exerciseDetails.title || t('title'),
+        `Veja o texto que eu criei: ${finalPhrase}`,
+        exerciseDetails.imageUrl || '',
+      )
 
-      router.push(`/exercises/feedback`)
+      router.push('/exercises/feedback')
     } catch (err: unknown) {
       if (err instanceof Error) {
         console.error('Error:', err.message)
@@ -90,7 +123,7 @@ export function LimitedNarrative() {
       ></AlertModal>
 
       <TitleBar
-        label={t('title')}
+        label={exerciseDetails.title || t('title')}
         answer={{ finalPhrase: answer.finalPhrase }}
         onConfirm={handleConfirm}
       />
@@ -100,7 +133,7 @@ export function LimitedNarrative() {
         size="sub"
         className="text-text mb-6"
       >
-        {t('description')}
+        {exerciseDetails.description || t('description')}
       </Text>
 
       <div className="flex flex-col items-center gap-4">
