@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { Archive, ImageIcon, LucideIcon, PenTool, Zap } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 import ExerciseCard from '@/components/ExercisesCard/ExerciseCard'
@@ -17,24 +16,18 @@ import { getToken } from '@/utils/token'
 
 type VariantType = 'primary' | 'secondary' | 'support-blue'
 
-const typeConfig: Record<
-  string,
-  { variant: VariantType; route: string; icon: LucideIcon }
-> = {
+const typeConfig: Record<string, { variant: VariantType; route: string }> = {
   Inversão: {
     variant: 'primary',
     route: '/exercises/inversion',
-    icon: Zap,
   },
   'Narrativa Limitada': {
     variant: 'secondary',
     route: '/exercises/limited-narrative',
-    icon: PenTool,
   },
   'Conexão Artística': {
     variant: 'support-blue',
     route: '/exercises/conexao-artistica', // TODO: Corrigir rota
-    icon: ImageIcon,
   },
 }
 
@@ -99,7 +92,12 @@ export default function ExercisesPage() {
         </Text>
         <div className="flex items-center gap-3">
           <Link href="/history">
-            <Archive size={35} />
+            <Image
+              src="/arquivoPaginaExercicio.svg"
+              alt="History icon"
+              width={35}
+              height={35}
+            />
           </Link>
           <Link href="/exercises/statistics">
             <Image
