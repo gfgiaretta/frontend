@@ -93,7 +93,7 @@ export default function ExercisesPage() {
         <div className="flex items-center gap-3">
           <Link href="/history">
             <Image
-              src="/arquivoPaginaExercico.svg"
+              src="/arquivoPaginaExercicio.svg"
               alt="Archive Icon"
               width={35}
               height={35}
