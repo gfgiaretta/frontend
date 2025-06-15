@@ -95,6 +95,9 @@ export function Inversion() {
     canvas.height = rect.height * scale
 
     ctx.scale(scale, scale)
+
+    ctx.fillStyle = '#ffffff'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
   }, []) // <- roda só uma vez
 
   useEffect(() => {
