@@ -3,7 +3,7 @@ import React from 'react'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
-//import '@mantine/charts/styles.css'
+import '@mantine/charts/styles.css'
 import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
