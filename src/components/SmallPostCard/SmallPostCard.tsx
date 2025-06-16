@@ -42,18 +42,14 @@ export default function SmallPostCard({
 
     try {
       if (!isSaved) {
-        await axios.post('/savedPosts', {
+        await axios.post('/post/save', {
           postId,
-          title,
-          description,
-          postImage,
-          userName,
-          userImage,
+          save: !isSaved,
         })
 
         setIsSaved(true)
       } else {
-        await axios.delete('/savedPosts', {
+        await axios.delete('/post/save', {
           data: { postId },
         })
 

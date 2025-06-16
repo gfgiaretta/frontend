@@ -1,6 +1,7 @@
 'use client'
 
 import { ReactNode, useState } from 'react'
+import React from 'react'
 
 import Image from 'next/image'
 
@@ -31,20 +32,21 @@ export default function LibraryCard({
 }: LibraryCardProps) {
   const [isSaved, setIsSaved] = useState(favorite)
 
-  const handleSave = async () => {
-    if (isSaved) return
+  const handleSave = async (e: React.MouseEvent) => {
+    e.stopPropagation()
 
     try {
-      await axios.post('/savedPosts', {
+      await axios.post('/library/save', {
         title,
         descriptions,
         image,
         link,
+        save: !isSaved,
       })
 
-      setIsSaved(true)
+      setIsSaved(!isSaved)
     } catch (error) {
-      console.error('Erro ao salvar o card:', error)
+      console.error('Erro ao salvar/remover o card:', error)
     }
   }
 
@@ -83,16 +85,19 @@ export default function LibraryCard({
             {title}
           </Text>
 
-          <div className="ml-auto flex border-1 border-primary rounded-full">
+          <div className="ml-auto flex border-1 border-secondary rounded-full">
             <button
               onClick={handleSave}
               className="text-primary px-0.5 py-0.5 flex items-center justify-center"
             >
               <Bookmark
-                className="mx-1 my-1"
+                className={`mx-1 my-1 ${
+                  isSaved
+                    ? 'fill-secondary text-secondary'
+                    : 'fill-none text-secondary'
+                }`}
                 size={20}
-                strokeWidth={0}
-                fill={isSaved ? 'fill-secondary' : 'none'}
+                strokeWidth={2}
               />
             </button>
           </div>

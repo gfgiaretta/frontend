@@ -1,6 +1,7 @@
 'use client'
 
 import { ReactNode, useEffect, useState } from 'react'
+import React from 'react'
 
 import Image from 'next/image'
 
@@ -57,22 +58,26 @@ export default function PostCard({
     }, ANIMATION_DURATION)
   }
 
-  const handleSave = async () => {
-    if (isSaved) return
+  const handleSave = async (e: React.MouseEvent) => {
+    e.stopPropagation()
 
     try {
-      await axios.post('/savedPosts', {
-        postId,
-        title,
-        description,
-        postImage,
-        userName,
-        userImage,
-      })
+      if (!isSaved) {
+        await axios.post('/post/save', {
+          postId,
+          save: !isSaved,
+        })
 
-      setIsSaved(true)
+        setIsSaved(true)
+      } else {
+        await axios.delete('/post/save', {
+          data: { postId },
+        })
+
+        setIsSaved(false)
+      }
     } catch (error) {
-      console.error('Erro ao salvar o post:', error)
+      console.error('Erro ao salvar/remover o post:', error)
     }
   }
 
