@@ -32,7 +32,7 @@ const typeConfig: Record<
   },
   'Conexão Artística': {
     variant: 'support-blue',
-    route: '/exercises/conexao-artistica', // TODO: Corrigir rota
+    route: '/exercises/connection',
     icon: ImageIcon,
   },
 }

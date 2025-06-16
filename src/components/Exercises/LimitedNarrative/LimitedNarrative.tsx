@@ -53,8 +53,6 @@ export function LimitedNarrative({ exerciseId }: LimitedNarrativeProps) {
   }
 
   const handleConfirm = async () => {
-    // const exerciseId = '7a4fc39c-0f98-4cd6-9362-e161b142295a'
-
     try {
       const token = getToken()
 

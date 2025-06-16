@@ -3,7 +3,6 @@
 
 import { Text } from '@/components/ui/Text'
 
-/* eslint-disable @next/next/no-img-element */
 
 type ConnectionCardProps = {
   imageSrc: string
@@ -24,9 +23,7 @@ export function ConnectionCard({
     <div className="flex flex-col items-center justify-center">
       <button
         onClick={onClick}
-        className={`aspect-[4/3] overflow-hidden rounded-xl border-5 transition-colors duration-300 ${
-          isSelected ? borderColor : 'border-transparent'
-        }`}
+        className={`overflow-hidden rounded-xl border-5 transition-colors duration-300 ${isSelected ? borderColor : 'border-transparent'}`}
       >
         <img
           src={imageSrc}

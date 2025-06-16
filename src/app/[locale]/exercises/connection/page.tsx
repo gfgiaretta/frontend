@@ -1,12 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useTranslations } from 'next-intl'
 
 import { ConnectionCard } from '@/components/Exercises/Connection/ConnectionCard'
 import { TitleBar } from '@/components/TitleBar/TitleBar'
 import { Text } from '@/components/ui/Text'
+import { useRouter, useSearchParams } from 'next/navigation'
+import useTokenCheck from '@/hooks/useToken'
+import { api } from '@/utils/api'
+import { getToken } from '@/utils/token'
+import { AlertModal, AlertModalHandle } from '@/components/ui/AlertModal'
 
 const BORDER_COLORS = ['primary', 'secondary', 'support-blue']
 
@@ -21,25 +26,79 @@ type Pair = {
   cards: CardData[]
 }
 
+type AnswerPair = {
+  artist: string
+  artwork: string
+}
+
 export default function InversionPage() {
+
+  useTokenCheck()
   const t = useTranslations('ConnectionExercise')
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const exerciseId =
+    searchParams.get('exerciseId') ?? '802e0adf-55c3-466d-82d7-b3390abc0be5' //For a demo purpose its ok to have a hardcoded fallback id, but ideally this shouldnt be here
 
-  const handleConfirm = async () => {
-    //TODO: WHEN THE BACKEND IS READY IMPLEMENT LOGIC HERE
-    console.log('I am a log')
-  }
-
-  const allCards: CardData[] = [
-    { id: '1', title: 'Van Gogh', imageSrc: '/test.jpg' },
-    { id: '2', title: 'Monet', imageSrc: '/test.jpg' },
-    { id: '3', title: 'Klimt', imageSrc: '/test.jpg' },
-    { id: '4', title: 'Picasso', imageSrc: '/test.jpg' },
-    { id: '5', title: 'Matisse', imageSrc: '/test.jpg' },
-    { id: '6', title: 'Dali', imageSrc: '/test.jpg' },
-  ]
+  const modalRef = useRef<AlertModalHandle>(null)
 
   const [selectedPairs, setSelectedPairs] = useState<Pair[]>([])
   const [currentSelection, setCurrentSelection] = useState<CardData[]>([])
+  const [allCards, setAllCards] = useState<CardData[]>([])
+  const [answer, setAnswer] = useState<AnswerPair[]>([])
+
+  const handleConfirm = async () => {
+
+    if (selectedPairs.length < 3) {
+      modalRef.current?.show()
+      return
+    }
+    try {
+      const token = getToken()
+      await api(token).post('/exercise/register', {
+        exerciseId,
+        content: {
+          answer
+        }
+      })
+
+      router.push(`/exercises/feedback?exerciseId=${exerciseId}`)
+    } catch { }
+  }
+
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        const token = getToken()
+        const response = await api(token).get(`/exercise/${exerciseId}`)
+        const cardDataArr: CardData[] = []
+        const answerPairs: AnswerPair[] = []
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        response.data.content.forEach((item: any) => {
+          const artwork = item.artwork
+          const artist = item.artist
+          cardDataArr.push({ id: artist.name, title: artist.name, imageSrc: artist.image })
+          cardDataArr.push({ id: artwork.name, title: artwork.name, imageSrc: artwork.image })
+          answerPairs.push({ artist: artist.name, artwork: artwork.name })
+        })
+
+        console.log('Card Data Array:', cardDataArr)
+
+        setAnswer(answerPairs)
+
+        // this is just an easy way to shuffle the cards
+        const shuffler = 0.5
+        cardDataArr.sort(() => Math.random() - shuffler)
+        setAllCards(cardDataArr)
+      } catch (error) {
+        console.error('Erro ao buscar exercícios:', error)
+      }
+    }
+
+    fetchExercises()
+  }, [])
+
+
 
   const getNextColor = () =>
     BORDER_COLORS[selectedPairs.length % BORDER_COLORS.length]
@@ -93,43 +152,37 @@ export default function InversionPage() {
   }
 
   return (
-    <div className="flex flex-col p-6 bg-background overflow-hidden ">
-      <div className="flex flex-col text-justify gap-6">
+    <div className="flex flex-col p-6 bg-background overflow-y-auto w-screen h-screen">
+      <div className="flex flex-col text-justify gap-2">
+        <AlertModal
+          ref={modalRef}
+          title={t('alertTitle')}
+          description={t('alertDescription')}
+        ></AlertModal>
         <TitleBar
           label={t('title')}
           onConfirm={handleConfirm}
+          answer={{ finalPhrase: '' }}
         />
         <Text
-          as="h3"
-          size="sub"
-          className="text-text mb-6"
+          as="h2"
+          size="t2"
+          className="text-text text-center mb-6"
         >
           {t('description')}
         </Text>
-      </div>
 
-      <div className="w-screen h-screen flex flex-col items-center mt-20 bg-background">
-        <div className="flex flex-col items-center justify-center w-1/2 gap-4">
-          {[0, 1, 2].map((row) => (
-            <div
-              key={row}
-              className="flex justify-between gap-3"
-            >
-              {allCards.slice(row * 2, row * 2 + 2).map((card) => {
-                const color = getCardColor(card.id)
-                const isSelected = Boolean(color)
-                return (
-                  <ConnectionCard
-                    key={card.id}
-                    imageSrc={card.imageSrc}
-                    title={card.title}
-                    borderColor={`border-${color}`}
-                    isSelected={isSelected}
-                    onClick={() => handleCardClick(card)}
-                  />
-                )
-              })}
-            </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          {allCards.map((card) => (
+            <ConnectionCard
+              key={card.id}
+              imageSrc={card.imageSrc}
+              title={card.title}
+              borderColor={getCardColor(card.id)}
+              isSelected={isCardInPair(card.id)}
+              onClick={() => handleCardClick(card)}
+            />
           ))}
         </div>
       </div>
