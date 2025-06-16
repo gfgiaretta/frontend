@@ -12,14 +12,10 @@ import { useTranslations } from 'next-intl'
 import StreakCard from './StreakCard'
 import { Button } from '@/components/ui/Button'
 import { Text } from '@/components/ui/Text'
-import { getToken } from '@/utils/token'
 import { api } from '@/utils/api'
+import { getToken } from '@/utils/token'
 
-type FeedbackProps = {
-  exerciseId: string
-}
-
-export default function FeedbackScreen({ exerciseId }: FeedbackProps) {
+export default function FeedbackScreen() {
   const DEFAULT_VALUE = 0
   const t = useTranslations('Feedback')
   const router = useRouter()
@@ -28,13 +24,10 @@ export default function FeedbackScreen({ exerciseId }: FeedbackProps) {
 
   useEffect(() => {
     const fetchStreak = async () => {
-    const token = getToken()
+      const token = getToken()
       try {
         const response = await api(token).get(`/user/streak`)
         const streakDays = response.data.streak
-
-        console.log('Streak:', streakDays)
-        console.log('Response:', response.data)
 
         setStreak(streakDays)
       } catch (error) {
@@ -49,7 +42,7 @@ export default function FeedbackScreen({ exerciseId }: FeedbackProps) {
     e.preventDefault()
     setIsSharing(true)
     try {
-      router.push(`/post?exerciseId=${exerciseId}`)
+      router.push(`/post?hasExercise=true`)
     } catch (err) {
       console.error('Erro ao compartilhar:', err)
     } finally {
@@ -96,6 +89,10 @@ export default function FeedbackScreen({ exerciseId }: FeedbackProps) {
             <Button
               variant="outlined"
               size="md"
+              onClick={() => {
+                document.cookie =
+                  'exerciseDetails=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+              }}
             >
               {t('backToFeed')}
             </Button>

@@ -118,14 +118,23 @@
     "next": "Swipe to the side to see the options."
   },
   "Inversion": {
-    "title": "Inversion"
+    "title": "Inversion",
+    "description": " Here the idea is to invert the logic of everything we know about brand creation. Draw your version of the logo below in the worst way you can."
   },
   "PostCard": {
     "invalidDate": "Invalid date",
     "minute": "minute",
     "hour": "hour",
     "day": "day",
-    "week": "week"
+    "week": "week",
+    "comments": {
+      "title": "Comments",
+      "showMore": "Show more",
+      "showLess": "Show less",
+      "send": "Send",
+      "writeComment": "Write a comment...",
+      "firstCommenter": "Be the first to comment!"
+    }
   },
   "Post": {
     "title": "Create a post",
@@ -141,6 +150,15 @@
   },
   "EditProfile": {
     "description": "Insert a description about you"
+  },
+  "Saved": {
+    "title": "Saved Posts",
+    "loading": "Loading",
+    "noSavedPosts": "No saved posts found",
+    "unknownAuthor": "Unknown author"
+  },
+  "History": {
+    "title": "History"
   },
   "ConnectionExercise": {
     "title": "Artistic Connection",

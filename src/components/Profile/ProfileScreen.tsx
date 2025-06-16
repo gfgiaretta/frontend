@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { Bookmark, LucideIcon, SquarePen } from 'lucide-react'
+import { Bookmark, SquarePen } from 'lucide-react'
 
 import SmallPostCard from '@/components/SmallPostCard/SmallPostCard'
 import { Text } from '@/components/ui/Text'
@@ -65,7 +65,7 @@ export default function ProfileScreen() {
             saved: post.isSaved,
           })),
         })
-      } catch { }
+      } catch {}
     }
     fetchUserInfo()
   }, [])
@@ -80,13 +80,25 @@ export default function ProfileScreen() {
     <div className="w-full h-full min-h-screen flex flex-col relative bg-background">
       <div className="flex relative justify-between items-start px-4 py-4 w-full h-[15vh] bg-[url('/profile-top-wave.svg')] bg-no-repeat bg-cover bg-bottom">
         <div>
-          <button className="text-white px-1 py-1" onClick={handleEditClick}>
-            <SquarePen size={25} strokeWidth={2} />
+          <button
+            className="text-white px-1 py-1"
+            onClick={handleEditClick}
+          >
+            <SquarePen
+              size={25}
+              strokeWidth={2}
+            />
           </button>
         </div>
         <div>
-          <button className="text-white px-1 py-1">
-            <Bookmark size={25} strokeWidth={2} />
+          <button
+            className="text-white px-1 py-1"
+            onClick={() => router.push('/saved')}
+          >
+            <Bookmark
+              size={25}
+              strokeWidth={2}
+            />
           </button>
         </div>
       </div>
@@ -94,8 +106,18 @@ export default function ProfileScreen() {
         <div className="relative w-max">
           {/* Streak */}
           <div className="absolute top-0 right-0 z-20 flex items-center justify-center w-8 h-8 bg-support-orange rounded-full p-1">
-            <Image src="/streak.svg" width={14} height={14} className="rounded-full mr-1" alt="streak" />
-            <Text as="span" size="notes" className="text-xs text-background">
+            <Image
+              src="/streak.svg"
+              width={14}
+              height={14}
+              className="rounded-full mr-1"
+              alt="streak"
+            />
+            <Text
+              as="span"
+              size="notes"
+              className="text-xs text-background"
+            >
               {userInfo.streak}
             </Text>
           </div>
@@ -111,17 +133,27 @@ export default function ProfileScreen() {
           </div>
         </div>
         <div className="py-1 px-1">
-          <Text as="span" size="body">
+          <Text
+            as="span"
+            size="body"
+          >
             {userInfo.name}
           </Text>
         </div>
         <div className="px-2 py-2 mt-2">
-          <Text as="h3" size="sub">
+          <Text
+            as="h3"
+            size="sub"
+          >
             {userInfo.description}
           </Text>
         </div>
         <div className="px-3 py-3">
-          <Text as="span" size="notes" className="text-grey-1">
+          <Text
+            as="span"
+            size="notes"
+            className="text-grey-1"
+          >
             Posts
           </Text>
         </div>

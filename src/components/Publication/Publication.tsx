@@ -3,25 +3,24 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useTranslations } from 'next-intl'
 
 import { TitleBar } from '@/components/TitleBar/TitleBar'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { useImageUpload } from '@/hooks/useImageUpload'
+import { UseImageUpload } from '@/hooks/useImageUpload'
 import { api } from '@/utils/api'
 import { getToken } from '@/utils/token'
 
 // eslint-disable-next-line no-magic-numbers
 const SUCCESS_UPLOAD_STATUS = [200, 201]
 
-type PublicationProps = {
-  exerciseId: string | null
-}
+export function Publication() {
+  const searchParams = useSearchParams()
+  const cookieHasExercise = searchParams.get('hasExercise')
 
-export function Publication({ exerciseId }: PublicationProps) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const t = useTranslations('Post')
   const router = useRouter()
@@ -32,36 +31,55 @@ export function Publication({ exerciseId }: PublicationProps) {
   const [imageUrl, setImageUrl] = useState<string | null>('default_post.jpeg')
   const [postImage, setPostImage] = useState<string | null>(null)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    const fetchExercise = async () => {
-      const token = getToken()
+    const fetchPresignedUrl = async (key: string) => {
       try {
-        const response = await api(token).get(`/exercise/${exerciseId}`)
-        const exerciseTitle = response.data.title
-        const exerciseDescription = response.data.description
-
-        console.log('Exercicio:', response.data)
-        console.log('Exercise Title:', exerciseTitle)
-        console.log('Exercise Description:', exerciseDescription)
-
-        if (!title) setTitle(exerciseTitle)
-        if (!description) setDescription(exerciseDescription)
-      } catch (error) {
-        console.error('Erro ao buscar exercício:', error)
+        const token = getToken()
+        const res = await api(token).get(
+          `/presigned/${encodeURIComponent(key)}`,
+        )
+        const presignedUrl = res.data as string
+        setPostImage(presignedUrl)
+      } catch (err) {
+        console.error('Failed to fetch presigned URL:', err)
+        setPostImage(null)
       }
     }
 
-    if (exerciseId) {
-      fetchExercise()
+    if (cookieHasExercise) {
+      const cookie = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('exerciseDetails='))
+      if (cookie) {
+        const exerciseDetails = JSON.parse(
+          decodeURIComponent(cookie.split('=')[1]),
+        ) as {
+          title: string
+          description: string
+          imageUrl: string
+        }
+        setTitle(exerciseDetails.title)
+        setDescription(exerciseDetails.description)
+
+        if (exerciseDetails.imageUrl) {
+          setImageUrl(exerciseDetails.imageUrl)
+          fetchPresignedUrl(exerciseDetails.imageUrl)
+        }
+      } else {
+        setTitle('')
+        setDescription('')
+        setPostImage(null)
+      }
     }
-  }, [exerciseId])
+  })
 
   const useHandleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     const fileURL = URL.createObjectURL(file!)
     setPostImage(fileURL)
 
-    useImageUpload(file).then((url) => {
+    UseImageUpload(file).then((url) => {
       if (url) {
         setImageUrl(url)
       }
@@ -69,6 +87,10 @@ export function Publication({ exerciseId }: PublicationProps) {
   }
 
   const useSendPost = async () => {
+    if (cookieHasExercise) {
+      document.cookie =
+        'exerciseDetails=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+    }
     const token = getToken()
     const resp = await api(token).post('/post', {
       title: title,
