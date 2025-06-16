@@ -14,6 +14,8 @@ import { sendComment } from '@/services/CommentService'
 
 // components/CommentInput.tsx
 
+// components/CommentInput.tsx
+
 interface CommentInputProps {
   postId: string
   onCommentSent: () => void

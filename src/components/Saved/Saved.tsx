@@ -29,6 +29,7 @@ interface LibraryData {
   image_url: string
   description: string
   link: string
+  isSaved: boolean
 }
 
 type SavedItem =
@@ -88,18 +89,21 @@ export function Saved() {
           postImage={item.data.image_url}
           userImage={item.data.owner.profile_picture_url}
           iconName={Bookmark}
+          favorite={item.data.isSaved}
         />
       )
     } else {
       card = (
         <LibraryCard
           key={item.data.library_id}
+          library_id={item.data.library_id}
           image={item.data.image_url}
           title={item.data.description}
           descriptions={''}
           className="w-full shadow-md"
           iconName={Book}
           link={item.data.link}
+          favorite={item.data.isSaved}
         />
       )
     }

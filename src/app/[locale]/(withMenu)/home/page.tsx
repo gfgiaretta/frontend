@@ -92,6 +92,7 @@ export default function HomePage() {
             postImage={post.postImage}
             userImage={post.userImage}
             iconName={Bookmark}
+            favorite={post.saved}
           />
         ))}
       </div>

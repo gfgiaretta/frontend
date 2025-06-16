@@ -94,7 +94,7 @@ export default function ExercisesPage() {
           <Link href="/history">
             <Image
               src="/arquivoPaginaExercicio.svg"
-              alt="History icon"
+              alt="Archive Icon"
               width={35}
               height={35}
             />
