@@ -5,12 +5,14 @@ import React from 'react'
 
 import Image from 'next/image'
 
-import axios from 'axios'
 import { Bookmark, LucideIcon } from 'lucide-react'
 
 import { Text } from '@/components/ui/Text'
+import { api } from '@/utils/api'
+import { getToken } from '@/utils/token'
 
 interface LibraryCardProps {
+  library_id: string
   image: string
   title: string
   descriptions: string
@@ -22,6 +24,7 @@ interface LibraryCardProps {
 }
 
 export default function LibraryCard({
+  library_id,
   image,
   title,
   descriptions,
@@ -36,14 +39,11 @@ export default function LibraryCard({
     e.stopPropagation()
 
     try {
-      await axios.post('/library/save', {
-        title,
-        descriptions,
-        image,
-        link,
+      const token = getToken()
+      await api(token).put('/library/save', {
+        library_id,
         save: !isSaved,
       })
-
       setIsSaved(!isSaved)
     } catch (error) {
       console.error('Erro ao salvar/remover o card:', error)

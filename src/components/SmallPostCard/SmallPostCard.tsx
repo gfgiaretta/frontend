@@ -43,23 +43,11 @@ export default function SmallPostCard({
 
     try {
       const token = getToken()
-      const save = !isSaved
-      if (!isSaved) {
-        const response = await api(token).put('/post/save', {
-          postId,
-          save,
-        })
-        console.log('Save post response: ', response)
-        setIsSaved(true)
-      } else {
-        const response = await api(token).put('/post/save', {
-          postId,
-          save,
-        })
-
-        console.log('Save post response: ', response)
-        setIsSaved(false)
-      }
+      await api(token).put('/post/save', {
+        postId,
+        save: !isSaved,
+      })
+      setIsSaved(!isSaved)
     } catch (error) {
       console.error('Erro ao salvar/remover o post:', error)
     }
