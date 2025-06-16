@@ -49,14 +49,14 @@ export const EditUser = () => {
       return
     }
 
-    let imageUrl: string | null | undefined = profileImageURL
-
+    let imageUrl: string | undefined
     if (imageChanged) {
-      imageUrl = await UseImageUpload(profileImageFile)
+      imageUrl = (await UseImageUpload(profileImageFile)) ?? undefined
     }
+
     const payload: patchProfileParams = {
-      description: userBio ?? '',
-      profilePictureUrl: imageUrl ?? '',
+      description: userBio,
+      ...(imageUrl ? { profilePictureUrl: imageUrl } : {}),
     }
 
     patchProfile(payload)

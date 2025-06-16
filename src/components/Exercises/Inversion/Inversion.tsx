@@ -23,6 +23,7 @@ export function Inversion() {
   const searchParams = useSearchParams()
   const exerciseId = searchParams.get('exerciseId') || ''
   const [exercise, setExercise] = useState<InversionExerciseDTO>()
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const isDrawing = useRef(false)
@@ -39,6 +40,34 @@ export function Inversion() {
     if (exerciseId) {
       getExercise(exerciseId).then((exercise) => {
         setExercise(exercise as InversionExerciseDTO)
+      })
+    }
+  }, [exerciseId])
+
+  useEffect(() => {
+    const fetchPresignedUrl = async (key: string) => {
+      try {
+        const token = getToken()
+        const res = await api(token).get(
+          `/presigned/${encodeURIComponent(key)}`,
+        )
+        const presignedUrl = res.data as string
+        setImageUrl(presignedUrl)
+      } catch (err) {
+        console.error('Failed to fetch presigned URL:', err)
+        setImageUrl(null)
+      }
+    }
+
+    if (exerciseId) {
+      getExercise(exerciseId).then((exercise) => {
+        setExercise(exercise as InversionExerciseDTO)
+
+        // If the image key exists, fetch the presigned URL
+        const key = (exercise as InversionExerciseDTO)?.content?.image_url
+        if (key) {
+          fetchPresignedUrl(key)
+        }
       })
     }
   }, [exerciseId])
@@ -189,10 +218,10 @@ export function Inversion() {
         {exercise?.description}
       </Text>
 
-      {exercise?.content.image_url && (
+      {imageUrl && (
         <div className="flex justify-center bg-background h-40">
           <Image
-            src={exercise?.content.image_url}
+            src={imageUrl}
             alt="exercise image"
             width={170}
             height={170}

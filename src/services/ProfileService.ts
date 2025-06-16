@@ -2,8 +2,8 @@ import { api } from '@/utils/api'
 import { getToken } from '@/utils/token'
 
 export interface patchProfileParams {
-  description: string
-  profilePictureUrl: string
+  description?: string
+  profilePictureUrl?: string
 }
 
 export const patchProfile = async ({
