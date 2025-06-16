@@ -1,8 +1,8 @@
-import { Statistics } from '@/components/Statistics/Statistics'
 import { MantineProvider } from '@mantine/core'
-
 import '@mantine/core/styles.css'
 import '@mantine/dates/styles.css'
+
+import { Statistics } from '@/components/Statistics/Statistics'
 
 export default function StatisticsPage() {
   return (

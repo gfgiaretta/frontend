@@ -5,12 +5,12 @@ import React, { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
 import { Text } from '../ui/Text'
+import { DonutChart } from './DonutChart/DonutChart'
 import { StreaksAndSavedPosts } from './StreaksAndSavedPosts'
 import { MonthCalendar } from '@/components/Statistics/Calendar/Calendar'
 import { api } from '@/utils/api'
 import { InterestsData } from '@/utils/interestUtils'
 import { getToken } from '@/utils/token'
-import { DonutChart } from './DonutChart/DonutChart'
 
 interface Days {
   date: string
@@ -32,7 +32,7 @@ export const Statistics = () => {
   const [statisticsData, setStatisticsData] = useState(
     defaultStatisticsDataCount,
   )
-
+  // eslint-disable-next-line no-magic-numbers
   const [streak, setStreak] = useState(0)
   interface ChartDataItem {
     name: string
@@ -62,7 +62,6 @@ export const Statistics = () => {
     userInterests.forEach((item, idx) => {
       chartDataFromApi.push({
         name: tInterests(item.interestId),
-        // eslint-disable-next-line no-magic-numbers
         value: graph[item.title] || '',
         color: INTERESTS_COLORS[idx] || '#ccc',
         icon: InterestsData[item.interestId]?.icon || '',
@@ -101,7 +100,8 @@ export const Statistics = () => {
 
   useEffect(() => {
     GetData()
-  }, []) // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="w-full h-full flex flex-col bg-background">
@@ -112,8 +112,8 @@ export const Statistics = () => {
       >
         {pageTitle('title')}
       </Text>
-      <div className='w-full flex flex-col items-center justify-center'>
-        <div className='w-full max-w-2xl'>
+      <div className="w-full flex flex-col items-center justify-center">
+        <div className="w-full max-w-2xl">
           <StreaksAndSavedPosts
             savedPosts={statisticsData.savedItems}
             streak={streak}
@@ -128,9 +128,14 @@ export const Statistics = () => {
                 {exercises('title')}
               </Text>
             </div>
-            {(chartData && chartData.length > 0) && <div className="flex flex-col items-center py-6">
-              <DonutChart data={chartData} />
-            </div>}
+            {
+              // eslint-disable-next-line no-magic-numbers
+              chartData && chartData.length > 0 && (
+                <div className="flex flex-col items-center py-6">
+                  <DonutChart data={chartData} />
+                </div>
+              )
+            }
             <div className="w-full flex py-10">
               <MonthCalendar calendar={statisticsData.calendar} />
             </div>

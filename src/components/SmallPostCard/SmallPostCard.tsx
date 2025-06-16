@@ -1,8 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
 import Image from 'next/image'
+
 import { Bookmark, LucideIcon } from 'lucide-react'
+
 import PostCard from './PostCard/PostCard'
 import { Text } from '@/components/ui/Text'
 

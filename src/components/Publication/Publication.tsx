@@ -31,6 +31,7 @@ export function Publication() {
   const [imageUrl, setImageUrl] = useState<string | null>('default_post.jpeg')
   const [postImage, setPostImage] = useState<string | null>(null)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const fetchPresignedUrl = async (key: string) => {
       try {
@@ -60,6 +61,7 @@ export function Publication() {
         }
         setTitle(exerciseDetails.title)
         setDescription(exerciseDetails.description)
+
         if (exerciseDetails.imageUrl) {
           setImageUrl(exerciseDetails.imageUrl)
           fetchPresignedUrl(exerciseDetails.imageUrl)
@@ -70,7 +72,7 @@ export function Publication() {
         setPostImage(null)
       }
     }
-  }, [])
+  })
 
   const useHandleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]

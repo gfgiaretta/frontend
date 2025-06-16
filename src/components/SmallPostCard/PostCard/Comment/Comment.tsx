@@ -25,6 +25,7 @@ export function Comment({
 
   const isLong = content.length > MAX_LENGTH
   const visibleContent =
+    // eslint-disable-next-line no-magic-numbers
     expanded || !isLong ? content : `${content.slice(0, MAX_LENGTH)}...`
 
   return (
