@@ -33,6 +33,20 @@ export function Publication() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+    const fetchPresignedUrl = async (key: string) => {
+      try {
+        const token = getToken()
+        const res = await api(token).get(
+          `/presigned/${encodeURIComponent(key)}`,
+        )
+        const presignedUrl = res.data as string
+        setPostImage(presignedUrl)
+      } catch (err) {
+        console.error('Failed to fetch presigned URL:', err)
+        setPostImage(null)
+      }
+    }
+
     if (cookieHasExercise) {
       const cookie = document.cookie
         .split('; ')
@@ -47,7 +61,11 @@ export function Publication() {
         }
         setTitle(exerciseDetails.title)
         setDescription(exerciseDetails.description)
-        setPostImage(exerciseDetails.imageUrl)
+
+        if (exerciseDetails.imageUrl) {
+          setImageUrl(exerciseDetails.imageUrl)
+          fetchPresignedUrl(exerciseDetails.imageUrl)
+        }
       } else {
         setTitle('')
         setDescription('')

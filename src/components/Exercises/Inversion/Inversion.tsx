@@ -5,11 +5,11 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-import { useTranslations } from 'next-intl'
-
 import { TitleBar } from '@/components/TitleBar/TitleBar'
 import { Text } from '@/components/ui/Text'
+import { UseImageUpload } from '@/hooks/useImageUpload'
 import useTokenCheck from '@/hooks/useToken'
+import { InversionExerciseDTO, getExercise } from '@/services/ExerciseService'
 import { api } from '@/utils/api'
 import { saveExercisesDetails } from '@/utils/saveExercisesDetails'
 import { getToken } from '@/utils/token'
@@ -17,13 +17,12 @@ import { getToken } from '@/utils/token'
 type Tool = 'pen' | 'fine' | 'thick' | 'eraser'
 
 export function Inversion() {
+  useTokenCheck()
+
+  const router = useRouter()
   const searchParams = useSearchParams()
   const exerciseId = searchParams.get('exerciseId') || ''
-
-  const t = useTranslations('Inversion')
-
-  useTokenCheck()
-  const router = useRouter()
+  const [exercise, setExercise] = useState<InversionExerciseDTO>()
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const isDrawing = useRef(false)
@@ -36,30 +35,49 @@ export function Inversion() {
   const DefaultPen = 5
   const EraserOrThickPen = 5
 
+  useEffect(() => {
+    if (exerciseId) {
+      getExercise(exerciseId).then((exercise) => {
+        setExercise(exercise as InversionExerciseDTO)
+        console.log(exercise)
+      })
+    }
+  }, [exerciseId])
+
+  const getCanvasFile = async (): Promise<File | null> => {
+    const canvas = canvasRef.current
+    if (!canvas) return null
+
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        if (!blob) return resolve(null)
+        resolve(new File([blob], `${exerciseId}.jpeg`, { type: 'image/jpeg' }))
+      }, 'image/jpeg')
+    })
+  }
+
   const handleConfirm = async () => {
     try {
-      const token = getToken()
-      const response = await api(token).get('/auth/token')
-      const userId = response.data.userId
+      const file = await getCanvasFile()
+      const imageUrl = await UseImageUpload(file)
 
+      const token = getToken()
       await api(token).post('/exercise/register', {
-        userId,
         exerciseId,
+        content: {
+          imageUrl,
+        },
       })
 
-      const title = t('title')
-      const description = t('description')
-      // Adicionar URL do S3 do desenho
-      const imageUrl = ''
-      saveExercisesDetails(title, description, imageUrl)
+      saveExercisesDetails(
+        exercise?.title || '',
+        exercise?.description || '',
+        imageUrl || '',
+      )
 
-      router.push(`/exercises/feedback`)
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error('Error:', err.message)
-      } else {
-        console.error('Unexpected error:', err)
-      }
+      router.push('/exercises/feedback')
+    } catch (error) {
+      console.error('Unexpected error:', error)
     }
   }
 
@@ -77,6 +95,9 @@ export function Inversion() {
     canvas.height = rect.height * scale
 
     ctx.scale(scale, scale)
+
+    ctx.fillStyle = '#ffffff'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
   }, []) // <- roda só uma vez
 
   useEffect(() => {
@@ -157,7 +178,7 @@ export function Inversion() {
   return (
     <div className="flex flex-col gap-6 p-6 min-h-screen bg-background text-text">
       <TitleBar
-        label={t('title')}
+        label={exercise?.title || ''}
         answer={{ finalPhrase: 'Você terminou!' }}
         onConfirm={handleConfirm}
       />
@@ -166,17 +187,19 @@ export function Inversion() {
         size="sub"
         className="text-base text-left"
       >
-        {t('description')}
+        {exercise?.description}
       </Text>
 
-      <div className="flex justify-center bg-background py-7">
-        <Image
-          src="/twitter-logo.png"
-          alt="Twitter logo"
-          width={170}
-          height={170}
-        />
-      </div>
+      {exercise?.content.image_url && (
+        <div className="flex justify-center bg-background h-40">
+          <Image
+            src={exercise?.content.image_url}
+            alt="exercise image"
+            width={170}
+            height={170}
+          />
+        </div>
+      )}
 
       <div className="w-full h-[44vh] min-h-[16rem] max-h-[44rem] bg-background rounded-2xl relative">
         <canvas
