@@ -80,13 +80,15 @@ export default function HomePage() {
           </button>
         </div>
       </div>
-      <div className="items-center flex flex-col gap-5 pb-[76px]">
+      <div className="items-center flex flex-col gap-1 pb-[76px]">
         {posts.map((post) => (
           <SmallPostCard
             key={post.id}
+            postId={post.id}
             userName={post.userName}
             title={post.title}
             description={post.description}
+            createdAt={post.createdAt}
             postImage={post.postImage}
             userImage={post.userImage}
             iconName={Bookmark}

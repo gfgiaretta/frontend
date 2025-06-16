@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Image from 'next/image'
 
@@ -10,32 +10,48 @@ import PostCard from './PostCard/PostCard'
 import { Text } from '@/components/ui/Text'
 
 interface SmallPostCardProps {
+  key: string
+  postId: string
   userName: string
   userImage: string
   title: string
   postImage: string
   description: string
+  createdAt: string
   iconName?: LucideIcon
 }
 
 export default function SmallPostCard({
+  postId,
   userName,
   userImage,
   title,
   postImage,
   description,
+  createdAt,
   iconName: Icon,
 }: SmallPostCardProps) {
   const [openPost, setOpenPost] = useState(false)
 
+  useEffect(() => {
+    if (openPost) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [openPost])
+
   return (
     <>
       <div
-        className="mb-20 w-full max-w-md"
+        className="mb-5 w-full max-w-md"
         onClick={() => setOpenPost(true)}
       >
         <div className="relative">
-          <div className="overflow-hidden w-[300px] h-[150px]">
+          <div className="overflow-hidden w-full h-[150px] relative">
             <Image
               src={postImage}
               alt="Post image"
@@ -43,7 +59,7 @@ export default function SmallPostCard({
               className="rounded-t-2xl object-cover"
             />
           </div>
-          <div className="absolute flex flex-row bg-text rounded-b-2xl justify-between items-center w-full top-30">
+          <div className="flex flex-row bg-text rounded-b-2xl justify-between items-center w-full top-30">
             <div className="flex flex-col text-background mx-3 my-3">
               <div>
                 <Text
@@ -100,6 +116,7 @@ export default function SmallPostCard({
         </div>
       </div>
       <PostCard
+        postId={postId}
         userName={userName}
         userImage={userImage}
         title={title}
@@ -107,7 +124,7 @@ export default function SmallPostCard({
         description={description}
         open={openPost}
         onClose={() => setOpenPost(false)}
-        postAt={''}
+        createdAt={createdAt}
         favorite={false}
       />
     </>

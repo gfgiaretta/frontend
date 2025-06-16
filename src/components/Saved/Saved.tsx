@@ -1,61 +1,110 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { Bookmark } from 'lucide-react'
+import { Book, Bookmark } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
+import LibraryCard from '../LibraryCard/LibraryCard'
 import { Text } from '../ui/Text'
 import SmallPostCard from '@/components/SmallPostCard/SmallPostCard'
+import { api } from '@/utils/api'
+import { getToken } from '@/utils/token'
 
-type SavedPost = {
-  id: string
+interface PostData {
+  post_id: string
+  owner: {
+    name: string
+    profile_picture_url: string
+  }
   title: string
   description: string
-  image: string
-  author?: {
-    name: string
-    avatar: string
-  }
+  createdAt: string
+  image_url: string
+  isSaved: boolean
 }
 
-const mockSavedPosts: SavedPost[] = [
-  {
-    id: '1',
-    title: 'Dados mockados ',
-    description: 'Dados mockados ',
-    image: '/public/creative.png',
-  },
-  {
-    id: '2',
-    title: 'Dados mockados ',
-    description: 'Dados mockados ',
-    image: '/images/saved2.png',
-    author: {
-      name: '@Dados mockados',
-      avatar: '/public/author1.png',
-    },
-  },
-  {
-    id: '3',
-    title: 'Dados mockados ',
-    description: 'Dados mockados',
-    image: '/images/saved3.png',
-  },
-  {
-    id: '4',
-    title: 'Dados mockados',
-    description: 'Dados mockados',
-    image: '/images/saved4.png',
-    author: {
-      name: '@Dados mockados',
-      avatar: '/images/author2.png',
-    },
-  },
-]
+interface LibraryData {
+  library_id: string
+  image_url: string
+  description: string
+  link: string
+}
+
+type SavedItem =
+  | { type: 'post'; data: PostData }
+  | { type: 'library'; data: LibraryData }
 
 export function Saved() {
   const t = useTranslations('Saved')
+  const [savedItems, setSavedItems] = useState<SavedItem[]>([])
+
+  useEffect(() => {
+    const fetchSavedItems = async () => {
+      try {
+        const token = getToken()
+        const response = await api(token).get('/user/savedItems')
+        console.log('response: ', response)
+
+        setSavedItems(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          response.data.data.map((item: any) => {
+            let savedItem
+
+            if (item.post_id) {
+              savedItem = {
+                type: 'post',
+                data: item as PostData,
+              }
+            } else if (item.library_id) {
+              savedItem = {
+                type: 'library',
+                data: item as LibraryData,
+              }
+            }
+            return savedItem
+          }) as SavedItem[],
+        )
+      } catch (error) {
+        console.error('Failed to fetch savedItems', error)
+      }
+    }
+
+    fetchSavedItems()
+  }, [])
+
+  function generateItemCard(item: SavedItem) {
+    let card
+
+    if (item.type === 'post') {
+      card = (
+        <SmallPostCard
+          key={item.data.post_id}
+          postId={item.data.post_id}
+          userName={item.data.owner.name}
+          title={item.data.title}
+          description={item.data.description}
+          createdAt={item.data.createdAt}
+          postImage={item.data.image_url}
+          userImage={item.data.owner.profile_picture_url}
+          iconName={Bookmark}
+        />
+      )
+    } else {
+      card = (
+        <LibraryCard
+          key={item.data.library_id}
+          image={item.data.image_url}
+          title={item.data.description}
+          descriptions={''}
+          className="w-full shadow-md"
+          iconName={Book}
+          link={item.data.link}
+        />
+      )
+    }
+    return card
+  }
 
   return (
     <div className="py-12 px-6 max-w-md mx-auto">
@@ -67,17 +116,7 @@ export function Saved() {
         {t('title')}
       </Text>
       <div className="flex flex-col items-center gap-4">
-        {mockSavedPosts.map((item) => (
-          <SmallPostCard
-            key={item.id}
-            userName={item.author?.name || t('unknownAuthor')}
-            userImage={item.author?.avatar || '/images/default-avatar.png'}
-            title={item.title}
-            description={item.description}
-            postImage={item.image}
-            iconName={Bookmark}
-          />
-        ))}
+        {savedItems.map((item) => generateItemCard(item))}
       </div>
     </div>
   )

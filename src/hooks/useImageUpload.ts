@@ -13,7 +13,7 @@ type ImageUploadResponse = {
 // eslint-disable-next-line no-magic-numbers
 const SUCCESS_UPLOAD_STATUS = [200, 201]
 
-export async function useImageUpload(file: File | null | undefined) {
+export async function UseImageUpload(file: File | null | undefined) {
   if (!file) {
     return
   }
@@ -46,7 +46,8 @@ function extractS3Key(url: string): string | null {
 
     // Remove the first slash from the URL path and return the full S3 key
     // eslint-disable-next-line no-magic-numbers
-    console.log('URI:' + decodeURIComponent(pathname).slice(1))
+    console.log(`URI:${decodeURIComponent(pathname).slice(1)}`)
+    // eslint-disable-next-line no-magic-numbers
     return decodeURIComponent(pathname).slice(1)
   } catch (_) {
     //console.error('Invalid URL:', e)

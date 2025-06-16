@@ -1,20 +1,26 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import Image from 'next/image'
 
 import { Bookmark } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
+import { CommentInput } from './Comment/CommentInput'
+import { Comment } from '@/components/SmallPostCard/PostCard/Comment/Comment'
 import { Text } from '@/components/ui/Text'
+import { CommentDTO, fetchComments } from '@/services/CommentService'
+import { getTimeSince } from '@/utils/dateUtils'
 
 interface PostCardProps {
+  postId: string
   userName: string
   userImage: string
   title: string
   postImage: string
   description: string
-  postAt: string
+  createdAt: string
   favorite: boolean
   className?: string
   children?: ReactNode
@@ -23,18 +29,21 @@ interface PostCardProps {
 }
 
 export default function PostCard({
+  postId,
   userName,
   userImage,
   title,
   postImage,
   description,
-  postAt,
+  createdAt,
   favorite,
   className = '',
   open,
   onClose,
 }: PostCardProps) {
+  const t = useTranslations('PostCard')
   const [isClosing, setIsClosing] = useState(false)
+  const [comments, setComments] = useState<CommentDTO[]>([])
 
   const handleClose = () => {
     setIsClosing(true)
@@ -44,6 +53,12 @@ export default function PostCard({
       // eslint-disable-next-line no-magic-numbers
     }, 300)
   }
+
+  useEffect(() => {
+    if (open) {
+      fetchComments(postId).then(setComments)
+    }
+  }, [open, postId])
 
   if (!open) return null
 
@@ -56,18 +71,19 @@ export default function PostCard({
 
       <div
         className={`
-          absolute bottom-16 left-0 w-full h-fit 
-          bg-background rounded-t-3xl 
-          p-4 pb-9 shadow-xl
-          ${isClosing ? 'animate-[slideDown_300ms_ease-in-out]' : 'animate-[slideUp_300ms_ease-in-out]'}
-        `}
+            absolute bottom-16 left-0 w-full h-fit 
+            bg-background rounded-t-3xl 
+            p-4 pb-9 shadow-xl
+            ${isClosing ? 'animate-[slideDown_300ms_ease-in-out]' : 'animate-[slideUp_300ms_ease-in-out]'}
+          `}
       >
         <div className="w-full flex items-center justify-center">
           <div
             className={`
-            flex flex-col relative w-full max-w-md ${className}
-          `}
+              flex flex-col relative w-full max-w-md ${className}
+            `}
           >
+            {/* Post owner*/}
             <div className="flex flex-row justify-between items-center mb-4 w-full">
               <div className="flex-shrink-0">
                 <Image
@@ -97,6 +113,7 @@ export default function PostCard({
               </div>
             </div>
 
+            {/* Image */}
             <div className="flex justify-center items-center">
               <Image
                 src={postImage}
@@ -107,6 +124,7 @@ export default function PostCard({
               />
             </div>
 
+            {/* Title and body */}
             <div>
               <div className="mt-2">
                 <Text
@@ -131,10 +149,48 @@ export default function PostCard({
                   size="notes"
                   className="text-grey-1"
                 >
-                  {postAt}
+                  {getTimeSince(createdAt, t)}
                 </Text>
               </div>
             </div>
+
+            {/* Comments */}
+            <div className="mt-4">
+              <Text
+                as="h1"
+                size="t3"
+                className="mb-2"
+              >
+                {t('comments.title')}
+              </Text>
+              <div className="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1">
+                {
+                  // eslint-disable-next-line no-magic-numbers
+                  comments.length === 0 && (
+                    <Text
+                      size="notes"
+                      className="text-grey-1"
+                    >
+                      {t('comments.firstCommenter')}
+                    </Text>
+                  )
+                }
+                {comments.map((comment) => (
+                  <Comment
+                    key={comment.comment_id}
+                    commentId={comment.comment_id}
+                    ownerName={comment.owner.name}
+                    ownerProfilePictureUrl={comment.owner.profile_picture_url}
+                    content={comment.content}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <CommentInput
+              postId={postId}
+              onCommentSent={() => fetchComments(postId).then(setComments)}
+            />
           </div>
         </div>
       </div>
