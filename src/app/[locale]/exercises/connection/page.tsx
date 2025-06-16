@@ -125,7 +125,6 @@ export default function InversionPage() {
 
             let artworkImageUrl = artwork.image
             try {
-              console.log(artwork.image)
               const res = await api(token).get(
                 `/presigned/${encodeURIComponent(artwork.image)}`,
               )
@@ -170,7 +169,8 @@ export default function InversionPage() {
     )
     if (pair) return pair.color
 
-    if (currentSelection.some((c) => c.id === cardId)) {
+    const idxInCurrent = currentSelection.findIndex((c) => c.id === cardId)
+    if (idxInCurrent !== -1) {
       return getNextColor()
     }
 
@@ -236,8 +236,11 @@ export default function InversionPage() {
               key={card.id}
               imageSrc={card.imageSrc}
               title={card.title}
-              borderColor={`border-${getCardColor(card.id)}`}
-              isSelected={isCardInPair(card.id)}
+              borderColor={`border-${getCardColor(card.id) ?? 'default'}`}
+              isSelected={
+                isCardInPair(card.id) ||
+                currentSelection.some((c) => c.id === card.id)
+              }
               onClick={() => handleCardClick(card)}
             />
           ))}
