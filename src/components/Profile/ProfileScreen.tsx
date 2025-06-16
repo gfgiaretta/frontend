@@ -163,11 +163,15 @@ export default function ProfileScreen() {
         {userInfo.posts.map((post) => (
           <SmallPostCard
             key={post.id}
+            postId={post.id}
             userName={post.userName}
             userImage={post.userImage}
             title={post.title}
             postImage={post.postImage}
             description={post.description}
+            iconName={Bookmark}
+            createdAt={post.createdAt}
+            favorite={post.saved}
           />
         ))}
       </div>
