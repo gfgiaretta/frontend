@@ -48,7 +48,7 @@ export default function LibraryPage() {
           title={item.description}
           descriptions={''}
           className="w-full shadow-md"
-          iconName={arrayIcons[index]}
+          iconName={arrayIcons[index % arrayIcons.length]}
           link={item.link}
           favorite={item.isSaved}
         />

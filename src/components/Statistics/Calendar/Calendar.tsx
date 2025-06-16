@@ -73,7 +73,7 @@ export function MonthCalendar({ calendar }: { calendar: Days[] }) {
         },
         month: {
           width: '100%',
-        }
+        },
       }}
     />
   )

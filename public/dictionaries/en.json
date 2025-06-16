@@ -151,7 +151,13 @@
   "EditProfile": {
     "description": "Insert a description about you"
   },
+  "Saved": {
+    "title": "Saved Posts",
+    "loading": "Loading",
+    "noSavedPosts": "No saved posts found",
+    "unknownAuthor": "Unknown author"
+  },
   "History": {
     "title": "History"
-}
+  }
 }

@@ -12,9 +12,8 @@ import { useTranslations } from 'next-intl'
 import StreakCard from './StreakCard'
 import { Button } from '@/components/ui/Button'
 import { Text } from '@/components/ui/Text'
-import { getToken } from '@/utils/token'
 import { api } from '@/utils/api'
-
+import { getToken } from '@/utils/token'
 
 export default function FeedbackScreen() {
   const DEFAULT_VALUE = 0
@@ -90,7 +89,10 @@ export default function FeedbackScreen() {
             <Button
               variant="outlined"
               size="md"
-              onClick={() => document.cookie = 'exerciseDetails=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'}
+              onClick={() => {
+                document.cookie =
+                  'exerciseDetails=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+              }}
             >
               {t('backToFeed')}
             </Button>

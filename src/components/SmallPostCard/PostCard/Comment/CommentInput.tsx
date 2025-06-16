@@ -12,6 +12,10 @@ import { sendComment } from '@/services/CommentService'
 
 // components/CommentInput.tsx
 
+// components/CommentInput.tsx
+
+// components/CommentInput.tsx
+
 interface CommentInputProps {
   postId: string
   onCommentSent: () => void
@@ -46,6 +50,7 @@ export function CommentInput({ postId, onCommentSent }: CommentInputProps) {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto'
       textareaRef.current.style.height =
+        // eslint-disable-next-line no-magic-numbers
         textareaRef.current.scrollHeight > 0
           ? `${textareaRef.current.scrollHeight}px`
           : 'auto'

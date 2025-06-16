@@ -198,14 +198,17 @@ export default function PostCard({
                 {t('comments.title')}
               </Text>
               <div className="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1">
-                {comments.length === 0 && (
-                  <Text
-                    size="notes"
-                    className="text-grey-1"
-                  >
-                    {t('comments.firstCommenter')}
-                  </Text>
-                )}
+                {
+                  // eslint-disable-next-line no-magic-numbers
+                  comments.length === 0 && (
+                    <Text
+                      size="notes"
+                      className="text-grey-1"
+                    >
+                      {t('comments.firstCommenter')}
+                    </Text>
+                  )
+                }
                 {comments.map((comment) => (
                   <Comment
                     key={comment.comment_id}

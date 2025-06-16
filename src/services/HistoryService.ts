@@ -13,6 +13,7 @@ export const getHistory = async (): Promise<HistoryItem[]> => {
   const token = getToken()
   const response = await api(token).get('/exercise/history')
 
+  // eslint-disable-next-line no-magic-numbers
   if (response.status !== 200) {
     throw new Error('Falha ao buscar histórico')
   }

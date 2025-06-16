@@ -16,5 +16,6 @@ export const patchProfile = async ({
     profilePictureUrl,
   })
 
+  // eslint-disable-next-line no-magic-numbers
   return response.status === 200
 }
