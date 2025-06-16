@@ -31,16 +31,28 @@ export function Publication() {
   const [imageUrl, setImageUrl] = useState<string | null>('default_post.jpeg')
   const [postImage, setPostImage] = useState<string | null>(null)
 
-
   useEffect(() => {
+    const fetchPresignedUrl = async (key: string) => {
+      try {
+        const token = getToken()
+        const res = await api(token).get(
+          `/presigned/${encodeURIComponent(key)}`,
+        )
+        const presignedUrl = res.data as string
+        setPostImage(presignedUrl)
+      } catch (err) {
+        console.error('Failed to fetch presigned URL:', err)
+        setPostImage(null)
+      }
+    }
+
     if (cookieHasExercise) {
       const cookie = document.cookie
         .split('; ')
         .find((row) => row.startsWith('exerciseDetails='))
       if (cookie) {
-
-        const exerciseDetails = JSON.parse(decodeURIComponent(cookie.split('=')[1])
-
+        const exerciseDetails = JSON.parse(
+          decodeURIComponent(cookie.split('=')[1]),
         ) as {
           title: string
           description: string
@@ -48,9 +60,10 @@ export function Publication() {
         }
         setTitle(exerciseDetails.title)
         setDescription(exerciseDetails.description)
-        setPostImage(exerciseDetails.imageUrl)
-
-
+        if (exerciseDetails.imageUrl) {
+          setImageUrl(exerciseDetails.imageUrl)
+          fetchPresignedUrl(exerciseDetails.imageUrl)
+        }
       } else {
         setTitle('')
         setDescription('')
@@ -73,7 +86,8 @@ export function Publication() {
 
   const useSendPost = async () => {
     if (cookieHasExercise) {
-      document.cookie = 'exerciseDetails=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+      document.cookie =
+        'exerciseDetails=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     }
     const token = getToken()
     const resp = await api(token).post('/post', {
