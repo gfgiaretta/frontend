@@ -44,7 +44,6 @@ export function Saved() {
       try {
         const token = getToken()
         const response = await api(token).get('/user/savedItems')
-        console.log('response: ', response)
 
         setSavedItems(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

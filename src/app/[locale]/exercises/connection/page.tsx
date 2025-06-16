@@ -2,16 +2,18 @@
 
 import { useEffect, useRef, useState } from 'react'
 
+import { useRouter, useSearchParams } from 'next/navigation'
+
 import { useTranslations } from 'next-intl'
 
 import { ConnectionCard } from '@/components/Exercises/Connection/ConnectionCard'
 import { TitleBar } from '@/components/TitleBar/TitleBar'
+import { AlertModal, AlertModalHandle } from '@/components/ui/AlertModal'
 import { Text } from '@/components/ui/Text'
-import { useRouter, useSearchParams } from 'next/navigation'
 import useTokenCheck from '@/hooks/useToken'
+import { ConnectionExerciseDTO, getExercise } from '@/services/ExerciseService'
 import { api } from '@/utils/api'
 import { getToken } from '@/utils/token'
-import { AlertModal, AlertModalHandle } from '@/components/ui/AlertModal'
 
 const BORDER_COLORS = ['primary', 'secondary', 'support-blue']
 
@@ -32,7 +34,6 @@ type AnswerPair = {
 }
 
 export default function InversionPage() {
-
   useTokenCheck()
   const t = useTranslations('ConnectionExercise')
   const searchParams = useSearchParams()
@@ -48,7 +49,6 @@ export default function InversionPage() {
   const [answer, setAnswer] = useState<AnswerPair[]>([])
 
   const handleConfirm = async () => {
-
     if (selectedPairs.length < 3) {
       modalRef.current?.show()
       return
@@ -58,47 +58,70 @@ export default function InversionPage() {
       await api(token).post('/exercise/register', {
         exerciseId,
         content: {
-          answer
-        }
+          answer,
+        },
       })
 
       router.push(`/exercises/feedback?exerciseId=${exerciseId}`)
-    } catch { }
+    } catch {}
   }
 
   useEffect(() => {
     const fetchExercises = async () => {
       try {
         const token = getToken()
-        const response = await api(token).get(`/exercise/${exerciseId}`)
         const cardDataArr: CardData[] = []
         const answerPairs: AnswerPair[] = []
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        response.data.content.forEach((item: any) => {
-          const artwork = item.artwork
-          const artist = item.artist
-          cardDataArr.push({ id: artist.name, title: artist.name, imageSrc: artist.image })
-          cardDataArr.push({ id: artwork.name, title: artwork.name, imageSrc: artwork.image })
-          answerPairs.push({ artist: artist.name, artwork: artwork.name })
-        })
 
-        console.log('Card Data Array:', cardDataArr)
+        const resp = await getExercise(exerciseId)
+        const exercise = resp as ConnectionExerciseDTO
+
+        await Promise.all(
+          exercise.content.map(async (item) => {
+            const { artist, artwork } = item
+
+            let artistImageUrl = artist.image
+            try {
+              const res = await api(token).get(
+                `/presigned/${encodeURIComponent(artist.image)}`,
+              )
+              artistImageUrl = res.data || artist.image
+            } catch {}
+
+            let artworkImageUrl = artwork.image
+            try {
+              console.log(artwork.image)
+              const res = await api(token).get(
+                `/presigned/${encodeURIComponent(artwork.image)}`,
+              )
+              artworkImageUrl = res.data || artwork.image
+            } catch {}
+
+            cardDataArr.push({
+              id: artist.name,
+              title: artist.name,
+              imageSrc: artistImageUrl,
+            })
+            cardDataArr.push({
+              id: artwork.name,
+              title: artwork.name,
+              imageSrc: artworkImageUrl,
+            })
+            answerPairs.push({ artist: artist.name, artwork: artwork.name })
+          }),
+        )
 
         setAnswer(answerPairs)
 
-        // this is just an easy way to shuffle the cards
-        const shuffler = 0.5
-        cardDataArr.sort(() => Math.random() - shuffler)
+        // Shuffle the cards
+        // eslint-disable-next-line no-magic-numbers
+        cardDataArr.sort(() => Math.random() - 0.5)
         setAllCards(cardDataArr)
-      } catch (error) {
-        console.error('Erro ao buscar exercícios:', error)
-      }
+      } catch {}
     }
 
     fetchExercises()
-  }, [])
-
-
+  }, [exerciseId])
 
   const getNextColor = () =>
     BORDER_COLORS[selectedPairs.length % BORDER_COLORS.length]
@@ -171,7 +194,6 @@ export default function InversionPage() {
         >
           {t('description')}
         </Text>
-
 
         <div className="grid grid-cols-2 gap-4">
           {allCards.map((card) => (

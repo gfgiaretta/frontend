@@ -39,7 +39,6 @@ export function Inversion() {
     if (exerciseId) {
       getExercise(exerciseId).then((exercise) => {
         setExercise(exercise as InversionExerciseDTO)
-        console.log(exercise)
       })
     }
   }, [exerciseId])

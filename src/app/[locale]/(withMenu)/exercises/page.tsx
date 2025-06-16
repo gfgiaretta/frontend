@@ -63,7 +63,6 @@ export default function ExercisesPage() {
         const userInfo = await api(token).get('/auth/token')
 
         const userInterests = userInfo.data.interests as UserInterest[]
-        console.log('userInterests: ', userInterests)
         setInterests({
           [userInterests[0].interestId]: 'primary' as VariantType,
           [userInterests[1].interestId]: 'secondary' as VariantType,

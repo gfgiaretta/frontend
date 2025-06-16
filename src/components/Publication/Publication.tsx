@@ -41,8 +41,7 @@ export function Publication() {
         )
         const presignedUrl = res.data as string
         setPostImage(presignedUrl)
-      } catch (err) {
-        console.error('Failed to fetch presigned URL:', err)
+      } catch {
         setPostImage(null)
       }
     }
