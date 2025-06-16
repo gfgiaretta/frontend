@@ -47,7 +47,6 @@ export default function ProfileScreen() {
       try {
         const token = getToken()
         const response = await api(token).get('user/profile')
-        console.log('fetchUserInfo : ', response)
         const user = response.data.data
         setUserInfo({
           name: user.name,

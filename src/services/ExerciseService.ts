@@ -23,6 +23,21 @@ export interface LimitedNarrativeExerciseDTO extends ExerciseDTO {
   }
 }
 
+type ArtistArtworkPair = {
+  artist: {
+    name: string
+    image: string
+  }
+  artwork: {
+    name: string
+    image: string
+  }
+}
+export interface ConnectionExerciseDTO extends ExerciseDTO {
+  type: 'Conexão Artística'
+  content: ArtistArtworkPair[]
+}
+
 export async function getExercise(exerciseId: string): Promise<ExerciseDTO> {
   const token = getToken()
   const response = await api(token).get(`/exercise/${exerciseId}`)

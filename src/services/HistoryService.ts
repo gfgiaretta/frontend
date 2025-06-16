@@ -18,7 +18,5 @@ export const getHistory = async (): Promise<HistoryItem[]> => {
     throw new Error('Falha ao buscar histórico')
   }
 
-  console.log('HISTORY RESPONSE: ', response)
-
   return response.data as HistoryItem[]
 }

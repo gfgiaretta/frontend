@@ -159,5 +159,11 @@
     "loading": "Carregando",
     "noSavedPosts": "Nenhum post salvo encontrado",
     "unknownAuthor": "Autor desconhecido"
+  },
+  "ConnectionExercise": {
+    "title": "Conexão Artistica",
+    "description": "Aqui a ideia é refrescar a memória sobre estilos artísticos. Relacione o artista com sua respectiva obra, selecionando-os um depois do outro.",
+    "alertTitle": "Atenção!",
+    "alertDescription": "Ops! Essa combinação não está correta. Que tal tentar novamente?"
   }
 }

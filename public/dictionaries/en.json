@@ -159,5 +159,11 @@
   },
   "History": {
     "title": "History"
+  },
+  "ConnectionExercise": {
+    "title": "Artistic Connection",
+    "description": "The idea here is to refresh your memory about artistic styles. Match the artist with their respective artwork by selecting them one after the other.",
+    "alertTitle": "Attention!",
+    "alertDescription": "Oops! That combination isn't correct. How about trying again?"
   }
 }
