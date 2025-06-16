@@ -4,11 +4,12 @@ import React, { useEffect, useState } from 'react'
 
 import Image from 'next/image'
 
-import axios from 'axios'
 import { Bookmark, LucideIcon } from 'lucide-react'
 
 import PostCard from './PostCard/PostCard'
 import { Text } from '@/components/ui/Text'
+import { api } from '@/utils/api'
+import { getToken } from '@/utils/token'
 
 interface SmallPostCardProps {
   key: string
@@ -41,18 +42,22 @@ export default function SmallPostCard({
     e.stopPropagation()
 
     try {
+      const token = getToken()
+      const save = !isSaved
       if (!isSaved) {
-        await axios.post('/post/save', {
+        const response = await api(token).put('/post/save', {
           postId,
-          save: !isSaved,
+          save,
         })
-
+        console.log('Save post response: ', response)
         setIsSaved(true)
       } else {
-        await axios.delete('/post/save', {
-          data: { postId },
+        const response = await api(token).put('/post/save', {
+          postId,
+          save,
         })
 
+        console.log('Save post response: ', response)
         setIsSaved(false)
       }
     } catch (error) {
