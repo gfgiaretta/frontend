@@ -15,7 +15,7 @@ import { ConnectionExerciseDTO, getExercise } from '@/services/ExerciseService'
 import { api } from '@/utils/api'
 import { getToken } from '@/utils/token'
 
-const BORDER_COLORS = ['primary', 'secondary', 'support-blue']
+const BORDER_COLORS = ['secondary', 'primary', 'support-blue']
 
 type CardData = {
   id: string
@@ -29,8 +29,31 @@ type Pair = {
 }
 
 type AnswerPair = {
-  artist: string
-  artwork: string
+  a1: string
+  a2: string
+}
+
+function normalizePair(pair: AnswerPair): string {
+  return [pair.a1, pair.a2].sort().join('::')
+}
+
+function comparePairs(
+  userAnswers: AnswerPair[],
+  correctAnswers: AnswerPair[],
+): boolean {
+  const normalizeSet = (pairs: AnswerPair[]) =>
+    new Set(pairs.map(normalizePair))
+
+  const userSet = normalizeSet(userAnswers)
+  const correctSet = normalizeSet(correctAnswers)
+
+  if (userSet.size !== correctSet.size) return false
+
+  for (const pair of correctSet) {
+    if (!userSet.has(pair)) return false
+  }
+
+  return true
 }
 
 export default function InversionPage() {
@@ -53,6 +76,18 @@ export default function InversionPage() {
       modalRef.current?.show()
       return
     }
+
+    const userAnswers: AnswerPair[] = selectedPairs.map((pair) => ({
+      a1: pair.cards[0].title,
+      a2: pair.cards[1].title,
+    }))
+
+    const isCorrect = comparePairs(userAnswers, answer)
+    if (!isCorrect) {
+      modalRef.current?.show()
+      return
+    }
+
     try {
       const token = getToken()
       await api(token).post('/exercise/register', {
@@ -107,7 +142,7 @@ export default function InversionPage() {
               title: artwork.name,
               imageSrc: artworkImageUrl,
             })
-            answerPairs.push({ artist: artist.name, artwork: artwork.name })
+            answerPairs.push({ a1: artist.name, a2: artwork.name })
           }),
         )
 
@@ -201,7 +236,7 @@ export default function InversionPage() {
               key={card.id}
               imageSrc={card.imageSrc}
               title={card.title}
-              borderColor={getCardColor(card.id)}
+              borderColor={`border-${getCardColor(card.id)}`}
               isSelected={isCardInPair(card.id)}
               onClick={() => handleCardClick(card)}
             />
