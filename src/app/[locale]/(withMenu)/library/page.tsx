@@ -43,12 +43,14 @@ export default function LibraryPage() {
       {reference.map((item, index) => (
         <LibraryCard
           key={index}
+          library_id={item.library_id}
           image={item.image_url}
           title={item.description}
           descriptions={''}
           className="w-full shadow-md"
-          iconName={arrayIcons[index]}
+          iconName={arrayIcons[index % arrayIcons.length]}
           link={item.link}
+          favorite={item.isSaved}
         />
       ))}
     </div>

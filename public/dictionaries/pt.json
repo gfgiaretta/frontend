@@ -118,13 +118,52 @@
     "next": "Arraste para o lado para ver as opções."
   },
   "Inversion": {
-    "title": "Inversão"
+    "title": "Inversão",
+    "description": "Aqui a ideia é inverter a lógica de tudo que sabemos sobre a criação de marca. Desenhe sua versão do logo abaixo da pior maneira que conseguir."
   },
   "PostCard": {
     "invalidDate": "Data invalida",
     "minute": "minuto",
     "hour": "hora",
     "day": "dia",
-    "week": "semana"
+    "week": "semana",
+    "comments": {
+      "title": "Comentários",
+      "showMore": "Ler mais",
+      "showLess": "Mostrar menos",
+      "send": "Enviar",
+      "writeComment": "Escreva um comentário...",
+      "firstCommenter": "Seja o primeiro a comentar!"
+    }
+  },
+  "Post": {
+    "title": "Criar uma publicação",
+    "back": "Título do projeto",
+    "placeholderTitle": "Insira um título",
+    "description": "Descrição",
+    "placeholderDescription": "Insira uma breve descrição do projeto",
+    "addImage": "Adicionar imagem",
+    "cancel": "Cancelar",
+    "create": "Criar",
+    "image": "Imagem",
+    "removeImage": "Remover imagem"
+  },
+  "EditProfile": {
+    "description": "Insira uma breve descrição sobre você."
+  },
+  "History": {
+    "title": "Histórico"
+  },
+  "Saved": {
+    "title": "Posts Salvos",
+    "loading": "Carregando",
+    "noSavedPosts": "Nenhum post salvo encontrado",
+    "unknownAuthor": "Autor desconhecido"
+  },
+  "ConnectionExercise": {
+    "title": "Conexão Artistica",
+    "description": "Aqui a ideia é refrescar a memória sobre estilos artísticos. Relacione o artista com sua respectiva obra, selecionando-os um depois do outro.",
+    "alertTitle": "Atenção!",
+    "alertDescription": "Ops! Essa combinação não está correta. Que tal tentar novamente?"
   }
 }

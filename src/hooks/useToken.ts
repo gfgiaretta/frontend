@@ -16,10 +16,11 @@ export default function useTokenCheck() {
     if (typeof window === 'undefined') return
 
     const checkToken = async () => {
+      return
       try {
         const token = getToken()
         if (!token) {
-          throw new Error('Token missing')
+          return
         }
 
         const response = await api(token).get('/auth/token')
@@ -29,6 +30,7 @@ export default function useTokenCheck() {
       } catch (_) {
         setTimeout(() => {
           router.replace('/login')
+          // eslint-disable-next-line no-magic-numbers
         }, 1)
       }
     }

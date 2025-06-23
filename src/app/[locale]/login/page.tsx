@@ -47,7 +47,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-1 px-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background px-6">
       <div className="flex items-center mb-8 mt-10">
         <Image
           src="/creative-flow-logo-completo.svg"
@@ -116,14 +116,14 @@ export default function Login() {
         <Button
           variant="filled"
           onClick={HandleLogin}
-          className="w-full py-4 text-lg"
+          className="w-full max-w-48"
         >
           {t('login')}
         </Button>
         <Button
           variant="filled"
-          className="w-full py-4 text-lg"
           onClick={() => router.push('/register')}
+          className="w-full max-w-48"
         >
           {t('register')}
         </Button>

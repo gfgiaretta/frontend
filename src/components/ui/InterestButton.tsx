@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ComponentType } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
@@ -8,10 +8,6 @@ export type Colors = 'primary' | 'secondary' | 'support'
 type sizes = 'sm' | 'md' | 'lg'
 type textSizes = 'notes' | 'sub' | 'cap1'
 
-type SizeMap = {
-  [key in sizes]: string
-}
-
 type TextMap = {
   [key in sizes]: textSizes
 }
@@ -19,7 +15,7 @@ type TextMap = {
 type AllColors = Colors | 'notSelected'
 
 interface InterestButtonProps {
-  icon: React.JSX.Element
+  icon: ComponentType<{ className?: string }>
   title: string
   onClick: () => void
   isSelected: boolean
@@ -27,16 +23,22 @@ interface InterestButtonProps {
   size: sizes
 }
 
-const sizeMap: SizeMap = {
-  sm: 'w-[7.75rem] h-[2.5rem] text-[var(--text-xs)]',
-  md: 'w-[10.75rem] h-[2.5rem] text-[var(--text-sm)]',
-  lg: 'w-[12.4375rem] h-[2.5rem] text-[var(--text-base)]',
+const sizeMap = {
+  sm: 'py-1 px-2',
+  md: 'py-2 px-3',
+  lg: 'py-3 px-4',
 }
 
 const textSizeMap: TextMap = {
   sm: 'notes',
   md: 'sub',
   lg: 'cap1',
+}
+
+const iconSize = {
+  sm: 'w-5 h-5',
+  md: 'w-6 h-6',
+  lg: 'w-7 h-7',
 }
 
 const colorMap: Record<AllColors, string> = {
@@ -49,7 +51,7 @@ const colorMap: Record<AllColors, string> = {
 export const InterestButton = React.forwardRef<
   HTMLButtonElement,
   InterestButtonProps
->(({ icon, title, onClick, isSelected, color, size }, ref) => {
+>(({ icon: Icon, title, onClick, isSelected, color, size }, ref) => {
   const { t } = useTranslation('Interests')
 
   const baseClasses = `${sizeMap[size]} inline-flex items-center justify-center gap-2 rounded-full transition-colors duration-200 hover:bg-grey-2`
@@ -61,7 +63,7 @@ export const InterestButton = React.forwardRef<
       className={`${baseClasses}, border-2 ${isSelected ? `border-${colorMap[color]} bg-${colorMap[color]} text-background` : `border-${colorMap.notSelected} bg-transparent text-text`}`}
     >
       <div className="flex items-center gap-2">
-        {icon}
+        <Icon className={iconSize[size]} />
         <Text
           as="span"
           size={textSizeMap[size]}

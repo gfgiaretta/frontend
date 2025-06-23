@@ -1,18 +1,54 @@
 'use client'
 
+import React, { useEffect, useState } from 'react'
+
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { useTranslations } from 'next-intl'
 
 import StreakCard from './StreakCard'
 import { Button } from '@/components/ui/Button'
 import { Text } from '@/components/ui/Text'
+import { api } from '@/utils/api'
+import { getToken } from '@/utils/token'
 
 export default function FeedbackScreen() {
+  const DEFAULT_VALUE = 0
   const t = useTranslations('Feedback')
-  const NumberOfDays = 1
+  const router = useRouter()
+  const [isSharing, setIsSharing] = useState(false)
+  const [streak, setStreak] = useState(DEFAULT_VALUE)
+
+  useEffect(() => {
+    const fetchStreak = async () => {
+      const token = getToken()
+      try {
+        const response = await api(token).get(`/user/streak`)
+        const streakDays = response.data.streak
+
+        setStreak(streakDays)
+      } catch (error) {
+        console.error('Erro ao buscar streak:', error)
+      }
+    }
+
+    fetchStreak()
+  }, [])
+
+  const handleShare = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    setIsSharing(true)
+    try {
+      router.push(`/post?hasExercise=true`)
+    } catch (err) {
+      console.error('Erro ao compartilhar:', err)
+    } finally {
+      setIsSharing(false)
+    }
+  }
 
   return (
     <>
@@ -45,7 +81,7 @@ export default function FeedbackScreen() {
         </Text>
 
         <div className="flex space-x-4 mt-6 mb-10">
-          <StreakCard days={NumberOfDays} />
+          <StreakCard days={streak} />
         </div>
 
         <div className="flex space-x-4 mt-10">
@@ -53,16 +89,26 @@ export default function FeedbackScreen() {
             <Button
               variant="outlined"
               size="md"
+              onClick={() => {
+                document.cookie =
+                  'exerciseDetails=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+              }}
             >
               {t('backToFeed')}
             </Button>
           </Link>
-          <Link href="/share">
+
+          <Link
+            href="#"
+            onClick={handleShare}
+            passHref
+          >
             <Button
               variant="filled"
               size="md"
+              disabled={isSharing}
             >
-              {t('share')}
+              {isSharing ? t('sharing') : t('share')}
             </Button>
           </Link>
         </div>

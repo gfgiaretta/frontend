@@ -1,0 +1,26 @@
+default:
+  image: node:22.15
+  cache:
+    key: node-modules-cache
+    policy: pull-push
+    paths:
+      - node_modules/
+  before_script:
+    - npm install
+    - npm ci
+
+stages:
+  - test
+  - lint
+
+test:
+  stage: test
+  script:
+    - echo "Running jest tests"
+    - npm run test
+
+lint:
+  stage: lint
+  script:
+    - echo "Running linter"
+    - npm run lint

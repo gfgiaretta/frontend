@@ -5,35 +5,29 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { ImageIcon, LucideIcon, PenTool, Zap } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 import ExerciseCard from '@/components/ExercisesCard/ExerciseCard'
 import { Text } from '@/components/ui/Text'
 import useTokenCheck from '@/hooks/useToken'
 import { api } from '@/utils/api'
+import { InterestsData } from '@/utils/interestUtils'
 import { getToken } from '@/utils/token'
 
 type VariantType = 'primary' | 'secondary' | 'support-blue'
 
-const typeConfig: Record<
-  string,
-  { variant: VariantType; route: string; icon: LucideIcon }
-> = {
+const typeConfig: Record<string, { variant: VariantType; route: string }> = {
   Inversão: {
     variant: 'primary',
     route: '/exercises/inversion',
-    icon: Zap,
   },
   'Narrativa Limitada': {
     variant: 'secondary',
     route: '/exercises/limited-narrative',
-    icon: PenTool,
   },
   'Conexão Artística': {
     variant: 'support-blue',
-    route: '/exercises/conexao-artistica', // TODO: Corrigir rota
-    icon: ImageIcon,
+    route: '/exercises/connection',
   },
 }
 
@@ -42,11 +36,23 @@ interface Exercise {
   title: string
   description: string
   type: string
+  interest_id: string
+}
+
+interface UserInterest {
+  title: string
+  interestId: string
+  [key: string]: string
+}
+
+interface Interest {
+  [key: string]: VariantType
 }
 
 export default function ExercisesPage() {
   const t = useTranslations('Exercises')
   const [exercises, setExercises] = useState<Exercise[]>([])
+  const [interests, setInterests] = useState<Interest>({})
   useTokenCheck()
 
   useEffect(() => {
@@ -54,6 +60,15 @@ export default function ExercisesPage() {
       try {
         const token = getToken()
         const response = await api(token).get('/exercise')
+        const userInfo = await api(token).get('/auth/token')
+
+        const userInterests = userInfo.data.interests as UserInterest[]
+        setInterests({
+          [userInterests[0].interestId]: 'primary' as VariantType,
+          [userInterests[1].interestId]: 'secondary' as VariantType,
+          [userInterests[2].interestId]: 'support-blue' as VariantType,
+        })
+
         setExercises(response.data)
       } catch (error) {
         console.error('Erro ao buscar exercícios:', error)
@@ -75,10 +90,10 @@ export default function ExercisesPage() {
           {t('title')}
         </Text>
         <div className="flex items-center gap-3">
-          <Link href="/arquivoPaginaExercicio">
+          <Link href="/history">
             <Image
               src="/arquivoPaginaExercicio.svg"
-              alt="Arquivo de Exercícios"
+              alt="Archive Icon"
               width={35}
               height={35}
             />
@@ -118,7 +133,7 @@ export default function ExercisesPage() {
           <div className="flex gap-4 w-max scroll-x-auto pl-4">
             {exercises.map((exercise) => {
               const config = typeConfig[exercise.type]
-
+              const icon = InterestsData[exercise.interest_id]?.icon || ''
               if (!config) return null
 
               return (
@@ -128,10 +143,10 @@ export default function ExercisesPage() {
                   className="snap-center flex-shrink-0 block cursor-pointer transition-transform active:scale-95"
                 >
                   <ExerciseCard
-                    icon={config.icon}
+                    icon={icon}
                     title={exercise.title}
                     description={exercise.description}
-                    variant={config.variant}
+                    variant={interests[exercise.interest_id]}
                     id={exercise.exercise_id}
                     type={config.route}
                   />

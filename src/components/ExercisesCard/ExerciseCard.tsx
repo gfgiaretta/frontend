@@ -3,13 +3,11 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { LucideIcon } from 'lucide-react'
-
 import { Text } from '@/components/ui/Text'
 
 interface ExerciseCardProps {
   id: string
-  icon: LucideIcon
+  icon: string
   title: string
   description: string
   variant: VariantType
@@ -41,7 +39,7 @@ const variantConfig: Record<VariantType, VariantConfig> = {
 
 export default function ExerciseCard({
   id,
-  icon: Icon,
+  icon,
   title,
   description,
   variant,
@@ -73,12 +71,31 @@ export default function ExerciseCard({
       `}
     >
       <div className="flex items-center gap-2 p-4">
-        {Icon && (
-          <Icon
-            size={16}
-            className="text-text"
+        <div
+          style={{
+            width: 24,
+            height: 24,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+          }}
+        >
+          <Image
+            src={icon}
+            alt="icon"
+            width={16}
+            height={16}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              filter:
+                'brightness(0) saturate(100%) invert(13%) sepia(0%) saturate(7482%) hue-rotate(146deg) brightness(98%) contrast(87%)',
+              display: 'block',
+            }}
           />
-        )}
+        </div>
         <Text
           as="h2"
           size="cap2"
