@@ -164,7 +164,7 @@ export function Inversion() {
       ctx.lineTo(pos.x, pos.y)
 
       // Estilos da ferramenta
-      ctx.strokeStyle = selectedTool === 'eraser' ? '#f6f6f6' : strokeColor
+      ctx.strokeStyle = selectedTool === 'eraser' ? '#ffffff' : strokeColor
 
       ctx.lineWidth =
         selectedTool === 'fine'
