@@ -9,7 +9,7 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "test": "jest --passWithNoTests",
-    "start": "pm2-runtime start ecosystem.config.js --env production",
+    "start": "next start",
     "deploy": "npm run ci && npm run build && npm run start"
   },
   "dependencies": {
